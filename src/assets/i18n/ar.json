@@ -367,8 +367,6 @@
       "name": "الاسم",
       "type": "النوع",
       "code": "الرمز",
-      "country": "الدولة",
-      "swift": "سويفت / BIC",
       "status": "الحالة"
     },
     "status": {
@@ -381,9 +379,6 @@
       "namePlaceholder": "مثال: البنك الوطني أو جوال باي",
       "code": "الرمز",
       "codePlaceholder": "مثال: NBK",
-      "country": "الدولة",
-      "swift": "سويفت / BIC",
-      "swiftPlaceholder": "مثال: NBKKWKWXXX",
       "active": "نشط"
     },
     "deleteConfirmTitle": "حذف العنصر",
@@ -454,6 +449,27 @@
     "saveSuccess": "تم حفظ المصروف بنجاح",
     "deleteSuccess": "تم حذف المصروف بنجاح"
   },
+  "devices": {
+    "title": "إدارة الأجهزة",
+    "subtitle": "الأجهزة المسجّلة الدخول حاليًا إلى حسابك",
+    "currentDevice": "الجهاز الحالي",
+    "signOut": "تسجيل الخروج",
+    "signOutAllOthers": "تسجيل الخروج من كل الأجهزة الأخرى",
+    "signOutConfirmTitle": "تسجيل خروج الجهاز",
+    "signOutConfirmText": "هل أنت متأكد من تسجيل الخروج من هذا الجهاز؟",
+    "signOutAllConfirmTitle": "تسجيل خروج كل الأجهزة الأخرى",
+    "signOutAllConfirmText": "هل أنت متأكد من تسجيل الخروج من كل الأجهزة الأخرى؟",
+    "signOutSuccess": "تم تسجيل الخروج بنجاح",
+    "locations": {
+      "baghdad": "بغداد، العراق",
+      "basra": "البصرة، العراق"
+    },
+    "activity": {
+      "now": "نشط الآن",
+      "hoursAgo": "منذ ٣ ساعات",
+      "yesterday": "الأمس"
+    }
+  },
   "table": {
     "id": "المعرّف",
     "customer": "العميل",
@@ -517,6 +533,17 @@
     "to": "إلى",
     "total": "الإجمالي",
     "exportPdf": "تصدير PDF",
+    "empty": "لا توجد معاملات في هذه الفترة",
+    "prevPeriod": "الفترة السابقة",
+    "nextPeriod": "الفترة التالية",
+    "today": "اليوم",
+    "jumpToDate": "الانتقال إلى تاريخ",
+    "periods": {
+      "daily": "يومي",
+      "weekly": "أسبوعي",
+      "monthly": "شهري",
+      "all": "الكل"
+    },
     "stats": {
       "count": "إجمالي المعاملات",
       "total": "إجمالي المبلغ",

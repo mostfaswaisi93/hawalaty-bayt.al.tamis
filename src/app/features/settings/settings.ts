@@ -1,12 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'app-settings',
-  imports: [FormsModule, TranslateModule],
+  imports: [FormsModule, RouterLink, TranslateModule],
   templateUrl: './settings.html',
 })
 export class Settings {

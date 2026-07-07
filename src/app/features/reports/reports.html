@@ -19,6 +19,74 @@
     </button>
   </div>
 
+  <!-- Period selector -->
+  <div class="tonal-elevation flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-outline-variant bg-surface-container-lowest p-4">
+    <div class="flex items-center gap-1 rounded-xl bg-surface-container p-1">
+      @for (p of periods; track p) {
+        <button
+          type="button"
+          (click)="setPeriod(p)"
+          class="rounded-lg px-4 py-2 text-body-sm font-bold transition-colors"
+          [class.bg-primary]="period() === p"
+          [class.text-on-primary]="period() === p"
+          [class.text-on-surface-variant]="period() !== p"
+          [class.hover:text-on-surface]="period() !== p">
+          {{ 'reports.periods.' + p | translate }}
+        </button>
+      }
+    </div>
+
+    @if (period() !== 'all') {
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          (click)="shift(-1)"
+          [attr.aria-label]="'reports.prevPeriod' | translate"
+          class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+          <span class="material-symbols-outlined rtl:-scale-x-100">chevron_left</span>
+        </button>
+
+        <span class="min-w-40 text-center font-bold text-on-surface" dir="ltr">
+          @switch (period()) {
+            @case ('daily') {
+              {{ rangeStart() | localDate: { day: 'numeric', month: 'long', year: 'numeric' } }}
+            }
+            @case ('weekly') {
+              {{ rangeStart() | localDate: { day: 'numeric', month: 'short' } }} – {{ rangeEndInclusive() | localDate: { day: 'numeric', month: 'short', year: 'numeric' } }}
+            }
+            @case ('monthly') {
+              {{ rangeStart() | localDate: { month: 'long', year: 'numeric' } }}
+            }
+          }
+        </span>
+
+        <button
+          type="button"
+          (click)="shift(1)"
+          [attr.aria-label]="'reports.nextPeriod' | translate"
+          class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+          <span class="material-symbols-outlined rtl:-scale-x-100">chevron_right</span>
+        </button>
+
+        <button
+          type="button"
+          (click)="goToday()"
+          class="ms-1 rounded-lg px-3 py-1.5 text-body-sm font-semibold text-primary transition-colors hover:bg-primary/10">
+          {{ 'reports.today' | translate }}
+        </button>
+
+        @if (period() === 'daily') {
+          <input
+            type="date"
+            [ngModel]="selectedDateValue()"
+            (ngModelChange)="pickDate($event)"
+            [attr.aria-label]="'reports.jumpToDate' | translate"
+            class="rounded-lg border border-outline-variant bg-surface-container px-3 py-1.5 text-body-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20" />
+        }
+      </div>
+    }
+  </div>
+
   <!-- Summary stats -->
   <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
     <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#00236f] to-[#1e3a8a] p-6 text-white shadow-xl">
@@ -71,41 +139,65 @@
           <span class="material-symbols-outlined">account_balance_wallet</span>
         </div>
       </div>
-      <p class="mb-6 text-xs text-slate-500">
+      <p class="text-xs text-slate-500">
         {{ 'reports.generatedAt' | translate }}: {{ now | localDate: { dateStyle: 'long', timeStyle: 'short' } }}
       </p>
-
-      <!-- Table -->
-      <div class="overflow-x-auto">
-        <table class="w-full">
-          <thead>
-            <tr class="border-b border-slate-200 text-slate-500">
-              <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.id' | translate }}</th>
-              <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.customer' | translate }}</th>
-              <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.item' | translate }}</th>
-              <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.amount' | translate }}</th>
-              <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.date' | translate }}</th>
-            </tr>
-          </thead>
-          <tbody class="stagger-rows">
-            @for (t of transfers; track t.id) {
-              <tr class="border-b border-slate-100">
-                <td class="whitespace-nowrap py-3 text-start text-sm"><span dir="ltr">{{ t.id }}</span></td>
-                <td class="whitespace-nowrap py-3 text-sm font-medium">{{ t.customer }}</td>
-                <td class="whitespace-nowrap py-3 text-sm text-slate-500">{{ t.itemName || '—' }}</td>
-                <td class="whitespace-nowrap py-3 text-sm font-bold text-[#00236f]">{{ t.amount | localCurrency }}</td>
-                <td class="whitespace-nowrap py-3 text-sm text-slate-500">{{ t.date | localDate }}</td>
-              </tr>
+      <p class="mb-6 text-xs font-semibold text-slate-600">
+        {{ 'reports.periods.' + period() | translate }}
+        @if (period() !== 'all') {
+          ·
+          @switch (period()) {
+            @case ('daily') {
+              {{ rangeStart() | localDate: { day: 'numeric', month: 'long', year: 'numeric' } }}
             }
-          </tbody>
-        </table>
-      </div>
+            @case ('weekly') {
+              {{ rangeStart() | localDate: { day: 'numeric', month: 'short' } }} – {{ rangeEndInclusive() | localDate: { day: 'numeric', month: 'short', year: 'numeric' } }}
+            }
+            @case ('monthly') {
+              {{ rangeStart() | localDate: { month: 'long', year: 'numeric' } }}
+            }
+          }
+        }
+      </p>
 
-      <!-- Total -->
-      <div class="mt-6 flex items-center justify-between border-t-2 border-slate-200 pt-4">
-        <span class="font-bold">{{ 'reports.total' | translate }}</span>
-        <span class="text-lg font-bold text-[#00236f]">{{ total | localCurrency }}</span>
-      </div>
+      @if (transfers().length === 0) {
+        <div class="flex flex-col items-center gap-3 py-16 text-center">
+          <span class="material-symbols-outlined text-5xl text-slate-300">receipt_long</span>
+          <p class="text-slate-500">{{ 'reports.empty' | translate }}</p>
+        </div>
+      } @else {
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-slate-200 text-slate-500">
+                <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.id' | translate }}</th>
+                <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.customer' | translate }}</th>
+                <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.item' | translate }}</th>
+                <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.amount' | translate }}</th>
+                <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.date' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody class="stagger-rows">
+              @for (t of transfers(); track t.id) {
+                <tr class="border-b border-slate-100">
+                  <td class="whitespace-nowrap py-3 text-start text-sm"><span dir="ltr">{{ t.id }}</span></td>
+                  <td class="whitespace-nowrap py-3 text-sm font-medium">{{ t.customer }}</td>
+                  <td class="whitespace-nowrap py-3 text-sm text-slate-500">{{ t.itemName || '—' }}</td>
+                  <td class="whitespace-nowrap py-3 text-sm font-bold text-[#00236f]">{{ t.amount | localCurrency }}</td>
+                  <td class="whitespace-nowrap py-3 text-sm text-slate-500">{{ t.date | localDate }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Total -->
+        <div class="mt-6 flex items-center justify-between border-t-2 border-slate-200 pt-4">
+          <span class="font-bold">{{ 'reports.total' | translate }}</span>
+          <span class="text-lg font-bold text-[#00236f]">{{ total | localCurrency }}</span>
+        </div>
+      }
     </div>
   </div>
 </div>

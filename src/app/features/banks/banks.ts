@@ -31,7 +31,7 @@ export class Banks {
     const t = this.type();
     return this.banks().filter((b) => {
       const okType = t === 'all' || b.type === t;
-      const okQuery = !q || [b.name, b.code, b.country, b.swift ?? ''].some((f) => f.toLowerCase().includes(q));
+      const okQuery = !q || [b.name, b.code].some((f) => f.toLowerCase().includes(q));
       return okType && okQuery;
     });
   });

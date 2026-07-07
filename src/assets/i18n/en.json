@@ -367,8 +367,6 @@
       "name": "Name",
       "type": "Type",
       "code": "Code",
-      "country": "Country",
-      "swift": "SWIFT / BIC",
       "status": "Status"
     },
     "status": {
@@ -381,9 +379,6 @@
       "namePlaceholder": "e.g. National Bank or Jawwal Pay",
       "code": "Code",
       "codePlaceholder": "e.g. NBK",
-      "country": "Country",
-      "swift": "SWIFT / BIC",
-      "swiftPlaceholder": "e.g. NBKKWKWXXX",
       "active": "Active"
     },
     "deleteConfirmTitle": "Delete entry",
@@ -454,6 +449,27 @@
     "saveSuccess": "Expense saved successfully",
     "deleteSuccess": "Expense deleted successfully"
   },
+  "devices": {
+    "title": "Manage Devices",
+    "subtitle": "Devices currently signed in to your account",
+    "currentDevice": "Current device",
+    "signOut": "Sign out",
+    "signOutAllOthers": "Sign out all other devices",
+    "signOutConfirmTitle": "Sign out device",
+    "signOutConfirmText": "Are you sure you want to sign out this device?",
+    "signOutAllConfirmTitle": "Sign out all other devices",
+    "signOutAllConfirmText": "Are you sure you want to sign out all other devices?",
+    "signOutSuccess": "Signed out successfully",
+    "locations": {
+      "baghdad": "Baghdad, Iraq",
+      "basra": "Basra, Iraq"
+    },
+    "activity": {
+      "now": "Active now",
+      "hoursAgo": "3 hours ago",
+      "yesterday": "Yesterday"
+    }
+  },
   "table": {
     "id": "ID",
     "customer": "Customer",
@@ -517,6 +533,17 @@
     "to": "To",
     "total": "Total",
     "exportPdf": "Export PDF",
+    "empty": "No transactions in this period",
+    "prevPeriod": "Previous period",
+    "nextPeriod": "Next period",
+    "today": "Today",
+    "jumpToDate": "Jump to date",
+    "periods": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "all": "All"
+    },
     "stats": {
       "count": "Total transactions",
       "total": "Total amount",

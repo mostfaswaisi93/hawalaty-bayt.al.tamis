@@ -55,6 +55,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/settings/settings').then((m) => m.Settings),
       },
       {
+        path: 'devices',
+        loadComponent: () => import('./features/devices/devices').then((m) => m.Devices),
+      },
+      {
         path: 'help',
         loadComponent: () => import('./features/help/help').then((m) => m.Help),
       },
