@@ -1,0 +1,215 @@
+<!-- Profile header bento -->
+<section class="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
+  <div class="glass-card relative flex flex-col items-center gap-6 overflow-hidden rounded-2xl p-8 text-center sm:flex-row sm:gap-8 sm:text-start lg:col-span-2">
+    <div class="pointer-events-none absolute -end-20 -top-20 h-64 w-64 rounded-full bg-primary/5 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-10 -start-10 h-48 w-48 rounded-full bg-secondary/5 blur-2xl"></div>
+
+    <div class="relative shrink-0">
+      <div class="grid h-24 w-24 place-items-center rounded-3xl border-4 border-white bg-primary text-3xl font-bold text-on-primary shadow-xl sm:h-32 sm:w-32">
+        {{ auth.initials() }}
+      </div>
+      <button
+        type="button"
+        class="absolute -bottom-2 -end-2 flex h-10 w-10 items-center justify-center rounded-xl border-2 border-white bg-primary text-white shadow-lg transition-transform hover:scale-110 active:scale-95"
+        [attr.aria-label]="'common.edit' | translate">
+        <span class="material-symbols-outlined text-sm">edit</span>
+      </button>
+    </div>
+
+    <div class="flex-1 space-y-2">
+      <div class="flex flex-wrap items-center justify-center gap-3 sm:justify-start">
+        <h2 class="font-display-lg text-display-lg text-primary">{{ auth.user()?.name }}</h2>
+        <span class="rounded-full border border-secondary/20 bg-secondary/10 px-3 py-1 font-label-caps text-[10px] uppercase tracking-wider text-secondary">
+          {{ 'settings.verifiedAccount' | translate }}
+        </span>
+      </div>
+      <p class="font-body-lg text-on-surface-variant">{{ 'settings.role' | translate }}</p>
+      <div class="mt-4 flex flex-wrap items-center justify-center gap-6 sm:justify-start">
+        <div class="flex items-center gap-2 text-on-surface-variant">
+          <span class="material-symbols-outlined text-primary/60">mail</span>
+          <span class="text-body-sm" dir="ltr">{{ auth.user()?.email }}</span>
+        </div>
+        <div class="flex items-center gap-2 text-on-surface-variant">
+          <span class="material-symbols-outlined text-primary/60">location_on</span>
+          <span class="text-body-sm">{{ 'settings.location' | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tier card -->
+  <div class="flex flex-col justify-between rounded-2xl bg-gradient-to-br from-[#00236f] to-[#1e3a8a] p-8 text-white shadow-lg">
+    <div>
+      <span class="font-label-caps opacity-70">{{ 'settings.tier.current' | translate }}</span>
+      <h3 class="mt-1 font-display-lg text-2xl">{{ 'settings.tier.name' | translate }}</h3>
+    </div>
+    <div class="space-y-4">
+      <div class="flex items-end justify-between">
+        <span class="text-body-sm opacity-80">{{ 'settings.tier.next' | translate }}</span>
+        <span class="font-numeral-lg text-sm">75%</span>
+      </div>
+      <div class="h-2 w-full overflow-hidden rounded-full bg-white/20">
+        <div class="h-full w-[75%] rounded-full bg-secondary-container shadow-[0_0_10px_rgba(254,147,44,0.5)]"></div>
+      </div>
+    </div>
+    <button type="button" class="mt-4 w-full rounded-lg border border-white/20 bg-white/10 py-2 font-body-sm transition-colors hover:bg-white/20">
+      {{ 'settings.tier.viewBenefits' | translate }}
+    </button>
+  </div>
+</section>
+
+<!-- Settings tabs -->
+<div class="grid grid-cols-1 gap-8 md:grid-cols-4">
+  <!-- Tab nav -->
+  <div class="space-y-2 md:col-span-1">
+    @for (tab of tabs; track tab.key) {
+      <button
+        type="button"
+        (click)="setTab(tab.key)"
+        class="group flex w-full items-center justify-between rounded-xl p-4 text-start transition-all"
+        [class.bg-primary]="activeTab() === tab.key"
+        [class.text-white]="activeTab() === tab.key"
+        [class.shadow-lg]="activeTab() === tab.key"
+        [class.text-on-surface-variant]="activeTab() !== tab.key"
+        [class.hover:bg-white]="activeTab() !== tab.key">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined">{{ tab.icon }}</span>
+          <span [class.font-bold]="activeTab() === tab.key">{{ tab.label | translate }}</span>
+        </div>
+        <span class="material-symbols-outlined text-sm opacity-50 transition-transform group-hover:translate-x-1">chevron_left</span>
+      </button>
+    }
+  </div>
+
+  <!-- Content -->
+  <div class="space-y-6 md:col-span-3">
+    <!-- Account form -->
+    <div class="glass-card rounded-2xl p-8">
+      <div class="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-outline-variant/30 pb-4">
+        <div>
+          <h4 class="font-headline-md text-primary">{{ 'settings.account.title' | translate }}</h4>
+          <p class="text-body-sm text-outline">{{ 'settings.account.subtitle' | translate }}</p>
+        </div>
+        <button type="button" (click)="save()" class="rounded-xl bg-primary px-6 py-2 font-bold text-white transition-all hover:shadow-lg active:scale-95">
+          {{ 'settings.account.save' | translate }}
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div class="space-y-2">
+          <label class="block font-label-caps text-on-surface-variant">{{ 'settings.account.fullName' | translate }}</label>
+          <input
+            type="text"
+            [ngModel]="form().fullName"
+            (ngModelChange)="update('fullName', $event)"
+            class="w-full rounded-xl border border-outline-variant bg-surface-container-low px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20" />
+        </div>
+        <div class="space-y-2">
+          <label class="block font-label-caps text-on-surface-variant">{{ 'settings.account.email' | translate }}</label>
+          <input
+            type="email"
+            dir="ltr"
+            [ngModel]="form().email"
+            (ngModelChange)="update('email', $event)"
+            class="w-full rounded-xl border border-outline-variant bg-surface-container-low px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20" />
+        </div>
+        <div class="space-y-2">
+          <label class="block font-label-caps text-on-surface-variant">{{ 'settings.account.phone' | translate }}</label>
+          <div class="flex" dir="ltr">
+            <span class="flex items-center rounded-s-xl border-y border-s border-outline-variant bg-surface-container px-4 text-body-sm">+964</span>
+            <input
+              type="tel"
+              [ngModel]="form().phone"
+              (ngModelChange)="update('phone', $event)"
+              class="flex-1 rounded-e-xl border border-outline-variant bg-surface-container-low px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20" />
+          </div>
+        </div>
+        <div class="space-y-2">
+          <label class="block font-label-caps text-on-surface-variant">{{ 'settings.account.dob' | translate }}</label>
+          <input
+            type="date"
+            [ngModel]="form().dob"
+            (ngModelChange)="update('dob', $event)"
+            class="w-full rounded-xl border border-outline-variant bg-surface-container-low px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20" />
+        </div>
+        <div class="space-y-2 md:col-span-2">
+          <label class="block font-label-caps text-on-surface-variant">{{ 'settings.account.bio' | translate }}</label>
+          <textarea
+            rows="3"
+            [ngModel]="form().bio"
+            (ngModelChange)="update('bio', $event)"
+            [placeholder]="'settings.account.bioPlaceholder' | translate"
+            class="w-full resize-none rounded-xl border border-outline-variant bg-surface-container-low px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security quick actions -->
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div class="glass-card rounded-2xl border-s-4 border-secondary p-6">
+        <div class="flex items-start gap-4">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
+            <span class="material-symbols-outlined">lock_reset</span>
+          </div>
+          <div>
+            <h5 class="font-bold text-on-surface">{{ 'settings.security.twoFactor.title' | translate }}</h5>
+            <p class="mt-1 text-body-sm text-outline">{{ 'settings.security.twoFactor.desc' | translate }}</p>
+            <button type="button" class="mt-4 flex items-center gap-1 font-bold text-body-sm text-primary hover:underline">
+              {{ 'settings.security.twoFactor.action' | translate }}
+              <span class="material-symbols-outlined text-sm">chevron_left</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card rounded-2xl border-s-4 border-primary p-6">
+        <div class="flex items-start gap-4">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <span class="material-symbols-outlined">devices</span>
+          </div>
+          <div>
+            <h5 class="font-bold text-on-surface">{{ 'settings.security.devices.title' | translate }}</h5>
+            <p class="mt-1 text-body-sm text-outline">{{ 'settings.security.devices.desc' | translate }}</p>
+            <button type="button" class="mt-4 flex items-center gap-1 font-bold text-body-sm text-primary hover:underline">
+              {{ 'settings.security.devices.action' | translate }}
+              <span class="material-symbols-outlined text-sm">chevron_left</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications preview -->
+    <div class="glass-card rounded-2xl p-8">
+      <h4 class="mb-6 font-headline-md text-primary">{{ 'settings.notifications.title' | translate }}</h4>
+      <div class="space-y-4">
+        <div class="flex items-center justify-between rounded-xl border border-outline-variant/20 bg-surface-container-lowest p-4 transition-colors hover:bg-surface">
+          <div class="flex items-center gap-4">
+            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-700">
+              <span class="material-symbols-outlined text-sm">check_circle</span>
+            </div>
+            <div>
+              <p class="font-bold text-on-surface">{{ 'settings.notifications.item1.title' | translate }}</p>
+              <p class="text-xs text-outline">{{ 'settings.notifications.item1.desc' | translate }}</p>
+            </div>
+          </div>
+          <span class="text-xs text-outline">{{ 'settings.notifications.item1.time' | translate }}</span>
+        </div>
+        <div class="flex items-center justify-between rounded-xl border border-outline-variant/20 bg-surface-container-lowest p-4 transition-colors hover:bg-surface">
+          <div class="flex items-center gap-4">
+            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+              <span class="material-symbols-outlined text-sm">info</span>
+            </div>
+            <div>
+              <p class="font-bold text-on-surface">{{ 'settings.notifications.item2.title' | translate }}</p>
+              <p class="text-xs text-outline">{{ 'settings.notifications.item2.desc' | translate }}</p>
+            </div>
+          </div>
+          <span class="text-xs text-outline">{{ 'settings.notifications.item2.time' | translate }}</span>
+        </div>
+      </div>
+      <button type="button" class="mt-6 w-full rounded-xl py-3 font-bold text-body-sm text-primary transition-colors hover:bg-primary/5">
+        {{ 'settings.notifications.seeAll' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="space-y-8">
+  <!-- Header -->
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="font-display-lg text-display-lg text-primary">{{ 'reports.title' | translate }}</h1>
+      <p class="font-body-lg text-on-surface-variant">{{ 'reports.subtitle' | translate }}</p>
+    </div>
+    <button
+      type="button"
+      [disabled]="exporting"
+      (click)="exportPdf()"
+      class="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-bold text-on-primary shadow-lg transition-all hover:bg-primary-container hover:text-on-primary-container active:scale-95 disabled:opacity-70">
+      @if (exporting) {
+        <span class="h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>
+      } @else {
+        <span class="material-symbols-outlined">picture_as_pdf</span>
+      }
+      <span>{{ 'reports.exportPdf' | translate }}</span>
+    </button>
+  </div>
+
+  <!-- Report card -->
+  <div class="tonal-elevation rounded-3xl border border-outline-variant bg-surface-container-lowest p-4 sm:p-6">
+    <!-- Printable sheet: captured verbatim into the PDF (carries active dir + font). -->
+    <div #report class="report-sheet rounded-2xl bg-white p-6 text-[#0b1c30] sm:p-8" [attr.dir]="language.dir()">
+      <!-- Report header -->
+      <div class="mb-6 flex items-start justify-between border-b border-slate-200 pb-4">
+        <div>
+          <h2 class="text-2xl font-bold text-[#00236f]">{{ 'app.name' | translate }}</h2>
+          <p class="text-sm text-slate-500">{{ 'reports.title' | translate }}</p>
+        </div>
+        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#00236f] text-white">
+          <span class="material-symbols-outlined">account_balance_wallet</span>
+        </div>
+      </div>
+      <p class="mb-6 text-xs text-slate-500">
+        {{ 'reports.generatedAt' | translate }}: {{ now | localDate: { dateStyle: 'long', timeStyle: 'short' } }}
+      </p>
+
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-slate-200 text-slate-500">
+              <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.id' | translate }}</th>
+              <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.customer' | translate }}</th>
+              <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.item' | translate }}</th>
+              <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.amount' | translate }}</th>
+              <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.date' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (t of transfers; track t.id) {
+              <tr class="border-b border-slate-100">
+                <td class="whitespace-nowrap py-3 text-sm" dir="ltr">{{ t.id }}</td>
+                <td class="whitespace-nowrap py-3 text-sm font-medium">{{ t.customer }}</td>
+                <td class="whitespace-nowrap py-3 text-sm text-slate-500">{{ t.itemName || '—' }}</td>
+                <td class="whitespace-nowrap py-3 text-sm font-bold text-[#00236f]">{{ t.amount | localCurrency: t.currency }}</td>
+                <td class="whitespace-nowrap py-3 text-sm text-slate-500">{{ t.date | localDate }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Total -->
+      <div class="mt-6 flex items-center justify-between border-t-2 border-slate-200 pt-4">
+        <span class="font-bold">{{ 'reports.total' | translate }}</span>
+        <span class="text-lg font-bold text-[#00236f]">{{ total | localCurrency: 'USD' }}</span>
+      </div>
+    </div>
+  </div>
+</div>

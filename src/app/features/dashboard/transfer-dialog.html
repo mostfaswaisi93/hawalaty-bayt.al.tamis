@@ -1,0 +1,211 @@
+<h2 mat-dialog-title>{{ 'form.newTransfer' | translate }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="flex flex-col gap-2 pt-2">
+    <!-- Items -->
+    <div class="mt-2">
+      <label class="mb-2 block text-sm font-semibold text-on-surface-variant">{{ 'form.items' | translate }}</label>
+
+      <div class="flex items-start gap-2">
+        <mat-form-field appearance="outline" class="flex-1" subscriptSizing="dynamic">
+          <mat-label>{{ 'form.selectItem' | translate }}</mat-label>
+          <mat-select [value]="pendingItemId()" (selectionChange)="pendingItemId.set($event.value)">
+            @for (item of availableItems(); track item.id) {
+              <mat-option [value]="item.id">{{ item.name }} — {{ item.price | localCurrency: item.currency }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <button
+          mat-mini-fab
+          color="primary"
+          type="button"
+          class="mt-1"
+          [disabled]="!pendingItemId()"
+          (click)="addPendingItem()"
+          [attr.aria-label]="'common.add' | translate">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+
+      @if (showItemsError()) {
+        <span class="mt-1 block text-xs text-red-600">{{ 'form.itemsRequired' | translate }}</span>
+      }
+
+      @if (lines().length > 0) {
+        <div class="mt-3 space-y-2 rounded-xl border border-outline-variant p-3">
+          @for (line of lines(); track line.itemId) {
+            <div class="flex items-center gap-2">
+              <span class="flex-1 truncate text-sm font-medium">{{ line.name }}</span>
+              <div class="flex items-center gap-1 rounded-lg border border-outline-variant">
+                <button
+                  type="button"
+                  class="flex h-7 w-7 items-center justify-center text-on-surface-variant hover:text-primary"
+                  (click)="decrementQty(line.itemId)"
+                  [attr.aria-label]="'common.decrease' | translate">
+                  <mat-icon class="!text-base">remove</mat-icon>
+                </button>
+                <span class="w-6 text-center text-sm font-bold">{{ line.quantity }}</span>
+                <button
+                  type="button"
+                  class="flex h-7 w-7 items-center justify-center text-on-surface-variant hover:text-primary"
+                  (click)="incrementQty(line.itemId)"
+                  [attr.aria-label]="'common.increase' | translate">
+                  <mat-icon class="!text-base">add</mat-icon>
+                </button>
+              </div>
+              <span class="w-24 whitespace-nowrap text-end text-sm font-bold" dir="ltr">
+                {{ line.price * line.quantity | localCurrency: currency }}
+              </span>
+              <button
+                type="button"
+                class="flex h-7 w-7 flex-shrink-0 items-center justify-center text-outline hover:text-error"
+                (click)="removeLine(line.itemId)"
+                [attr.aria-label]="'common.delete' | translate">
+                <mat-icon class="!text-base">close</mat-icon>
+              </button>
+            </div>
+          }
+          <div class="flex items-center justify-between border-t border-outline-variant pt-2">
+            <span class="font-bold">{{ 'form.total' | translate }}</span>
+            <span class="font-bold text-primary" dir="ltr">{{ subtotal() | localCurrency: currency }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Payment method -->
+    <div class="mt-4">
+      <label class="mb-2 block text-sm font-semibold text-on-surface-variant">{{ 'form.paymentMethod' | translate }}</label>
+      <div class="grid grid-cols-2 gap-2">
+        <button
+          type="button"
+          (click)="setPaymentMethod('cash')"
+          class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
+          [class.bg-primary]="form.controls.paymentMethod.value === 'cash'"
+          [class.text-on-primary]="form.controls.paymentMethod.value === 'cash'"
+          [class.bg-surface-container]="form.controls.paymentMethod.value !== 'cash'"
+          [class.text-on-surface-variant]="form.controls.paymentMethod.value !== 'cash'">
+          {{ 'form.paymentCash' | translate }}
+        </button>
+        <button
+          type="button"
+          (click)="setPaymentMethod('bank')"
+          class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
+          [class.bg-primary]="form.controls.paymentMethod.value === 'bank'"
+          [class.text-on-primary]="form.controls.paymentMethod.value === 'bank'"
+          [class.bg-surface-container]="form.controls.paymentMethod.value !== 'bank'"
+          [class.text-on-surface-variant]="form.controls.paymentMethod.value !== 'bank'">
+          {{ 'form.paymentBank' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Cash scenario -->
+    @if (form.controls.paymentMethod.value === 'cash') {
+      <div class="mt-3 rounded-xl border border-outline-variant p-3">
+        <mat-slide-toggle formControlName="hasChange" (change)="onHasChangeToggle($event.checked)">
+          {{ 'form.hasChange' | translate }}
+        </mat-slide-toggle>
+
+        @if (form.controls.hasChange.value) {
+          <div class="mt-3 flex flex-col gap-2">
+            <label class="block text-sm font-semibold text-on-surface-variant">{{ 'form.changeMethod' | translate }}</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                (click)="setChangeMethod('cash')"
+                class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
+                [class.bg-primary]="form.controls.changeMethod.value === 'cash'"
+                [class.text-on-primary]="form.controls.changeMethod.value === 'cash'"
+                [class.bg-surface-container]="form.controls.changeMethod.value !== 'cash'"
+                [class.text-on-surface-variant]="form.controls.changeMethod.value !== 'cash'">
+                {{ 'form.changeCash' | translate }}
+              </button>
+              <button
+                type="button"
+                (click)="setChangeMethod('bank')"
+                class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
+                [class.bg-primary]="form.controls.changeMethod.value === 'bank'"
+                [class.text-on-primary]="form.controls.changeMethod.value === 'bank'"
+                [class.bg-surface-container]="form.controls.changeMethod.value !== 'bank'"
+                [class.text-on-surface-variant]="form.controls.changeMethod.value !== 'bank'">
+                {{ 'form.changeBank' | translate }}
+              </button>
+            </div>
+
+            @if (form.controls.changeMethod.value === 'bank') {
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'form.selectBank' | translate }}</mat-label>
+                <mat-select formControlName="changeBankId">
+                  <mat-optgroup [label]="'banks.types.bank' | translate">
+                    @for (b of banks(); track b.id) {
+                      <mat-option [value]="b.id">{{ b.name }}</mat-option>
+                    }
+                  </mat-optgroup>
+                  <mat-optgroup [label]="'banks.types.wallet' | translate">
+                    @for (w of wallets(); track w.id) {
+                      <mat-option [value]="w.id">{{ w.name }}</mat-option>
+                    }
+                  </mat-optgroup>
+                </mat-select>
+              </mat-form-field>
+              <app-field-error [control]="form.controls.changeBankId" />
+            }
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'form.changeAmount' | translate }}</mat-label>
+              <input matInput type="number" formControlName="changeAmount" />
+            </mat-form-field>
+            <app-field-error [control]="form.controls.changeAmount" />
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Bank/wallet transfer scenario -->
+    @if (form.controls.paymentMethod.value === 'bank') {
+      <div class="mt-3 flex flex-col gap-2 rounded-xl border border-outline-variant p-3">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'form.selectBank' | translate }}</mat-label>
+          <mat-select formControlName="bankId">
+            <mat-optgroup [label]="'banks.types.bank' | translate">
+              @for (b of banks(); track b.id) {
+                <mat-option [value]="b.id">{{ b.name }}</mat-option>
+              }
+            </mat-optgroup>
+            <mat-optgroup [label]="'banks.types.wallet' | translate">
+              @for (w of wallets(); track w.id) {
+                <mat-option [value]="w.id">{{ w.name }}</mat-option>
+              }
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+        <app-field-error [control]="form.controls.bankId" />
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'form.senderName' | translate }}</mat-label>
+          <input matInput formControlName="senderName" [placeholder]="'form.senderNamePlaceholder' | translate" />
+        </mat-form-field>
+        <app-field-error [control]="form.controls.senderName" />
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'form.transferredAmount' | translate }}</mat-label>
+          <input matInput type="number" formControlName="transferredAmount" />
+        </mat-form-field>
+        <app-field-error [control]="form.controls.transferredAmount" />
+      </div>
+    }
+
+    <mat-form-field appearance="outline" class="mt-2">
+      <mat-label>{{ 'form.notes' | translate }}</mat-label>
+      <textarea matInput rows="2" formControlName="notes" [placeholder]="'form.notesPlaceholder' | translate"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>{{ 'common.cancel' | translate }}</button>
+  <button mat-flat-button color="primary" (click)="submit()">
+    {{ 'common.save' | translate }}
+  </button>
+</mat-dialog-actions>

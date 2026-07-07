@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#7B2E28"/>
+  <!-- brick oven dome -->
+  <path d="M16 48 a16 16 0 0 1 32 0 z" fill="#FDF6F0"/>
+  <!-- oven opening -->
+  <circle cx="32" cy="43" r="7.5" fill="#7B2E28"/>
+  <!-- rising smoke -->
+  <path d="M32 8c3.5 4 3.5 7.5 0 11-3.5-3.5-3.5-7 0-11z" fill="#FDF6F0"/>
+  <path d="M32 15.5c4.5 5 4.5 9.5 0 14-4.5-4.5-4.5-9 0-14z" fill="#FDF6F0" opacity="0.85"/>
+</svg>

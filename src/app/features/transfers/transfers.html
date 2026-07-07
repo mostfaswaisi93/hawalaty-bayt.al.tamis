@@ -1,0 +1,187 @@
+<div class="flex flex-col gap-stack-md">
+  <!-- Header -->
+  <section class="flex flex-col gap-2">
+    <h2 class="font-display-lg text-display-lg text-primary">{{ 'transfers.title' | translate }}</h2>
+    <p class="font-body-lg text-on-surface-variant">{{ 'transfers.subtitle' | translate }}</p>
+  </section>
+
+  <div class="grid grid-cols-1 gap-stack-md lg:grid-cols-12">
+    <!-- Left column -->
+    <div class="flex flex-col gap-stack-md lg:col-span-8">
+      <!-- Recipient selection -->
+      <div class="rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 shadow-sm">
+        <div class="mb-6 flex items-center justify-between">
+          <h3 class="font-headline-md text-headline-md">{{ 'transfers.chooseRecipient' | translate }}</h3>
+          <button type="button" class="flex items-center gap-1 font-bold text-primary hover:underline">
+            <span class="material-symbols-outlined text-sm">group_add</span>
+            <span class="font-body-sm">{{ 'transfers.addRecipient' | translate }}</span>
+          </button>
+        </div>
+
+        <div class="relative mb-8">
+          <span class="material-symbols-outlined absolute end-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+          <input
+            type="text"
+            [placeholder]="'transfers.searchRecipient' | translate"
+            class="w-full rounded-xl border border-outline-variant py-4 pe-12 ps-4 font-body-lg outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20" />
+        </div>
+
+        <h4 class="mb-4 font-label-caps text-label-caps uppercase text-on-surface-variant">
+          {{ 'transfers.frequentRecipients' | translate }}
+        </h4>
+        <div class="custom-scrollbar flex gap-6 overflow-x-auto pb-4">
+          <button type="button" class="group flex min-w-[80px] flex-col items-center gap-2">
+            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-md transition-transform group-hover:scale-105">
+              <span class="material-symbols-outlined">add</span>
+            </div>
+            <span class="font-body-sm text-xs">{{ 'transfers.new' | translate }}</span>
+          </button>
+
+          @for (c of contacts; track c.nameKey; let i = $index) {
+            <button type="button" class="group flex min-w-[80px] cursor-pointer flex-col items-center gap-2" (click)="select(i)">
+              <div
+                class="grid h-14 w-14 place-items-center rounded-full border-2 font-bold transition-all"
+                [class.bg-surface-container-high]="selected() !== i"
+                [class.text-on-surface-variant]="selected() !== i"
+                [class.border-transparent]="selected() !== i"
+                [class.group-hover:border-primary]="selected() !== i"
+                [class.bg-primary]="selected() === i"
+                [class.text-white]="selected() === i"
+                [class.border-primary]="selected() === i"
+                [class.ring-4]="selected() === i"
+                [class.ring-primary/10]="selected() === i">
+                {{ c.initials }}
+              </div>
+              <span class="whitespace-nowrap text-center font-body-sm text-xs" [class.font-bold]="selected() === i" [class.text-primary]="selected() === i" [class.font-semibold]="selected() !== i">
+                {{ c.nameKey | translate }}
+              </span>
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Transfer details -->
+      <div class="rounded-2xl border border-outline-variant bg-surface-container-lowest p-8 shadow-sm">
+        <h3 class="mb-6 font-headline-md text-headline-md">{{ 'transfers.detailsTitle' | translate }}</h3>
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+          <div class="flex flex-col gap-2">
+            <label class="font-label-caps text-label-caps text-on-surface-variant">{{ 'transfers.amountSent' | translate }}</label>
+            <div class="relative">
+              <input
+                type="number"
+                [ngModel]="amount()"
+                (ngModelChange)="amount.set($event || 0)"
+                class="w-full rounded-xl border-2 border-outline-variant py-4 pe-24 ps-4 font-numeral-lg text-display-lg outline-none transition-all focus:border-primary" />
+              <div class="absolute inset-y-0 end-0 flex items-center">
+                <button type="button" class="flex h-full items-center gap-2 rounded-e-xl border-s border-outline-variant bg-surface-container px-4 transition-colors hover:bg-surface-container-high">
+                  <span class="font-bold text-primary">USD</span>
+                  <span class="material-symbols-outlined text-sm">expand_more</span>
+                </button>
+              </div>
+            </div>
+            <p class="mt-1 text-xs text-on-surface-variant">
+              {{ 'transfers.availableBalance' | translate }}: <span dir="ltr">${{ availableBalance | localNumber: { minimumFractionDigits: 2 } }}</span>
+            </p>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label class="font-label-caps text-label-caps text-on-surface-variant">{{ 'transfers.receiverGets' | translate }}</label>
+            <div class="relative">
+              <input
+                type="text"
+                [value]="receiverAmount() | localNumber"
+                disabled
+                class="w-full rounded-xl border-2 border-surface-container-high bg-surface-container-low py-4 pe-24 ps-4 font-numeral-lg text-display-lg text-on-surface-variant outline-none" />
+              <div class="absolute inset-y-0 end-0 flex items-center">
+                <div class="flex h-full items-center gap-2 rounded-e-xl border-s border-outline-variant bg-surface-container/50 px-4">
+                  <span class="font-bold text-on-surface-variant">ILS</span>
+                </div>
+              </div>
+            </div>
+            <p class="mt-1 text-xs font-bold text-secondary">
+              {{ 'transfers.exchangeRate' | translate }}: 1 USD = {{ rate | localNumber: { minimumFractionDigits: 2 } }} ILS
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-8 flex flex-col gap-2">
+          <label class="font-label-caps text-label-caps text-on-surface-variant">{{ 'transfers.notes' | translate }}</label>
+          <textarea
+            rows="3"
+            [ngModel]="note()"
+            (ngModelChange)="note.set($event)"
+            [placeholder]="'transfers.notesPlaceholder' | translate"
+            class="w-full rounded-xl border border-outline-variant p-4 font-body-lg outline-none transition-all focus:border-primary"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right column -->
+    <div class="flex flex-col gap-stack-md lg:col-span-4">
+      <!-- Summary -->
+      <div class="relative overflow-hidden rounded-2xl bg-[#00236f] p-8 text-white shadow-xl">
+        <div class="pointer-events-none absolute end-0 top-0 -mt-16 -me-16 h-32 w-32 rounded-full bg-white/5 blur-3xl"></div>
+        <div class="pointer-events-none absolute bottom-0 start-0 -mb-12 -ms-12 h-24 w-24 rounded-full bg-secondary/20 blur-2xl"></div>
+
+        <h3 class="mb-8 font-headline-md text-headline-md">{{ 'transfers.summary' | translate }}</h3>
+        <div class="mb-8 space-y-4">
+          <div class="flex items-center justify-between opacity-80">
+            <span class="font-body-sm">{{ 'transfers.baseAmount' | translate }}</span>
+            <span class="font-numeral-lg text-lg" dir="ltr">${{ amount() | localNumber: { minimumFractionDigits: 2 } }}</span>
+          </div>
+          <div class="flex items-center justify-between opacity-80">
+            <span class="font-body-sm">{{ 'transfers.transferFee' | translate }}</span>
+            <span class="font-numeral-lg text-lg" dir="ltr">${{ transferFee | localNumber: { minimumFractionDigits: 2 } }}</span>
+          </div>
+          <div class="flex items-center justify-between opacity-80">
+            <span class="font-body-sm">{{ 'transfers.serviceFee' | translate }}</span>
+            <span class="font-numeral-lg text-lg" dir="ltr">${{ serviceFee | localNumber: { minimumFractionDigits: 2 } }}</span>
+          </div>
+          <div class="flex items-center justify-between border-t border-white/20 pt-4">
+            <span class="font-body-lg font-bold">{{ 'transfers.totalDue' | translate }}</span>
+            <span class="font-numeral-lg text-2xl text-secondary-container" dir="ltr">${{ total() | localNumber: { minimumFractionDigits: 2 } }}</span>
+          </div>
+        </div>
+
+        <div class="mb-8 rounded-xl bg-white/10 p-4">
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-secondary-container">info</span>
+            <div>
+              <p class="mb-1 text-xs font-bold">{{ 'transfers.etaTitle' | translate }}</p>
+              <p class="text-xs opacity-80">{{ 'transfers.etaValue' | translate }}</p>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          (click)="confirm()"
+          class="flex w-full items-center justify-center gap-2 rounded-xl bg-secondary-container py-4 font-bold text-on-secondary-fixed shadow-lg transition-all hover:brightness-110 active:scale-[0.98]">
+          <span>{{ 'transfers.confirmSend' | translate }}</span>
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+      </div>
+
+      <!-- Security badge -->
+      <div class="flex items-center gap-4 rounded-2xl border border-outline-variant bg-surface-container-high p-6">
+        <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white text-primary shadow-sm">
+          <span class="material-symbols-outlined" data-weight="fill">verified_user</span>
+        </div>
+        <div>
+          <p class="text-sm font-bold">{{ 'transfers.securityTitle' | translate }}</p>
+          <p class="text-xs text-on-surface-variant">{{ 'transfers.securityDesc' | translate }}</p>
+        </div>
+      </div>
+
+      <!-- Promo card -->
+      <div class="group relative h-40 cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br from-[#00236f] to-[#1e3a8a] shadow-lg">
+        <div class="pointer-events-none absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 3px 3px, white 1px, transparent 0); background-size: 22px 22px;"></div>
+        <div class="pointer-events-none absolute -end-8 -top-8 h-28 w-28 rounded-full bg-secondary-container/30 blur-2xl transition-transform duration-700 group-hover:scale-125"></div>
+        <div class="absolute inset-x-5 bottom-5">
+          <p class="text-sm font-bold text-white">{{ 'transfers.promoTitle' | translate }}</p>
+          <p class="mt-1 text-xs text-white/70">{{ 'transfers.promoDesc' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

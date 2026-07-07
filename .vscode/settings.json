@@ -1,0 +1,15 @@
+{
+  // Tailwind directives (@tailwind, @apply, @layer, @screen) and Tailwind's
+  // theme() function are processed by PostCSS at build time. VS Code's built-in
+  // CSS/SCSS linter doesn't know them, so silence the "Unknown at rule" warnings.
+  "scss.lint.unknownAtRules": "ignore",
+  "css.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore",
+
+  // Let the Tailwind CSS IntelliSense extension provide autocomplete/hover for
+  // the custom design tokens inside .html and .ts class strings.
+  "tailwindCSS.includeLanguages": {
+    "html": "html",
+    "typescript": "javascript"
+  }
+}

@@ -1,0 +1,442 @@
+{
+  "app": {
+    "name": "حوالاتي",
+    "tagline": "تحويلات مالية سريعة وآمنة"
+  },
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "transfers": "الحوالات",
+    "history": "السجل",
+    "banks": "البنوك والمحافظ",
+    "catalog": "المنتجات والخدمات",
+    "reports": "التقارير",
+    "settings": "الإعدادات",
+    "menu": "القائمة"
+  },
+  "history": {
+    "title": "سجل الحوالات",
+    "subtitle": "تتبّع جميع معاملاتك المالية السابقة بكل سهولة.",
+    "exportReport": "تصدير التقرير",
+    "totalTransfers": "إجمالي المعاملات (هذا الشهر)",
+    "vsLastMonth": "عن الشهر الماضي",
+    "timeRange": "النطاق الزمني",
+    "last30": "آخر 30 يوم",
+    "operationType": "نوع العملية",
+    "prev": "السابق",
+    "next": "التالي",
+    "showing": "عرض {{from}}-{{to}} من أصل {{total}} معاملة",
+    "statuses": {
+      "completed": "مكتمل",
+      "processing": "قيد المعالجة",
+      "cancelled": "ملغى"
+    },
+    "types": {
+      "international": "حوالة دولية",
+      "domestic": "حوالة داخلية",
+      "autopay": "دفع آلي",
+      "cash": "سحب نقدي"
+    },
+    "subs": {
+      "intlBank": "بنك دولي",
+      "rinCash": "محفظة رين كاش",
+      "bills": "دفع فواتير",
+      "personal": "التحويل الشخصي",
+      "localBank": "بنك محلي"
+    },
+    "names": {
+      "john": "جون سميث",
+      "asiacell": "آسياسيل تيليكوم",
+      "mohammedAhmed": "محمد أحمد"
+    },
+    "columns": {
+      "recipient": "المستلم",
+      "dateTime": "التاريخ والوقت",
+      "type": "نوع العملية",
+      "reference": "رقم المرجع",
+      "status": "الحالة",
+      "amount": "المبلغ"
+    }
+  },
+  "forgot": {
+    "title": "إعادة تعيين كلمة المرور",
+    "subtitle": "أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين.",
+    "submit": "إرسال رابط إعادة التعيين",
+    "sending": "جارٍ الإرسال...",
+    "sentTitle": "تحقّق من بريدك",
+    "sentText": "أرسلنا رابط إعادة تعيين كلمة المرور إلى",
+    "backToLogin": "العودة لتسجيل الدخول"
+  },
+  "notFound": {
+    "title": "الصفحة غير موجودة",
+    "subtitle": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+    "backHome": "العودة إلى لوحة التحكم"
+  },
+  "transfers": {
+    "title": "إرسال أموال جديدة",
+    "subtitle": "قم بتحويل الأموال بأمان وسرعة إلى أي مكان في العالم.",
+    "chooseRecipient": "اختر المستلم",
+    "addRecipient": "إضافة مستلم جديد",
+    "searchRecipient": "ابحث بالاسم، البريد الإلكتروني، أو رقم الهاتف...",
+    "frequentRecipients": "المستلمون المتكررون",
+    "new": "جديد",
+    "detailsTitle": "تفاصيل التحويل",
+    "amountSent": "المبلغ المرسل",
+    "availableBalance": "الرصيد المتاح",
+    "receiverGets": "سيصل للمستلم",
+    "exchangeRate": "سعر الصرف",
+    "notes": "ملاحظات (اختياري)",
+    "notesPlaceholder": "أضف رسالة قصيرة للمستلم...",
+    "summary": "ملخص العملية",
+    "baseAmount": "المبلغ الأساسي",
+    "transferFee": "رسوم التحويل",
+    "serviceFee": "رسوم الخدمة",
+    "totalDue": "الإجمالي المطلوب",
+    "etaTitle": "وقت الوصول المتوقع",
+    "etaValue": "خلال 15-30 دقيقة إلى حساب المستلم",
+    "confirmSend": "تأكيد وإرسال",
+    "securityTitle": "حماية متكاملة",
+    "securityDesc": "جميع معاملاتك مشفرة ومحمية بأعلى معايير الأمان العالمية.",
+    "promoTitle": "وفّر 50% على الرسوم",
+    "promoDesc": "استخدم الكود FIRST50 في أول عملية تحويل لك هذا الشهر."
+  },
+  "settings": {
+    "verifiedAccount": "حساب موثّق",
+    "role": "مستشار مالي أول",
+    "location": "بغداد، العراق",
+    "tier": {
+      "current": "الفئة الحالية",
+      "name": "بريميوم ذهبي",
+      "next": "الفئة التالية: بلاتيني",
+      "viewBenefits": "عرض المزايا"
+    },
+    "tabs": {
+      "account": "معلومات الحساب",
+      "security": "الأمان",
+      "notifications": "الإشعارات",
+      "language": "اللغة"
+    },
+    "account": {
+      "title": "معلومات الحساب",
+      "subtitle": "إدارة بياناتك الشخصية وملفك العام.",
+      "save": "حفظ التغييرات",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "dob": "تاريخ الميلاد",
+      "bio": "نبذة",
+      "bioPlaceholder": "أخبرنا قليلاً عن نفسك..."
+    },
+    "security": {
+      "twoFactor": {
+        "title": "المصادقة الثنائية",
+        "desc": "عزّز أمان حسابك بإضافة طبقة حماية إضافية.",
+        "action": "الإعداد الآن"
+      },
+      "devices": {
+        "title": "الأجهزة المسجّلة",
+        "desc": "أنت مسجّل الدخول حالياً على 3 أجهزة نشطة.",
+        "action": "إدارة الأجهزة"
+      }
+    },
+    "notifications": {
+      "title": "أحدث إشعارات النشاط",
+      "seeAll": "عرض كل الإشعارات",
+      "item1": {
+        "title": "تم التحويل بنجاح",
+        "desc": "إلى: زيد المنصور ($2,400.00)",
+        "time": "قبل ساعتين"
+      },
+      "item2": {
+        "title": "تم رصد تسجيل دخول جديد",
+        "desc": "iPhone 15 Pro • بغداد، العراق",
+        "time": "أمس"
+      }
+    }
+  },
+  "header": {
+    "searchPlaceholder": "بحث عن معاملة أو مستلم...",
+    "notifications": "الإشعارات",
+    "help": "المساعدة"
+  },
+  "footer": {
+    "rights": "© 2026 حوالاتي. جميع الحقوق محفوظة. مرخّص من قبل البنك المركزي."
+  },
+  "language": {
+    "label": "اللغة",
+    "arabic": "العربية",
+    "english": "English",
+    "switch": "تغيير اللغة"
+  },
+  "theme": {
+    "light": "الوضع الفاتح",
+    "dark": "الوضع الداكن"
+  },
+  "user": {
+    "account": "الحساب",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج",
+    "greeting": "مرحباً",
+    "role": "عميل مميز"
+  },
+  "auth": {
+    "loginSuccess": "مرحباً بعودتك!",
+    "logoutSuccess": "تم تسجيل خروجك",
+    "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+  },
+  "login": {
+    "welcome": "مرحباً بعودتك",
+    "subtitle": "سجّل الدخول لإدارة حوالاتك",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "you@example.com",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "remember": "تذكّرني",
+    "submit": "تسجيل الدخول",
+    "signingIn": "جارٍ تسجيل الدخول...",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
+    "brandTitle": "شريكك الموثوق في عالم التحويلات المالية",
+    "brandSubtitle": "نوفّر لك أفضل التقنيات العالمية لضمان سرعة وأمان أموالك، وتحكّم كامل في معاملاتك الدولية والمحلية بنقرة واحدة.",
+    "feature1": "تتبّع الحوالات في الوقت الفعلي",
+    "feature2": "دعم متعدد البنوك والعملات",
+    "feature3": "تقارير احترافية ثنائية اللغة",
+    "demoTitle": "بيانات الدخول التجريبية",
+    "useDemo": "استخدام بيانات تجريبية",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "noAccount": "ليس لديك حساب؟",
+    "contactBank": "تواصل مع بنكك",
+    "copyright": "© 2026 حوالاتي. جميع الحقوق محفوظة.",
+    "privacy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة",
+    "support": "مركز المساعدة"
+  },
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "add": "إضافة",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "search": "بحث",
+    "export": "تصدير",
+    "exportPdf": "تصدير PDF",
+    "close": "إغلاق",
+    "confirm": "تأكيد",
+    "submit": "إرسال",
+    "reset": "إعادة تعيين",
+    "yes": "نعم",
+    "no": "لا",
+    "actions": "إجراءات",
+    "loading": "جارٍ التحميل...",
+    "all": "الكل",
+    "status": "الحالة",
+    "filter": "فلترة",
+    "increase": "زيادة",
+    "decrease": "إنقاص"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "subtitle": "نظرة عامة على نشاط حوالاتك",
+    "newTransfer": "حوالة جديدة",
+    "balance": {
+      "available": "إجمالي الرصيد المتوفر",
+      "account": "رقم الحساب",
+      "details": "تفاصيل الرصيد"
+    },
+    "quickActions": {
+      "send": "إرسال",
+      "request": "طلب",
+      "topup": "شحن",
+      "more": "المزيد"
+    },
+    "scheduled": {
+      "title": "حوالات مجدولة",
+      "viewAll": "عرض الكل",
+      "dueLabel": "موعد",
+      "tomorrow": "غداً",
+      "rent": "إيجار المكتب - شهرياً",
+      "utilities": "فاتورة الخدمات العامة"
+    },
+    "parties": {
+      "sara": "سارة علي",
+      "electricity": "شركة الكهرباء",
+      "amazon": "أمازون جلوبال",
+      "rafidain": "بنك الرافدين",
+      "jasim": "جاسم عباس",
+      "ali": "علي حسن",
+      "emirates": "بنك الإمارات دبي الوطني",
+      "reem": "ريم حمد",
+      "mohammed": "محمد جاسم",
+      "layla": "ليلى أحمد",
+      "yassin": "ياسين عمر"
+    },
+    "insights": {
+      "title": "تحليل النفقات",
+      "monthlySpending": "مصاريف هذا الشهر"
+    },
+    "days": {
+      "sat": "سبت",
+      "sun": "أحد",
+      "mon": "اثنين",
+      "tue": "ثلاثاء",
+      "wed": "أربعاء"
+    },
+    "transactions": {
+      "title": "آخر المعاملات",
+      "subtitle": "تتبّع نشاطك المالي الأخير في مكان واحد",
+      "party": "المستلم / المرسل",
+      "type": "النوع",
+      "loadMore": "تحميل المزيد من المعاملات",
+      "online": "مشتريات عبر الإنترنت",
+      "incoming": "تحويل وارد من حساب",
+      "expenseShare": "مشاركة نفقات",
+      "direct": "خصم مباشر",
+      "bankTransfer": "تحويل بنكي",
+      "requestType": "طلب حوالة"
+    }
+  },
+  "banks": {
+    "title": "البنوك والمحافظ",
+    "subtitle": "إدارة البنوك والمحافظ الرقمية المتاحة للحوالات",
+    "addEntity": "إضافة بنك / محفظة",
+    "editEntity": "تعديل بنك / محفظة",
+    "searchPlaceholder": "ابحث عن بنك أو محفظة...",
+    "count": "{{count}} عنصر",
+    "empty": "لا توجد بنوك أو محافظ",
+    "types": {
+      "bank": "بنك",
+      "wallet": "محفظة"
+    },
+    "columns": {
+      "name": "الاسم",
+      "type": "النوع",
+      "code": "الرمز",
+      "country": "الدولة",
+      "swift": "سويفت / BIC",
+      "status": "الحالة"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "form": {
+      "type": "النوع",
+      "name": "الاسم",
+      "namePlaceholder": "مثال: البنك الوطني أو جوال باي",
+      "code": "الرمز",
+      "codePlaceholder": "مثال: NBK",
+      "country": "الدولة",
+      "swift": "سويفت / BIC",
+      "swiftPlaceholder": "مثال: NBKKWKWXXX",
+      "active": "نشط"
+    },
+    "deleteConfirmTitle": "حذف العنصر",
+    "deleteConfirmText": "هل أنت متأكد من حذف هذا البنك أو المحفظة؟",
+    "saveSuccess": "تم الحفظ بنجاح",
+    "deleteSuccess": "تم الحذف بنجاح"
+  },
+  "catalog": {
+    "title": "المنتجات والخدمات",
+    "subtitle": "إدارة السلع والخدمات التي تقدّمها مع تسعيرتها",
+    "addItem": "إضافة صنف",
+    "editItem": "تعديل صنف",
+    "searchPlaceholder": "ابحث عن سلعة أو خدمة...",
+    "count": "{{count}} صنف",
+    "empty": "لا توجد أصناف",
+    "columns": {
+      "name": "الصنف",
+      "type": "النوع",
+      "category": "الفئة",
+      "price": "السعر",
+      "status": "الحالة"
+    },
+    "types": {
+      "service": "خدمة",
+      "good": "سلعة"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "form": {
+      "name": "اسم الصنف",
+      "namePlaceholder": "مثال: إصلاح هاتف محمول",
+      "type": "النوع",
+      "category": "الفئة",
+      "categoryPlaceholder": "مثال: إلكترونيات",
+      "price": "السعر",
+      "pricePlaceholder": "أدخل السعر",
+      "currency": "العملة",
+      "active": "نشط"
+    },
+    "deleteConfirmTitle": "حذف الصنف",
+    "deleteConfirmText": "هل أنت متأكد من حذف هذا الصنف؟",
+    "saveSuccess": "تم حفظ الصنف بنجاح",
+    "deleteSuccess": "تم حذف الصنف بنجاح"
+  },
+  "table": {
+    "id": "المعرّف",
+    "customer": "العميل",
+    "item": "الصنف / الخدمة",
+    "amount": "المبلغ",
+    "currency": "العملة",
+    "date": "التاريخ",
+    "status": "الحالة",
+    "actions": "إجراءات",
+    "noData": "لا توجد بيانات",
+    "rowsPerPage": "صفوف لكل صفحة"
+  },
+  "status": {
+    "completed": "مكتملة",
+    "pending": "قيد الانتظار",
+    "failed": "فاشلة"
+  },
+  "form": {
+    "newTransfer": "حوالة جديدة",
+    "walkInCustomer": "زبون حاضر",
+    "items": "الأصناف",
+    "selectItem": "اختر صنفاً",
+    "itemsRequired": "الرجاء إضافة صنف واحد على الأقل",
+    "total": "الإجمالي",
+    "paymentMethod": "طريقة الدفع",
+    "paymentCash": "نقدي",
+    "paymentBank": "تحويل بنكي / محفظة",
+    "hasChange": "هل يوجد باقي؟",
+    "changeMethod": "كيف تم إرجاع الباقي؟",
+    "changeCash": "نقداً",
+    "changeBank": "تحويل بنكي / محفظة",
+    "selectBank": "اختر البنك أو المحفظة",
+    "changeAmount": "مبلغ الباقي المُرجَع",
+    "senderName": "اسم الشخص الذي قام بالتحويل",
+    "senderNamePlaceholder": "أدخل اسم المُحوِّل",
+    "transferredAmount": "المبلغ المُحوَّل",
+    "notes": "ملاحظات",
+    "notesPlaceholder": "ملاحظات اختيارية"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "email": "يرجى إدخال بريد إلكتروني صحيح",
+    "minlength": "يجب أن يكون على الأقل {{count}} أحرف",
+    "maxlength": "يجب ألا يتجاوز {{count}} أحرف",
+    "min": "يجب ألا تقل القيمة عن {{min}}",
+    "max": "يجب ألا تزيد القيمة عن {{max}}",
+    "pattern": "التنسيق غير صحيح"
+  },
+  "messages": {
+    "saveSuccess": "تم الحفظ بنجاح",
+    "saveError": "حدث خطأ ما. يرجى المحاولة مرة أخرى",
+    "deleteConfirmTitle": "تأكيد الحذف",
+    "deleteConfirmText": "هل أنت متأكد من حذف هذه الحوالة؟",
+    "deleteSuccess": "تم الحذف بنجاح"
+  },
+  "reports": {
+    "title": "التقارير",
+    "subtitle": "إنشاء وتصدير تقارير الحوالات",
+    "generatedAt": "تم الإنشاء في",
+    "period": "الفترة",
+    "from": "من",
+    "to": "إلى",
+    "total": "الإجمالي",
+    "exportPdf": "تصدير PDF"
+  }
+}

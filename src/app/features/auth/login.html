@@ -1,0 +1,152 @@
+<div class="flex min-h-screen flex-col bg-surface text-on-surface">
+  <!-- Top header -->
+  <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between border-b border-outline-variant bg-surface px-inline-md shadow-sm md:px-inline-lg">
+    <span class="font-display-lg text-display-lg font-bold leading-none text-primary">{{ 'app.name' | translate }}</span>
+    <div class="flex items-center gap-2">
+      <app-language-switcher />
+      <app-theme-toggle />
+    </div>
+  </header>
+
+  <main class="flex flex-grow pt-16">
+    <!-- Form side -->
+    <section class="flex w-full items-center justify-center bg-surface px-inline-md py-10 lg:w-1/2 lg:px-24">
+      <div class="w-full max-w-md">
+        <div class="mb-8">
+          <h1 class="mb-2 font-display-lg text-display-lg text-primary">{{ 'login.welcome' | translate }}</h1>
+          <p class="font-body-lg text-on-surface-variant">{{ 'login.subtitle' | translate }}</p>
+        </div>
+
+        <!-- Demo credentials hint -->
+        <div class="mb-6 flex items-start gap-3 rounded-xl border border-primary/10 bg-surface-container-low p-4">
+          <span class="material-symbols-outlined text-primary">info</span>
+          <div class="text-sm">
+            <p class="font-semibold text-primary">{{ 'login.demoTitle' | translate }}</p>
+            <p class="text-on-surface-variant" dir="ltr">{{ demoEmail }} · {{ demoPassword }}</p>
+            <button type="button" class="mt-1 font-semibold text-primary underline" (click)="fillDemo()">
+              {{ 'login.useDemo' | translate }}
+            </button>
+          </div>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-5">
+          <!-- Email -->
+          <div class="space-y-2">
+            <label class="block font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant" for="email">
+              {{ 'login.email' | translate }}
+            </label>
+            <div class="relative">
+              <span class="material-symbols-outlined pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3 text-outline">mail</span>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                autocomplete="username"
+                [placeholder]="'login.emailPlaceholder' | translate"
+                class="w-full rounded-xl border border-outline-variant bg-surface-container-lowest py-3 pe-4 ps-11 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
+            </div>
+            <app-field-error [control]="form.controls.email" />
+          </div>
+
+          <!-- Password -->
+          <div class="space-y-2">
+            <label class="block font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant" for="password">
+              {{ 'login.password' | translate }}
+            </label>
+            <div class="relative">
+              <span class="material-symbols-outlined pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3 text-outline">lock</span>
+              <input
+                id="password"
+                [type]="hidePassword() ? 'password' : 'text'"
+                formControlName="password"
+                autocomplete="current-password"
+                [placeholder]="'login.passwordPlaceholder' | translate"
+                class="w-full rounded-xl border border-outline-variant bg-surface-container-lowest py-3 pe-12 ps-11 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
+              <button
+                type="button"
+                (click)="hidePassword.set(!hidePassword())"
+                [attr.aria-label]="(hidePassword() ? 'login.showPassword' : 'login.hidePassword') | translate"
+                class="absolute inset-y-0 end-0 flex items-center pe-3 text-outline transition-colors hover:text-primary">
+                <span class="material-symbols-outlined">{{ hidePassword() ? 'visibility' : 'visibility_off' }}</span>
+              </button>
+            </div>
+            <app-field-error [control]="form.controls.password" />
+          </div>
+
+          <!-- Remember + forgot -->
+          <div class="flex items-center justify-between">
+            <label class="flex cursor-pointer items-center gap-2">
+              <input type="checkbox" formControlName="remember" class="h-5 w-5 rounded accent-primary" />
+              <span class="font-body-sm text-on-surface-variant">{{ 'login.remember' | translate }}</span>
+            </label>
+            <a routerLink="/forgot-password" class="font-body-sm font-bold text-primary hover:underline">
+              {{ 'login.forgotPassword' | translate }}
+            </a>
+          </div>
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            [disabled]="loading()"
+            class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-4 font-headline-md text-headline-md text-on-primary shadow-lg transition-all hover:bg-primary-container hover:text-on-primary-container active:scale-[0.98] disabled:opacity-70">
+            @if (loading()) {
+              <span class="h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>
+              <span>{{ 'login.signingIn' | translate }}</span>
+            } @else {
+              <span>{{ 'login.submit' | translate }}</span>
+              <span class="material-symbols-outlined">login</span>
+            }
+          </button>
+        </form>
+
+        <!-- Sign-up / contact -->
+        <div class="mt-8 text-center">
+          <span class="font-body-sm text-on-surface-variant">{{ 'login.noAccount' | translate }}</span>
+          <button type="button" class="px-1 font-body-sm font-bold text-secondary hover:underline">
+            {{ 'login.contactBank' | translate }}
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Branding side -->
+    <section class="relative hidden items-center justify-center overflow-hidden bg-primary-container p-inline-lg lg:flex lg:w-1/2">
+      <div class="pointer-events-none absolute inset-0 opacity-30">
+        <div class="absolute -top-1/4 start-[-10%] h-96 w-96 rounded-full bg-primary blur-3xl"></div>
+        <div class="absolute -bottom-1/4 end-[-10%] h-96 w-96 rounded-full bg-secondary-container blur-3xl"></div>
+      </div>
+
+      <div class="relative z-10 max-w-lg text-center">
+        <div class="mb-8 flex justify-center">
+          <div class="flex h-24 w-24 items-center justify-center rounded-3xl border border-white/20 bg-white/10 shadow-xl backdrop-blur-md">
+            <span class="material-symbols-outlined text-5xl text-white" data-weight="fill">account_balance_wallet</span>
+          </div>
+        </div>
+        <h2 class="mb-4 font-display-lg text-[36px] leading-tight text-white">{{ 'login.brandTitle' | translate }}</h2>
+        <p class="font-body-lg leading-relaxed text-white/80">{{ 'login.brandSubtitle' | translate }}</p>
+
+        <ul class="mt-10 inline-block space-y-3 text-start">
+          @for (f of features; track f) {
+            <li class="flex items-center gap-3 text-white/90">
+              <span class="material-symbols-outlined text-secondary-container" data-weight="fill">check_circle</span>
+              <span class="font-body-lg">{{ f | translate }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="z-20 flex flex-col items-center justify-between gap-3 border-t border-outline-variant bg-surface-container-lowest px-inline-md py-stack-md md:flex-row md:px-inline-lg">
+    <div class="flex flex-col items-center gap-2 md:flex-row md:gap-4">
+      <span class="font-headline-md text-headline-md text-primary">{{ 'app.name' | translate }}</span>
+      <span class="font-body-sm text-on-surface-variant">{{ 'login.copyright' | translate }}</span>
+    </div>
+    <nav class="flex flex-wrap justify-center gap-4">
+      <a class="cursor-pointer font-body-sm text-on-surface-variant transition-colors hover:text-secondary">{{ 'login.privacy' | translate }}</a>
+      <a class="cursor-pointer font-body-sm text-on-surface-variant transition-colors hover:text-secondary">{{ 'login.terms' | translate }}</a>
+      <a class="cursor-pointer font-body-sm text-on-surface-variant transition-colors hover:text-secondary">{{ 'login.support' | translate }}</a>
+    </nav>
+  </footer>
+</div>

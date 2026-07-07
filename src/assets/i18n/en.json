@@ -1,0 +1,442 @@
+{
+  "app": {
+    "name": "My Transfers",
+    "tagline": "Fast and secure money transfers"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "transfers": "Transfers",
+    "history": "History",
+    "banks": "Banks & Wallets",
+    "catalog": "Products & Services",
+    "reports": "Reports",
+    "settings": "Settings",
+    "menu": "Menu"
+  },
+  "history": {
+    "title": "Transaction History",
+    "subtitle": "Track all your past financial transactions with ease.",
+    "exportReport": "Export report",
+    "totalTransfers": "Total transactions (this month)",
+    "vsLastMonth": "vs last month",
+    "timeRange": "Time range",
+    "last30": "Last 30 days",
+    "operationType": "Operation type",
+    "prev": "Previous",
+    "next": "Next",
+    "showing": "Showing {{from}}-{{to}} of {{total}} transactions",
+    "statuses": {
+      "completed": "Completed",
+      "processing": "Processing",
+      "cancelled": "Cancelled"
+    },
+    "types": {
+      "international": "International transfer",
+      "domestic": "Domestic transfer",
+      "autopay": "Auto payment",
+      "cash": "Cash withdrawal"
+    },
+    "subs": {
+      "intlBank": "International bank",
+      "rinCash": "Rin Cash wallet",
+      "bills": "Bill payment",
+      "personal": "Personal transfer",
+      "localBank": "Local bank"
+    },
+    "names": {
+      "john": "John Smith",
+      "asiacell": "Asiacell Telecom",
+      "mohammedAhmed": "Mohammed Ahmed"
+    },
+    "columns": {
+      "recipient": "Recipient",
+      "dateTime": "Date & time",
+      "type": "Operation type",
+      "reference": "Reference",
+      "status": "Status",
+      "amount": "Amount"
+    }
+  },
+  "forgot": {
+    "title": "Reset password",
+    "subtitle": "Enter your email and we'll send you a reset link.",
+    "submit": "Send reset link",
+    "sending": "Sending...",
+    "sentTitle": "Check your inbox",
+    "sentText": "We've sent a password reset link to",
+    "backToLogin": "Back to login"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "subtitle": "The page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to dashboard"
+  },
+  "transfers": {
+    "title": "Send new money",
+    "subtitle": "Transfer money securely and quickly anywhere in the world.",
+    "chooseRecipient": "Choose recipient",
+    "addRecipient": "Add new recipient",
+    "searchRecipient": "Search by name, email, or phone number...",
+    "frequentRecipients": "Frequent recipients",
+    "new": "New",
+    "detailsTitle": "Transfer details",
+    "amountSent": "Amount sent",
+    "availableBalance": "Available balance",
+    "receiverGets": "Recipient gets",
+    "exchangeRate": "Exchange rate",
+    "notes": "Notes (optional)",
+    "notesPlaceholder": "Add a short message for the recipient...",
+    "summary": "Transaction summary",
+    "baseAmount": "Base amount",
+    "transferFee": "Transfer fee",
+    "serviceFee": "Service fee",
+    "totalDue": "Total due",
+    "etaTitle": "Estimated arrival time",
+    "etaValue": "Within 15-30 minutes to the recipient's account",
+    "confirmSend": "Confirm & send",
+    "securityTitle": "Full protection",
+    "securityDesc": "All your transactions are encrypted and protected with the highest global security standards.",
+    "promoTitle": "Save 50% on fees",
+    "promoDesc": "Use code FIRST50 on your first transfer this month."
+  },
+  "settings": {
+    "verifiedAccount": "Verified Account",
+    "role": "Senior Financial Consultant",
+    "location": "Baghdad, Iraq",
+    "tier": {
+      "current": "Current Tier",
+      "name": "Gold Premium",
+      "next": "Next Tier: Platinum",
+      "viewBenefits": "View Benefits"
+    },
+    "tabs": {
+      "account": "Account Info",
+      "security": "Security",
+      "notifications": "Notifications",
+      "language": "Language"
+    },
+    "account": {
+      "title": "Account Information",
+      "subtitle": "Manage your personal details and public profile.",
+      "save": "Save Changes",
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "dob": "Date of Birth",
+      "bio": "Bio",
+      "bioPlaceholder": "Tell us a little about yourself..."
+    },
+    "security": {
+      "twoFactor": {
+        "title": "Two-Factor Authentication",
+        "desc": "Enhance your account security by adding an extra layer of protection.",
+        "action": "Setup Now"
+      },
+      "devices": {
+        "title": "Logged Devices",
+        "desc": "You are currently logged in on 3 active devices.",
+        "action": "Manage Devices"
+      }
+    },
+    "notifications": {
+      "title": "Latest Activity Notifications",
+      "seeAll": "See All Notifications",
+      "item1": {
+        "title": "Transfer Successful",
+        "desc": "To: Zaid Al-Mansour ($2,400.00)",
+        "time": "2 hours ago"
+      },
+      "item2": {
+        "title": "New Login Detected",
+        "desc": "iPhone 15 Pro • Baghdad, IQ",
+        "time": "Yesterday"
+      }
+    }
+  },
+  "header": {
+    "searchPlaceholder": "Search a transaction or recipient...",
+    "notifications": "Notifications",
+    "help": "Help"
+  },
+  "footer": {
+    "rights": "© 2026 My Transfers. All rights reserved. Licensed by the Central Bank."
+  },
+  "language": {
+    "label": "Language",
+    "arabic": "العربية",
+    "english": "English",
+    "switch": "Switch language"
+  },
+  "theme": {
+    "light": "Light mode",
+    "dark": "Dark mode"
+  },
+  "user": {
+    "account": "Account",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "greeting": "Welcome",
+    "role": "Premium Client"
+  },
+  "auth": {
+    "loginSuccess": "Welcome back!",
+    "logoutSuccess": "You have been logged out",
+    "invalidCredentials": "Invalid email or password"
+  },
+  "login": {
+    "welcome": "Welcome back",
+    "subtitle": "Sign in to manage your transfers",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "remember": "Remember me",
+    "submit": "Sign in",
+    "signingIn": "Signing in...",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "brandTitle": "Your trusted partner in money transfers",
+    "brandSubtitle": "World-class technology keeps your money fast and secure — full control over your local and international transactions in one click.",
+    "feature1": "Real-time transfer tracking",
+    "feature2": "Multi-bank & multi-currency support",
+    "feature3": "Professional bilingual reports",
+    "demoTitle": "Demo credentials",
+    "useDemo": "Use demo credentials",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "contactBank": "Contact your bank",
+    "copyright": "© 2026 My Transfers. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "support": "Contact Support"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "export": "Export",
+    "exportPdf": "Export PDF",
+    "close": "Close",
+    "confirm": "Confirm",
+    "submit": "Submit",
+    "reset": "Reset",
+    "yes": "Yes",
+    "no": "No",
+    "actions": "Actions",
+    "loading": "Loading...",
+    "all": "All",
+    "status": "Status",
+    "filter": "Filter",
+    "increase": "Increase",
+    "decrease": "Decrease"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Overview of your transfer activity",
+    "newTransfer": "New Transfer",
+    "balance": {
+      "available": "Total available balance",
+      "account": "Account number",
+      "details": "Balance details"
+    },
+    "quickActions": {
+      "send": "Send",
+      "request": "Request",
+      "topup": "Top up",
+      "more": "More"
+    },
+    "scheduled": {
+      "title": "Scheduled transfers",
+      "viewAll": "View all",
+      "dueLabel": "Due",
+      "tomorrow": "Tomorrow",
+      "rent": "Office rent - monthly",
+      "utilities": "Utilities bill"
+    },
+    "parties": {
+      "sara": "Sara Ali",
+      "electricity": "Electricity Company",
+      "amazon": "Amazon Global",
+      "rafidain": "Rafidain Bank",
+      "jasim": "Jasim Abbas",
+      "ali": "Ali Hassan",
+      "emirates": "Emirates NBD",
+      "reem": "Reem Hamad",
+      "mohammed": "Mohammed Jasim",
+      "layla": "Layla Ahmad",
+      "yassin": "Yassin Omar"
+    },
+    "insights": {
+      "title": "Spending insights",
+      "monthlySpending": "This month's spending"
+    },
+    "days": {
+      "sat": "Sat",
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed"
+    },
+    "transactions": {
+      "title": "Recent transactions",
+      "subtitle": "Track your latest financial activity in one place",
+      "party": "Recipient / Sender",
+      "type": "Type",
+      "loadMore": "Load more transactions",
+      "online": "Online purchase",
+      "incoming": "Incoming account transfer",
+      "expenseShare": "Expense sharing",
+      "direct": "Direct debit",
+      "bankTransfer": "Bank transfer",
+      "requestType": "Transfer request"
+    }
+  },
+  "banks": {
+    "title": "Banks & Wallets",
+    "subtitle": "Manage the banks and digital wallets available for transfers",
+    "addEntity": "Add Bank / Wallet",
+    "editEntity": "Edit Bank / Wallet",
+    "searchPlaceholder": "Search banks or wallets...",
+    "count": "{{count}} entries",
+    "empty": "No banks or wallets found",
+    "types": {
+      "bank": "Bank",
+      "wallet": "Wallet"
+    },
+    "columns": {
+      "name": "Name",
+      "type": "Type",
+      "code": "Code",
+      "country": "Country",
+      "swift": "SWIFT / BIC",
+      "status": "Status"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "form": {
+      "type": "Type",
+      "name": "Name",
+      "namePlaceholder": "e.g. National Bank or Jawwal Pay",
+      "code": "Code",
+      "codePlaceholder": "e.g. NBK",
+      "country": "Country",
+      "swift": "SWIFT / BIC",
+      "swiftPlaceholder": "e.g. NBKKWKWXXX",
+      "active": "Active"
+    },
+    "deleteConfirmTitle": "Delete entry",
+    "deleteConfirmText": "Are you sure you want to delete this bank or wallet?",
+    "saveSuccess": "Saved successfully",
+    "deleteSuccess": "Deleted successfully"
+  },
+  "catalog": {
+    "title": "Products & Services",
+    "subtitle": "Manage the items and services you offer, with pricing",
+    "addItem": "Add Item",
+    "editItem": "Edit Item",
+    "searchPlaceholder": "Search products or services...",
+    "count": "{{count}} items",
+    "empty": "No items found",
+    "columns": {
+      "name": "Item",
+      "type": "Type",
+      "category": "Category",
+      "price": "Price",
+      "status": "Status"
+    },
+    "types": {
+      "service": "Service",
+      "good": "Good"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "form": {
+      "name": "Item name",
+      "namePlaceholder": "e.g. Mobile phone repair",
+      "type": "Type",
+      "category": "Category",
+      "categoryPlaceholder": "e.g. Electronics",
+      "price": "Price",
+      "pricePlaceholder": "Enter price",
+      "currency": "Currency",
+      "active": "Active"
+    },
+    "deleteConfirmTitle": "Delete item",
+    "deleteConfirmText": "Are you sure you want to delete this item?",
+    "saveSuccess": "Item saved successfully",
+    "deleteSuccess": "Item deleted successfully"
+  },
+  "table": {
+    "id": "ID",
+    "customer": "Customer",
+    "item": "Item / Service",
+    "amount": "Amount",
+    "currency": "Currency",
+    "date": "Date",
+    "status": "Status",
+    "actions": "Actions",
+    "noData": "No data available",
+    "rowsPerPage": "Rows per page"
+  },
+  "status": {
+    "completed": "Completed",
+    "pending": "Pending",
+    "failed": "Failed"
+  },
+  "form": {
+    "newTransfer": "New Transfer",
+    "walkInCustomer": "Walk-in customer",
+    "items": "Items",
+    "selectItem": "Select an item",
+    "itemsRequired": "Please add at least one item",
+    "total": "Total",
+    "paymentMethod": "Payment method",
+    "paymentCash": "Cash",
+    "paymentBank": "Bank / wallet transfer",
+    "hasChange": "Is there change due?",
+    "changeMethod": "How was the change returned?",
+    "changeCash": "Cash",
+    "changeBank": "Bank / wallet transfer",
+    "selectBank": "Select a bank or wallet",
+    "changeAmount": "Change amount returned",
+    "senderName": "Name of the person who made the transfer",
+    "senderNamePlaceholder": "Enter the sender's name",
+    "transferredAmount": "Transferred amount",
+    "notes": "Notes",
+    "notesPlaceholder": "Optional notes"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "minlength": "Must be at least {{count}} characters",
+    "maxlength": "Must be at most {{count}} characters",
+    "min": "Value must be at least {{min}}",
+    "max": "Value must be at most {{max}}",
+    "pattern": "Invalid format"
+  },
+  "messages": {
+    "saveSuccess": "Saved successfully",
+    "saveError": "Something went wrong. Please try again",
+    "deleteConfirmTitle": "Delete confirmation",
+    "deleteConfirmText": "Are you sure you want to delete this transfer?",
+    "deleteSuccess": "Deleted successfully"
+  },
+  "reports": {
+    "title": "Reports",
+    "subtitle": "Generate and export transfer reports",
+    "generatedAt": "Generated at",
+    "period": "Period",
+    "from": "From",
+    "to": "To",
+    "total": "Total",
+    "exportPdf": "Export PDF"
+  }
+}

@@ -1,0 +1,191 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex flex-wrap items-start justify-between gap-3">
+    <div>
+      <h1 class="font-display-lg text-display-lg text-primary">{{ 'history.title' | translate }}</h1>
+      <p class="font-body-lg text-on-surface-variant">{{ 'history.subtitle' | translate }}</p>
+    </div>
+    <a
+      routerLink="/reports"
+      class="flex items-center gap-2 rounded-xl border border-primary/30 bg-primary/5 px-4 py-2.5 font-bold text-primary transition-colors hover:bg-primary/10">
+      <span class="material-symbols-outlined text-xl">download</span>
+      <span>{{ 'history.exportReport' | translate }}</span>
+    </a>
+  </div>
+
+  <!-- Summary + filters row -->
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
+    <!-- Summary card -->
+    <div class="relative overflow-hidden rounded-2xl bg-[#00236f] p-6 text-white shadow-xl">
+      <div class="pointer-events-none absolute -end-6 -top-6 h-24 w-24 rounded-full bg-white/5 blur-2xl"></div>
+      <p class="text-xs text-white/70">{{ 'history.totalTransfers' | translate }}</p>
+      <h2 class="mt-2 font-display-lg text-3xl font-bold" dir="ltr">${{ monthlyTotal | localNumber: { minimumFractionDigits: 2 } }}</h2>
+      <div class="mt-2 flex items-center gap-1 text-xs">
+        <span class="material-symbols-outlined text-sm text-green-300">trending_up</span>
+        <span class="font-bold text-green-300" dir="ltr">14.2%</span>
+        <span class="text-white/60">{{ 'history.vsLastMonth' | translate }}</span>
+      </div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="rounded-2xl border border-outline-variant bg-surface-container-lowest p-4 lg:col-span-3">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div class="flex flex-wrap gap-4">
+          <!-- Time range -->
+          <div class="flex flex-col gap-1">
+            <label class="font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant">{{ 'history.timeRange' | translate }}</label>
+            <div class="flex items-center gap-2 rounded-lg border border-outline-variant bg-surface px-3 py-2">
+              <span class="material-symbols-outlined text-lg text-outline">calendar_month</span>
+              <span class="text-body-sm">{{ 'history.last30' | translate }}</span>
+              <span class="material-symbols-outlined text-sm text-outline">expand_more</span>
+            </div>
+          </div>
+          <!-- Operation type -->
+          <div class="flex flex-col gap-1">
+            <label class="font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant">{{ 'history.operationType' | translate }}</label>
+            <div class="relative">
+              <select
+                [ngModel]="type()"
+                (ngModelChange)="setType($event)"
+                class="appearance-none rounded-lg border border-outline-variant bg-surface py-2 pe-9 ps-3 text-body-sm outline-none focus:border-primary">
+                @for (t of types; track t) {
+                  <option [value]="t">{{ (t === 'all' ? 'common.all' : 'history.types.' + t) | translate }}</option>
+                }
+              </select>
+              <span class="material-symbols-outlined pointer-events-none absolute end-2 top-1/2 -translate-y-1/2 text-sm text-outline">expand_more</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status chips + filter -->
+        <div class="flex items-end gap-2">
+          <div class="flex flex-col gap-1">
+            <label class="font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant">{{ 'table.status' | translate }}</label>
+            <div class="flex flex-wrap gap-1">
+              @for (s of statuses; track s) {
+                <button
+                  type="button"
+                  (click)="setStatus(s)"
+                  class="rounded-lg px-3 py-1.5 text-body-sm font-semibold transition-colors"
+                  [class.bg-primary]="status() === s"
+                  [class.text-on-primary]="status() === s"
+                  [class.bg-surface-container]="status() !== s"
+                  [class.text-on-surface-variant]="status() !== s"
+                  [class.hover:bg-surface-container-high]="status() !== s">
+                  {{ (s === 'all' ? 'common.all' : 'history.statuses.' + s) | translate }}
+                </button>
+              }
+            </div>
+          </div>
+          <button type="button" class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-on-primary transition-transform active:scale-95" [attr.aria-label]="'common.filter' | translate">
+            <span class="material-symbols-outlined text-xl">filter_list</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="tonal-elevation overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-lowest">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="bg-surface-container-low text-outline">
+            <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'history.columns.recipient' | translate }}</th>
+            <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'history.columns.dateTime' | translate }}</th>
+            <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'history.columns.type' | translate }}</th>
+            <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'history.columns.reference' | translate }}</th>
+            <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'table.status' | translate }}</th>
+            <th class="whitespace-nowrap px-5 py-4 text-end font-label-caps text-[11px] uppercase tracking-wider">{{ 'history.columns.amount' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-outline-variant/20">
+          @for (t of paged(); track t.ref) {
+            <tr class="transition-colors hover:bg-surface-container-low/40">
+              <!-- Recipient -->
+              <td class="px-5 py-4">
+                <div class="flex items-center gap-3">
+                  @if (t.icon) {
+                    <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg" [class]="t.iconTone">
+                      <span class="material-symbols-outlined text-xl">{{ t.icon }}</span>
+                    </div>
+                  } @else {
+                    <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
+                      {{ t.avatar }}
+                    </div>
+                  }
+                  <div>
+                    <p class="whitespace-nowrap text-body-sm font-bold">{{ t.nameKey | translate }}</p>
+                    <p class="whitespace-nowrap text-[11px] text-outline">{{ t.subKey | translate }}</p>
+                  </div>
+                </div>
+              </td>
+              <!-- Date & time -->
+              <td class="whitespace-nowrap px-5 py-4">
+                <p class="text-body-sm">{{ t.datetime | localDate: { day: 'numeric', month: 'long', year: 'numeric' } }}</p>
+                <p class="text-[11px] text-outline" dir="ltr">{{ t.datetime | localDate: { hour: '2-digit', minute: '2-digit' } }}</p>
+              </td>
+              <!-- Type -->
+              <td class="whitespace-nowrap px-5 py-4">
+                <span class="rounded-md bg-surface-container px-2.5 py-1 text-[11px] font-semibold text-on-surface-variant">{{ t.typeKey | translate }}</span>
+              </td>
+              <!-- Reference -->
+              <td class="whitespace-nowrap px-5 py-4 font-mono text-body-sm text-on-surface-variant" dir="ltr">#{{ t.ref }}</td>
+              <!-- Status -->
+              <td class="px-5 py-4">
+                <span class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-[11px] font-bold" [class]="statusPill(t.status)">
+                  <span class="h-1.5 w-1.5 rounded-full" [class]="statusDot(t.status)"></span>
+                  {{ 'history.statuses.' + t.status | translate }}
+                </span>
+              </td>
+              <!-- Amount -->
+              <td class="whitespace-nowrap px-5 py-4 text-end" dir="ltr">
+                <p class="font-bold" [class]="amountClass(t.tone)">${{ t.usd | localNumber: { minimumFractionDigits: 2 } }}</p>
+                <p class="text-[11px] text-outline">ILS {{ t.ils | localNumber }}</p>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex flex-wrap items-center justify-between gap-3 border-t border-outline-variant/30 px-5 py-4">
+      <span class="text-body-sm text-on-surface-variant">
+        {{ 'history.showing' | translate: { from: rangeFrom(), to: rangeTo(), total: filtered().length } }}
+      </span>
+      <div class="flex items-center gap-1">
+        <button
+          type="button"
+          (click)="goPage(page() - 1)"
+          [disabled]="page() === 1"
+          class="flex h-9 w-9 items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant transition-colors hover:bg-surface-container disabled:opacity-40"
+          [attr.aria-label]="'history.prev' | translate">
+          <span class="material-symbols-outlined text-xl">chevron_right</span>
+        </button>
+        @for (p of pages(); track p) {
+          <button
+            type="button"
+            (click)="goPage(p)"
+            class="flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-body-sm font-bold transition-colors"
+            [class.bg-primary]="page() === p"
+            [class.text-on-primary]="page() === p"
+            [class.border]="page() !== p"
+            [class.border-outline-variant]="page() !== p"
+            [class.text-on-surface-variant]="page() !== p"
+            [class.hover:bg-surface-container]="page() !== p">
+            {{ p | localNumber }}
+          </button>
+        }
+        <button
+          type="button"
+          (click)="goPage(page() + 1)"
+          [disabled]="page() === totalPages()"
+          class="flex h-9 w-9 items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant transition-colors hover:bg-surface-container disabled:opacity-40"
+          [attr.aria-label]="'history.next' | translate">
+          <span class="material-symbols-outlined text-xl">chevron_left</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
