@@ -6,33 +6,61 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ConstantsService } from '../../core/constants.service';
+import { menuCategoryIcon } from '../../core/menu-category-style';
 import { MenuService } from '../../core/menu.service';
 import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 
 /** Editor for the "Menu categories" constant — one entry in the Constants list. */
 @Component({
   selector: 'app-menu-categories-dialog',
-  imports: [FormsModule, MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, TranslateModule],
+  imports: [
+    FormsModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatTooltipModule,
+    TranslateModule,
+  ],
   template: `
-    <h2 mat-dialog-title>{{ 'constants.menuCategories.title' | translate }}</h2>
+    <h2 mat-dialog-title class="!flex !items-center !gap-3">
+      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand">
+        <mat-icon>restaurant_menu</mat-icon>
+      </span>
+      {{ 'constants.menuCategories.title' | translate }}
+    </h2>
 
     <mat-dialog-content>
-      <p class="mb-6 text-body-sm text-on-surface-variant">{{ 'constants.menuCategories.subtitle' | translate }}</p>
+      <p class="mb-5 text-body-sm text-on-surface-variant">{{ 'constants.menuCategories.subtitle' | translate }}</p>
 
-      <div class="mb-6 flex flex-wrap gap-2">
+      <div class="mb-6 flex flex-wrap gap-2 rounded-2xl border border-outline-variant/40 bg-surface-container-low p-4">
         @for (c of constants.menuCategories(); track c) {
-          <span class="inline-flex items-center gap-2 rounded-full bg-surface-container px-4 py-2 text-body-sm font-semibold">
+          <span class="inline-flex items-center gap-2 rounded-full bg-surface-container-lowest py-1.5 ps-3 pe-2 text-body-sm font-semibold shadow-sm">
+            <span class="material-symbols-outlined text-base text-outline">{{ categoryIcon(c) }}</span>
             {{ c }}
-            <button
-              type="button"
-              (click)="removeCategory(c)"
-              [attr.aria-label]="'common.delete' | translate"
-              class="flex h-5 w-5 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-error-container hover:text-error">
-              <span class="material-symbols-outlined text-sm">close</span>
-            </button>
+            @if (isInUse(c)) {
+              <span
+                class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-outline/60"
+                [matTooltip]="'constants.menuCategories.inUseTooltip' | translate">
+                <span class="material-symbols-outlined text-sm">lock</span>
+              </span>
+            } @else {
+              <button
+                type="button"
+                (click)="removeCategory(c)"
+                [attr.aria-label]="'common.delete' | translate"
+                class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-error-container hover:text-error">
+                <span class="material-symbols-outlined text-sm">close</span>
+              </button>
+            }
           </span>
+        }
+        @if (constants.menuCategories().length === 0) {
+          <p class="text-body-sm text-on-surface-variant">{{ 'constants.customList.empty' | translate }}</p>
         }
       </div>
 
@@ -74,6 +102,14 @@ export class MenuCategoriesDialog {
 
   protected readonly newCategory = signal('');
 
+  protected categoryIcon(category: string): string {
+    return menuCategoryIcon(category);
+  }
+
+  protected isInUse(category: string): boolean {
+    return this.menu.all().some((i) => i.category === category);
+  }
+
   protected addCategory(): void {
     const added = this.constants.addMenuCategory(this.newCategory());
     if (!added) {
@@ -85,11 +121,6 @@ export class MenuCategoriesDialog {
   }
 
   protected removeCategory(category: string): void {
-    if (this.menu.all().some((i) => i.category === category)) {
-      this.notify('constants.menuCategories.inUse');
-      return;
-    }
-
     this.dialog
       .open(ConfirmDialog, {
         width: '400px',

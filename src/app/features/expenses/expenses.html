@@ -1,0 +1,158 @@
+<div class="page-enter space-y-8">
+  <!-- Header -->
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="font-display-lg text-display-lg text-primary">{{ 'expenses.title' | translate }}</h1>
+      <p class="font-body-lg text-on-surface-variant">{{ 'expenses.subtitle' | translate }}</p>
+    </div>
+    <button
+      type="button"
+      (click)="openDialog()"
+      class="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-bold text-on-primary shadow-lg transition-all hover:bg-primary-container hover:text-on-primary-container active:scale-95">
+      <span class="material-symbols-outlined">add</span>
+      <span>{{ 'expenses.addExpense' | translate }}</span>
+    </button>
+  </div>
+
+  <!-- Summary stats -->
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#00236f] to-[#1e3a8a] p-6 text-white shadow-xl">
+      <div class="pointer-events-none absolute -end-6 -top-6 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
+      <div class="relative z-10 flex items-center gap-4">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10">
+          <span class="material-symbols-outlined">receipt_long</span>
+        </div>
+        <div>
+          <p class="text-xs text-white/70">{{ 'expenses.stats.count' | translate }}</p>
+          <p class="font-numeral-lg text-2xl" dir="ltr">{{ totalCount() | localNumber }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+      <div class="flex items-center gap-4">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-error/10 text-error">
+          <span class="material-symbols-outlined">payments</span>
+        </div>
+        <div>
+          <p class="text-body-sm text-on-surface-variant">{{ 'expenses.stats.total' | translate }}</p>
+          <p class="font-numeral-lg text-2xl text-on-surface" dir="ltr">{{ totalAmount() | localCurrency }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+      <div class="flex items-center gap-4">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <span class="material-symbols-outlined">trending_down</span>
+        </div>
+        <div>
+          <p class="text-body-sm text-on-surface-variant">{{ 'expenses.stats.average' | translate }}</p>
+          <p class="font-numeral-lg text-2xl text-on-surface" dir="ltr">{{ averageAmount() | localCurrency }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table card -->
+  <div class="tonal-elevation rounded-3xl border border-outline-variant bg-surface-container-lowest p-6">
+    <!-- Toolbar -->
+    <div class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="search-pill flex w-full items-center gap-2 rounded-full bg-surface-container px-4 py-2 transition-shadow sm:w-72">
+          <span class="material-symbols-outlined text-outline">search</span>
+          <input
+            type="text"
+            [ngModel]="query()"
+            (ngModelChange)="query.set($event)"
+            [placeholder]="'expenses.searchPlaceholder' | translate"
+            class="w-full border-none bg-transparent text-body-sm outline-none focus:ring-0" />
+        </div>
+        <div class="flex flex-wrap gap-1">
+          <button
+            type="button"
+            (click)="setBank('all')"
+            class="rounded-lg px-3 py-1.5 text-body-sm font-semibold transition-colors"
+            [class.bg-primary]="bankId() === 'all'"
+            [class.text-on-primary]="bankId() === 'all'"
+            [class.bg-surface-container]="bankId() !== 'all'"
+            [class.text-on-surface-variant]="bankId() !== 'all'"
+            [class.hover:bg-surface-container-high]="bankId() !== 'all'">
+            {{ 'common.all' | translate }}
+          </button>
+          @for (p of payers(); track p.id) {
+            <button
+              type="button"
+              (click)="setBank(p.id)"
+              class="rounded-lg px-3 py-1.5 text-body-sm font-semibold transition-colors"
+              [class.bg-primary]="bankId() === p.id"
+              [class.text-on-primary]="bankId() === p.id"
+              [class.bg-surface-container]="bankId() !== p.id"
+              [class.text-on-surface-variant]="bankId() !== p.id"
+              [class.hover:bg-surface-container-high]="bankId() !== p.id">
+              {{ p.name }}
+            </button>
+          }
+        </div>
+      </div>
+      <span class="whitespace-nowrap text-body-sm text-on-surface-variant">{{ 'expenses.count' | translate: { count: totalCount() } }}</span>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-outline-variant/30 text-outline">
+            <th class="whitespace-nowrap pb-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'expenses.columns.date' | translate }}</th>
+            <th class="whitespace-nowrap pb-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'expenses.columns.description' | translate }}</th>
+            <th class="whitespace-nowrap pb-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'expenses.columns.paidFrom' | translate }}</th>
+            <th class="whitespace-nowrap pb-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'expenses.columns.amount' | translate }}</th>
+            <th class="whitespace-nowrap pb-4 text-end font-label-caps text-[11px] uppercase tracking-wider">{{ 'common.actions' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody class="stagger-rows divide-y divide-outline-variant/20">
+          @for (e of filtered(); track e.id) {
+            <tr class="transition-colors hover:bg-surface-container-low/50">
+              <td class="whitespace-nowrap py-4 text-body-sm text-on-surface-variant">{{ e.date | localDate: { day: 'numeric', month: 'long', year: 'numeric' } }}</td>
+              <td class="whitespace-nowrap py-4 font-bold">{{ e.description }}</td>
+              <td class="whitespace-nowrap py-4">
+                <span class="inline-flex items-center gap-2 text-body-sm text-on-surface-variant">
+                  <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <span class="material-symbols-outlined text-lg">{{ payerIcon(e.bankId) }}</span>
+                  </span>
+                  {{ e.bankName }}
+                </span>
+              </td>
+              <td class="whitespace-nowrap py-4 text-start font-bold text-error">
+                <span dir="ltr">-{{ e.amount | localCurrency }}</span>
+              </td>
+              <td class="py-4">
+                <div class="flex items-center justify-end gap-1">
+                  <button
+                    type="button"
+                    (click)="openDialog(e)"
+                    [attr.aria-label]="'common.edit' | translate"
+                    class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+                    <span class="material-symbols-outlined text-xl">edit</span>
+                  </button>
+                  <button
+                    type="button"
+                    (click)="remove(e)"
+                    [attr.aria-label]="'common.delete' | translate"
+                    class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-error-container hover:text-error">
+                    <span class="material-symbols-outlined text-xl">delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      @if (filtered().length === 0) {
+        <div class="flex flex-col items-center gap-3 py-16 text-center">
+          <span class="material-symbols-outlined text-5xl text-outline/50">payments</span>
+          <p class="text-on-surface-variant">{{ 'expenses.empty' | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>

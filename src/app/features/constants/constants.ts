@@ -32,7 +32,7 @@ export class Constants {
 
   protected openConstantType(key: string): void {
     if (key === 'menuCategories') {
-      this.dialog.open(MenuCategoriesDialog, { width: '520px', maxWidth: '95vw' });
+      this.dialog.open(MenuCategoriesDialog, { width: '560px', maxWidth: '95vw' });
       return;
     }
     const list = this.constants.customLists().find((l) => l.key === key);
