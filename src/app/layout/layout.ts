@@ -38,6 +38,7 @@ export class Layout {
     { link: '/banks', icon: 'account_balance', key: 'nav.banks' },
     { link: '/menu', icon: 'restaurant_menu', key: 'nav.foodMenu' },
     { link: '/reports', icon: 'assessment', key: 'nav.reports' },
+    { link: '/constants', icon: 'tune', key: 'nav.constants' },
     { link: '/settings', icon: 'settings', key: 'nav.settings' },
   ];
 

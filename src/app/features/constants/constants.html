@@ -1,0 +1,43 @@
+<div class="page-enter space-y-8">
+  <!-- Header -->
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="font-display-lg text-display-lg text-primary">{{ 'constants.title' | translate }}</h1>
+      <p class="font-body-lg text-on-surface-variant">{{ 'constants.subtitle' | translate }}</p>
+    </div>
+    <button
+      type="button"
+      (click)="openAddConstant()"
+      class="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-bold text-on-primary shadow-lg transition-all hover:bg-primary-container hover:text-on-primary-container active:scale-95">
+      <span class="material-symbols-outlined">add</span>
+      <span>{{ 'constants.addType.title' | translate }}</span>
+    </button>
+  </div>
+
+  <!-- Constant types -->
+  <div class="tonal-elevation rounded-3xl border border-outline-variant bg-surface-container-lowest p-6 sm:p-8">
+    <div class="space-y-3">
+      @for (c of cards(); track c.key) {
+        <button
+          type="button"
+          (click)="openConstantType(c.key)"
+          class="group flex w-full items-center gap-4 rounded-xl border border-outline-variant/40 bg-surface-container-low p-5 text-start transition-all hover:border-primary hover:bg-surface-container">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <span class="material-symbols-outlined">{{ c.icon }}</span>
+          </div>
+          <div class="min-w-0 flex-1">
+            <h5 class="font-bold text-on-surface">{{ c.titleKey ? (c.titleKey | translate) : c.title }}</h5>
+            <p class="text-body-sm text-on-surface-variant">
+              @if (c.descKey) {
+                {{ c.descKey | translate }}
+              } @else {
+                {{ 'constants.customList.description' | translate: { count: c.itemCount } }}
+              }
+            </p>
+          </div>
+          <span class="material-symbols-outlined shrink-0 text-outline transition-transform group-hover:-translate-x-1">chevron_left</span>
+        </button>
+      }
+    </div>
+  </div>
+</div>

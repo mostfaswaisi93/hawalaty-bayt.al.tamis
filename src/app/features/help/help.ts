@@ -22,6 +22,7 @@ export class Help {
     { icon: 'account_balance', link: '/banks', titleKey: 'nav.banks', descKey: 'help.features.banks' },
     { icon: 'restaurant_menu', link: '/menu', titleKey: 'nav.foodMenu', descKey: 'help.features.menu' },
     { icon: 'assessment', link: '/reports', titleKey: 'nav.reports', descKey: 'help.features.reports' },
+    { icon: 'tune', link: '/constants', titleKey: 'nav.constants', descKey: 'help.features.constants' },
     { icon: 'settings', link: '/settings', titleKey: 'nav.settings', descKey: 'help.features.settings' },
   ];
 

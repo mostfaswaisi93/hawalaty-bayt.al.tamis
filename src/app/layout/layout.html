@@ -76,7 +76,7 @@
         [attr.aria-label]="'nav.menu' | translate">
         <span class="material-symbols-outlined">menu</span>
       </button>
-      <div class="hidden w-full max-w-md items-center gap-2 rounded-full bg-surface-container px-4 py-1.5 sm:flex">
+      <div class="search-pill hidden w-full max-w-md items-center gap-2 rounded-full bg-surface-container px-4 py-1.5 transition-shadow sm:flex">
         <span class="material-symbols-outlined text-outline">search</span>
         <input
           type="text"
@@ -90,13 +90,6 @@
 
       <div class="flex items-center gap-1 border-s border-outline-variant ps-4 md:ps-6">
         <app-theme-toggle />
-        <button
-          type="button"
-          class="hidden h-10 w-10 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary sm:flex"
-          [matTooltip]="'header.notifications' | translate"
-          [attr.aria-label]="'header.notifications' | translate">
-          <span class="material-symbols-outlined">notifications</span>
-        </button>
         <a
           routerLink="/help"
           class="flex h-10 w-10 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary"

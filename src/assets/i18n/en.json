@@ -10,6 +10,7 @@
     "banks": "Banks & Wallets",
     "foodMenu": "Menu",
     "reports": "Reports",
+    "constants": "Constants",
     "settings": "Settings",
     "menu": "Menu"
   },
@@ -87,7 +88,8 @@
       "banks": "Manage the banks and wallets used for payments and giving change back to customers.",
       "menu": "Manage your menu items, prices and availability, organized by category.",
       "reports": "Generate and export a professional PDF report with totals and averages.",
-      "settings": "Your profile, security, notifications, and the Constants tab for managing menu categories."
+      "constants": "Business-wide values, like the menu's categories, editable from one place.",
+      "settings": "Your profile, security and language preferences."
     },
     "faq": {
       "title": "Frequently asked questions",
@@ -97,7 +99,7 @@
       },
       "addCategory": {
         "q": "How do I add a new menu category?",
-        "a": "Go to Settings → Constants, type the new category name and click Add. It appears immediately in the Menu page's filters and in the item form."
+        "a": "Open Constants → Menu Categories, type the new category name and click Add. It appears immediately in the Menu page's filters and in the item form."
       },
       "exportReport": {
         "q": "How do I export a report?",
@@ -157,10 +159,7 @@
     "tabs": {
       "account": "Account Info",
       "security": "Security",
-      "notifications": "Notifications",
-      "language": "Language",
-      "constants": "Constants",
-      "businessSection": "Business settings"
+      "language": "Language"
     },
     "account": {
       "title": "Account Information",
@@ -184,41 +183,47 @@
         "desc": "You are currently logged in on 3 active devices.",
         "action": "Manage Devices"
       }
-    },
-    "notifications": {
-      "title": "Latest Activity Notifications",
-      "seeAll": "See All Notifications",
-      "item1": {
-        "title": "Transfer Successful",
-        "desc": "To: Zaid Al-Mansour (₪2,400.00)",
-        "time": "2 hours ago"
-      },
-      "item2": {
-        "title": "New Login Detected",
-        "desc": "iPhone 15 Pro • Baghdad, IQ",
-        "time": "Yesterday"
-      }
-    },
-    "constants": {
-      "subtitle": "Business-wide values used across the app. Pick a type below to view or edit it.",
-      "menuCategories": {
-        "title": "Menu Categories",
-        "subtitle": "Manage the categories used to organize your menu",
-        "newCategory": "New category",
-        "newCategoryPlaceholder": "e.g. Desserts",
-        "add": "Add",
-        "addSuccess": "Category added successfully",
-        "invalid": "Please enter a valid, unique category name",
-        "inUse": "This category is used by menu items and can't be deleted",
-        "deleteConfirmTitle": "Delete category",
-        "deleteConfirmText": "Are you sure you want to delete this category?",
-        "deleteSuccess": "Category deleted successfully"
-      }
     }
+  },
+  "constants": {
+    "title": "Constants",
+    "subtitle": "Business-wide values used across the app. Pick a type below to view or edit it.",
+    "menuCategories": {
+      "title": "Menu Categories",
+      "subtitle": "Manage the categories used to organize your menu",
+      "newCategory": "New category",
+      "newCategoryPlaceholder": "e.g. Desserts",
+      "add": "Add",
+      "addSuccess": "Category added successfully",
+      "invalid": "Please enter a valid, unique category name",
+      "inUse": "This category is used by menu items and can't be deleted",
+      "deleteConfirmTitle": "Delete category",
+      "deleteConfirmText": "Are you sure you want to delete this category?",
+      "deleteSuccess": "Category deleted successfully"
+    },
+    "addType": {
+      "title": "Add Constant",
+      "nameLabel": "Constant name",
+      "namePlaceholder": "e.g. Payment Methods",
+      "add": "Add & Continue",
+      "invalid": "Please enter a valid, unique name"
+    },
+    "customList": {
+      "description": "{{count}} items",
+      "empty": "No items yet",
+      "newItem": "New item",
+      "newItemPlaceholder": "Enter a value",
+      "add": "Add",
+      "addSuccess": "Item added successfully",
+      "invalid": "Please enter a valid, unique value"
+    },
+    "deleteType": "Delete constant",
+    "deleteTypeConfirmTitle": "Delete constant",
+    "deleteTypeConfirmText": "Are you sure you want to delete this constant and all its items?",
+    "deleteTypeSuccess": "Constant deleted successfully"
   },
   "header": {
     "searchPlaceholder": "Search a transaction or recipient...",
-    "notifications": "Notifications",
     "help": "Help"
   },
   "footer": {

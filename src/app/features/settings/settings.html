@@ -79,56 +79,10 @@
         <span class="material-symbols-outlined text-sm opacity-50 transition-transform group-hover:translate-x-1">chevron_left</span>
       </button>
     }
-
-    <!-- Business-wide settings: kept visually separate from the personal tabs above. -->
-    <p class="mb-1 mt-6 px-4 font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant/70">
-      {{ 'settings.tabs.businessSection' | translate }}
-    </p>
-    <button
-      type="button"
-      (click)="setTab('constants')"
-      class="group flex w-full items-center justify-between rounded-xl p-4 text-start transition-all"
-      [class.bg-primary]="activeTab() === 'constants'"
-      [class.text-white]="activeTab() === 'constants'"
-      [class.shadow-lg]="activeTab() === 'constants'"
-      [class.text-on-surface-variant]="activeTab() !== 'constants'"
-      [class.hover:bg-white]="activeTab() !== 'constants'">
-      <div class="flex items-center gap-3">
-        <span class="material-symbols-outlined">tune</span>
-        <span [class.font-bold]="activeTab() === 'constants'">{{ 'settings.tabs.constants' | translate }}</span>
-      </div>
-      <span class="material-symbols-outlined text-sm opacity-50 transition-transform group-hover:translate-x-1">chevron_left</span>
-    </button>
   </div>
 
   <!-- Content -->
   <div class="space-y-6 md:col-span-3">
-    @if (activeTab() === 'constants') {
-      <div class="glass-card rounded-2xl p-8">
-        <div class="mb-6 border-b border-outline-variant/30 pb-4">
-          <h4 class="font-headline-md text-primary">{{ 'settings.tabs.constants' | translate }}</h4>
-          <p class="text-body-sm text-outline">{{ 'settings.constants.subtitle' | translate }}</p>
-        </div>
-
-        <div class="space-y-3">
-          @for (t of constantTypes; track t.key) {
-            <button
-              type="button"
-              (click)="openConstantType(t.key)"
-              class="group flex w-full items-center gap-4 rounded-xl border border-outline-variant/40 bg-surface-container-lowest p-5 text-start transition-all hover:border-primary hover:bg-surface-container">
-              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <span class="material-symbols-outlined">{{ t.icon }}</span>
-              </div>
-              <div class="min-w-0 flex-1">
-                <h5 class="font-bold text-on-surface">{{ t.titleKey | translate }}</h5>
-                <p class="text-body-sm text-on-surface-variant">{{ t.descKey | translate }}</p>
-              </div>
-              <span class="material-symbols-outlined shrink-0 text-outline transition-transform group-hover:-translate-x-1">chevron_left</span>
-            </button>
-          }
-        </div>
-      </div>
-    } @else {
     <!-- Account form -->
     <div class="glass-card rounded-2xl p-8">
       <div class="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-outline-variant/30 pb-4">
@@ -223,40 +177,5 @@
         </div>
       </div>
     </div>
-
-    <!-- Notifications preview -->
-    <div class="glass-card rounded-2xl p-8">
-      <h4 class="mb-6 font-headline-md text-primary">{{ 'settings.notifications.title' | translate }}</h4>
-      <div class="space-y-4">
-        <div class="flex items-center justify-between rounded-xl border border-outline-variant/20 bg-surface-container-lowest p-4 transition-colors hover:bg-surface">
-          <div class="flex items-center gap-4">
-            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-700">
-              <span class="material-symbols-outlined text-sm">check_circle</span>
-            </div>
-            <div>
-              <p class="font-bold text-on-surface">{{ 'settings.notifications.item1.title' | translate }}</p>
-              <p class="text-xs text-outline">{{ 'settings.notifications.item1.desc' | translate }}</p>
-            </div>
-          </div>
-          <span class="text-xs text-outline">{{ 'settings.notifications.item1.time' | translate }}</span>
-        </div>
-        <div class="flex items-center justify-between rounded-xl border border-outline-variant/20 bg-surface-container-lowest p-4 transition-colors hover:bg-surface">
-          <div class="flex items-center gap-4">
-            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-700">
-              <span class="material-symbols-outlined text-sm">info</span>
-            </div>
-            <div>
-              <p class="font-bold text-on-surface">{{ 'settings.notifications.item2.title' | translate }}</p>
-              <p class="text-xs text-outline">{{ 'settings.notifications.item2.desc' | translate }}</p>
-            </div>
-          </div>
-          <span class="text-xs text-outline">{{ 'settings.notifications.item2.time' | translate }}</span>
-        </div>
-      </div>
-      <button type="button" class="mt-6 w-full rounded-xl py-3 font-bold text-body-sm text-primary transition-colors hover:bg-primary/5">
-        {{ 'settings.notifications.seeAll' | translate }}
-      </button>
-    </div>
-    }
   </div>
 </div>
