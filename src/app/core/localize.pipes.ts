@@ -17,7 +17,7 @@ export class LocalNumberPipe implements PipeTransform {
 @Pipe({ name: 'localCurrency', standalone: true, pure: false })
 export class LocalCurrencyPipe implements PipeTransform {
   private readonly format = inject(FormatService);
-  transform(value: number | null | undefined, currency = 'USD'): string {
+  transform(value: number | null | undefined, currency = 'ILS'): string {
     return value == null ? '' : this.format.currency(value, currency);
   }
 }

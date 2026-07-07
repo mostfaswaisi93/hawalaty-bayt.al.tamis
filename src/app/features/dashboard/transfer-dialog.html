@@ -11,7 +11,7 @@
           <mat-label>{{ 'form.selectItem' | translate }}</mat-label>
           <mat-select [value]="pendingItemId()" (selectionChange)="pendingItemId.set($event.value)">
             @for (item of availableItems(); track item.id) {
-              <mat-option [value]="item.id">{{ item.name }} — {{ item.price | localCurrency: item.currency }}</mat-option>
+              <mat-option [value]="item.id">{{ item.name }} — {{ item.price | localCurrency }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -54,7 +54,7 @@
                 </button>
               </div>
               <span class="w-24 whitespace-nowrap text-end text-sm font-bold" dir="ltr">
-                {{ line.price * line.quantity | localCurrency: currency }}
+                {{ line.price * line.quantity | localCurrency }}
               </span>
               <button
                 type="button"
@@ -67,7 +67,7 @@
           }
           <div class="flex items-center justify-between border-t border-outline-variant pt-2">
             <span class="font-bold">{{ 'form.total' | translate }}</span>
-            <span class="font-bold text-primary" dir="ltr">{{ subtotal() | localCurrency: currency }}</span>
+            <span class="font-bold text-primary" dir="ltr">{{ subtotal() | localCurrency }}</span>
           </div>
         </div>
       }

@@ -82,8 +82,6 @@
     "detailsTitle": "تفاصيل التحويل",
     "amountSent": "المبلغ المرسل",
     "availableBalance": "الرصيد المتاح",
-    "receiverGets": "سيصل للمستلم",
-    "exchangeRate": "سعر الصرف",
     "notes": "ملاحظات (اختياري)",
     "notesPlaceholder": "أضف رسالة قصيرة للمستلم...",
     "summary": "ملخص العملية",
@@ -113,7 +111,8 @@
       "account": "معلومات الحساب",
       "security": "الأمان",
       "notifications": "الإشعارات",
-      "language": "اللغة"
+      "language": "اللغة",
+      "constants": "الثوابت"
     },
     "account": {
       "title": "معلومات الحساب",
@@ -143,13 +142,28 @@
       "seeAll": "عرض كل الإشعارات",
       "item1": {
         "title": "تم التحويل بنجاح",
-        "desc": "إلى: زيد المنصور ($2,400.00)",
+        "desc": "إلى: زيد المنصور (₪2,400.00)",
         "time": "قبل ساعتين"
       },
       "item2": {
         "title": "تم رصد تسجيل دخول جديد",
         "desc": "iPhone 15 Pro • بغداد، العراق",
         "time": "أمس"
+      }
+    },
+    "constants": {
+      "menuCategories": {
+        "title": "أقسام قائمة الطعام",
+        "subtitle": "إدارة الأقسام المستخدمة لتنظيم قائمة الطعام",
+        "newCategory": "قسم جديد",
+        "newCategoryPlaceholder": "مثال: الحلويات",
+        "add": "إضافة",
+        "addSuccess": "تمت إضافة القسم بنجاح",
+        "invalid": "الرجاء إدخال اسم قسم صالح وغير مكرر",
+        "inUse": "هذا القسم مستخدم في أصناف القائمة ولا يمكن حذفه",
+        "deleteConfirmTitle": "حذف القسم",
+        "deleteConfirmText": "هل أنت متأكد من حذف هذا القسم؟",
+        "deleteSuccess": "تم حذف القسم بنجاح"
       }
     }
   },
@@ -359,7 +373,6 @@
       "category": "القسم",
       "price": "السعر",
       "pricePlaceholder": "أدخل السعر",
-      "currency": "العملة",
       "active": "متوفر"
     },
     "deleteConfirmTitle": "حذف الصنف",
@@ -372,7 +385,6 @@
     "customer": "العميل",
     "item": "الصنف",
     "amount": "المبلغ",
-    "currency": "العملة",
     "date": "التاريخ",
     "status": "الحالة",
     "actions": "إجراءات",

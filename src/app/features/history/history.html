@@ -19,7 +19,7 @@
     <div class="relative overflow-hidden rounded-2xl bg-[#00236f] p-6 text-white shadow-xl">
       <div class="pointer-events-none absolute -end-6 -top-6 h-24 w-24 rounded-full bg-white/5 blur-2xl"></div>
       <p class="text-xs text-white/70">{{ 'history.totalTransfers' | translate }}</p>
-      <h2 class="mt-2 font-display-lg text-3xl font-bold" dir="ltr">${{ monthlyTotal | localNumber: { minimumFractionDigits: 2 } }}</h2>
+      <h2 class="mt-2 font-display-lg text-3xl font-bold" dir="ltr">{{ monthlyTotal | localCurrency }}</h2>
       <div class="mt-2 flex items-center gap-1 text-xs">
         <span class="material-symbols-outlined text-sm text-green-300">trending_up</span>
         <span class="font-bold text-green-300" dir="ltr">14.2%</span>
@@ -140,8 +140,7 @@
               </td>
               <!-- Amount -->
               <td class="whitespace-nowrap px-5 py-4 text-end" dir="ltr">
-                <p class="font-bold" [class]="amountClass(t.tone)">${{ t.usd | localNumber: { minimumFractionDigits: 2 } }}</p>
-                <p class="text-[11px] text-outline">ILS {{ t.ils | localNumber }}</p>
+                <p class="font-bold" [class]="amountClass(t.tone)">{{ t.amount | localCurrency }}</p>
               </td>
             </tr>
           }

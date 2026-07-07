@@ -38,7 +38,7 @@
           [class.hover:bg-surface-container-high]="category() !== 'all'">
           {{ 'common.all' | translate }}
         </button>
-        @for (c of categories; track c) {
+        @for (c of categories(); track c) {
           <button
             type="button"
             (click)="setCategory(c)"
@@ -85,7 +85,7 @@
                 @for (i of group.items; track i.id) {
                   <tr class="transition-colors hover:bg-surface-container-low/50">
                     <td class="whitespace-nowrap px-6 py-4 font-bold">{{ i.name }}</td>
-                    <td class="whitespace-nowrap px-6 py-4 font-bold text-primary" dir="ltr">{{ i.price | localCurrency: i.currency }}</td>
+                    <td class="whitespace-nowrap px-6 py-4 font-bold text-primary" dir="ltr">{{ i.price | localCurrency }}</td>
                     <td class="px-6 py-4">
                       <span
                         class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-[11px] font-bold"

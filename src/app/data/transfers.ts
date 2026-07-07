@@ -18,7 +18,6 @@ export interface Transfer {
   customer: string;
   date: string; // ISO
   status: TransferStatus;
-  currency: string;
 
   items: TransferLineItem[];
   /** Sum of quantity × price across all line items. */
@@ -51,7 +50,6 @@ export const MOCK_TRANSFERS: Transfer[] = [
     customer: 'Ahmad Ali',
     date: '2026-07-01',
     status: 'completed',
-    currency: 'ILS',
     items: [{ itemId: 'ITM-03', name: 'بيتزا مارغريتا', quantity: 2, price: 20 }],
     amount: 40,
     itemName: 'بيتزا مارغريتا ×2',
@@ -63,7 +61,6 @@ export const MOCK_TRANSFERS: Transfer[] = [
     customer: 'Sara Youssef',
     date: '2026-07-02',
     status: 'pending',
-    currency: 'ILS',
     items: [
       { itemId: 'ITM-18', name: 'كلزوني', quantity: 1, price: 30 },
       { itemId: 'ITM-27', name: 'مشروبات غازية باردة', quantity: 2, price: 5 },
@@ -82,7 +79,6 @@ export const MOCK_TRANSFERS: Transfer[] = [
     customer: 'Omar Khalid',
     date: '2026-07-03',
     status: 'completed',
-    currency: 'USD',
     items: [{ itemId: 'ITM-21', name: 'فرشوحة بيت التميس', quantity: 3, price: 25 }],
     amount: 75,
     itemName: 'فرشوحة بيت التميس ×3',
@@ -97,7 +93,6 @@ export const MOCK_TRANSFERS: Transfer[] = [
     customer: 'Layla Hassan',
     date: '2026-07-04',
     status: 'failed',
-    currency: 'ILS',
     items: [{ itemId: 'ITM-19', name: 'كلزوني دبل جبنة', quantity: 1, price: 35 }],
     amount: 35,
     itemName: 'كلزوني دبل جبنة ×1',
@@ -112,7 +107,6 @@ export const MOCK_TRANSFERS: Transfer[] = [
     customer: 'Kareem Nabil',
     date: '2026-07-05',
     status: 'pending',
-    currency: 'ILS',
     items: [
       { itemId: 'ITM-01', name: 'بيتزا خضار', quantity: 2, price: 20 },
       { itemId: 'ITM-22', name: 'شيبس', quantity: 2, price: 8 },
@@ -125,6 +119,3 @@ export const MOCK_TRANSFERS: Transfer[] = [
     changeAmount: 4,
   },
 ];
-
-/** The platform only supports Shekel and Dollar — by explicit business decision, no other currencies. */
-export const CURRENCIES = ['ILS', 'USD'];

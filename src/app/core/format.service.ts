@@ -20,7 +20,7 @@ export class FormatService {
     return new Intl.NumberFormat(this.locale, { numberingSystem: 'latn', ...options }).format(value);
   }
 
-  currency(value: number, currency = 'USD'): string {
+  currency(value: number, currency = 'ILS'): string {
     return new Intl.NumberFormat(this.locale, {
       style: 'currency',
       currency,

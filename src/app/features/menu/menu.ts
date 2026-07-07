@@ -4,8 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MenuService } from '../../core/menu.service';
+import { ConstantsService } from '../../core/constants.service';
 import { LocalCurrencyPipe } from '../../core/localize.pipes';
-import { MenuItem, MENU_CATEGORIES } from '../../data/menu';
+import { MenuItem } from '../../data/menu';
 import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 import { ItemDialog } from './item-dialog';
 
@@ -30,13 +31,14 @@ const DEFAULT_STYLE = { icon: 'restaurant_menu', badge: 'bg-brand/10 text-brand'
 })
 export class Menu {
   private readonly menu = inject(MenuService);
+  private readonly constants = inject(ConstantsService);
   private readonly dialog = inject(MatDialog);
   private readonly snackbar = inject(MatSnackBar);
   private readonly translate = inject(TranslateService);
 
   protected readonly query = signal('');
   protected readonly category = signal<'all' | string>('all');
-  protected readonly categories: readonly string[] = MENU_CATEGORIES;
+  protected readonly categories = this.constants.menuCategories;
 
   private readonly filtered = computed(() => {
     const q = this.query().trim().toLowerCase();
@@ -53,7 +55,7 @@ export class Menu {
   /** Items grouped by category, in printed-menu order; empty groups are dropped. */
   protected readonly groups = computed<MenuGroup[]>(() => {
     const items = this.filtered();
-    return this.categories
+    return this.categories()
       .map((category) => ({ category, items: items.filter((i) => i.category === category) }))
       .filter((g) => g.items.length > 0);
   });

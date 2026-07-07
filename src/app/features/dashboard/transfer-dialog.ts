@@ -38,9 +38,6 @@ export class TransferDialog {
   private readonly banksService = inject(BanksService);
   private readonly translate = inject(TranslateService);
 
-  /** The business only operates in Shekel — no currency picker in this form. */
-  protected readonly currency = 'ILS';
-
   protected readonly availableItems = computed(() => this.menu.all().filter((i) => i.active));
   protected readonly banks = computed(() => this.banksService.all().filter((b) => b.active && b.type === 'bank'));
   protected readonly wallets = computed(() => this.banksService.all().filter((b) => b.active && b.type === 'wallet'));
@@ -187,7 +184,6 @@ export class TransferDialog {
       customer,
       date: new Date().toISOString(),
       status: 'pending',
-      currency: this.currency,
       items: this.lines(),
       amount: this.subtotal(),
       itemName,

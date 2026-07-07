@@ -63,45 +63,21 @@
       <!-- Transfer details -->
       <div class="rounded-2xl border border-outline-variant bg-surface-container-lowest p-8 shadow-sm">
         <h3 class="mb-6 font-headline-md text-headline-md">{{ 'transfers.detailsTitle' | translate }}</h3>
-        <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <div class="flex flex-col gap-2">
-            <label class="font-label-caps text-label-caps text-on-surface-variant">{{ 'transfers.amountSent' | translate }}</label>
-            <div class="relative">
-              <input
-                type="number"
-                [ngModel]="amount()"
-                (ngModelChange)="amount.set($event || 0)"
-                class="w-full rounded-xl border-2 border-outline-variant py-4 pe-24 ps-4 font-numeral-lg text-display-lg outline-none transition-all focus:border-primary" />
-              <div class="absolute inset-y-0 end-0 flex items-center">
-                <button type="button" class="flex h-full items-center gap-2 rounded-e-xl border-s border-outline-variant bg-surface-container px-4 transition-colors hover:bg-surface-container-high">
-                  <span class="font-bold text-primary">USD</span>
-                  <span class="material-symbols-outlined text-sm">expand_more</span>
-                </button>
-              </div>
+        <div class="flex flex-col gap-2">
+          <label class="font-label-caps text-label-caps text-on-surface-variant">{{ 'transfers.amountSent' | translate }}</label>
+          <div class="relative">
+            <input
+              type="number"
+              [ngModel]="amount()"
+              (ngModelChange)="amount.set($event || 0)"
+              class="w-full rounded-xl border-2 border-outline-variant py-4 pe-16 ps-4 font-numeral-lg text-display-lg outline-none transition-all focus:border-primary" />
+            <div class="absolute inset-y-0 end-0 flex items-center pe-4">
+              <span class="font-bold text-primary">₪</span>
             </div>
-            <p class="mt-1 text-xs text-on-surface-variant">
-              {{ 'transfers.availableBalance' | translate }}: <span dir="ltr">${{ availableBalance | localNumber: { minimumFractionDigits: 2 } }}</span>
-            </p>
           </div>
-
-          <div class="flex flex-col gap-2">
-            <label class="font-label-caps text-label-caps text-on-surface-variant">{{ 'transfers.receiverGets' | translate }}</label>
-            <div class="relative">
-              <input
-                type="text"
-                [value]="receiverAmount() | localNumber"
-                disabled
-                class="w-full rounded-xl border-2 border-surface-container-high bg-surface-container-low py-4 pe-24 ps-4 font-numeral-lg text-display-lg text-on-surface-variant outline-none" />
-              <div class="absolute inset-y-0 end-0 flex items-center">
-                <div class="flex h-full items-center gap-2 rounded-e-xl border-s border-outline-variant bg-surface-container/50 px-4">
-                  <span class="font-bold text-on-surface-variant">ILS</span>
-                </div>
-              </div>
-            </div>
-            <p class="mt-1 text-xs font-bold text-secondary">
-              {{ 'transfers.exchangeRate' | translate }}: 1 USD = {{ rate | localNumber: { minimumFractionDigits: 2 } }} ILS
-            </p>
-          </div>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            {{ 'transfers.availableBalance' | translate }}: <span dir="ltr">{{ availableBalance | localCurrency }}</span>
+          </p>
         </div>
 
         <div class="mt-8 flex flex-col gap-2">
@@ -127,19 +103,19 @@
         <div class="mb-8 space-y-4">
           <div class="flex items-center justify-between opacity-80">
             <span class="font-body-sm">{{ 'transfers.baseAmount' | translate }}</span>
-            <span class="font-numeral-lg text-lg" dir="ltr">${{ amount() | localNumber: { minimumFractionDigits: 2 } }}</span>
+            <span class="font-numeral-lg text-lg" dir="ltr">{{ amount() | localCurrency }}</span>
           </div>
           <div class="flex items-center justify-between opacity-80">
             <span class="font-body-sm">{{ 'transfers.transferFee' | translate }}</span>
-            <span class="font-numeral-lg text-lg" dir="ltr">${{ transferFee | localNumber: { minimumFractionDigits: 2 } }}</span>
+            <span class="font-numeral-lg text-lg" dir="ltr">{{ transferFee | localCurrency }}</span>
           </div>
           <div class="flex items-center justify-between opacity-80">
             <span class="font-body-sm">{{ 'transfers.serviceFee' | translate }}</span>
-            <span class="font-numeral-lg text-lg" dir="ltr">${{ serviceFee | localNumber: { minimumFractionDigits: 2 } }}</span>
+            <span class="font-numeral-lg text-lg" dir="ltr">{{ serviceFee | localCurrency }}</span>
           </div>
           <div class="flex items-center justify-between border-t border-white/20 pt-4">
             <span class="font-body-lg font-bold">{{ 'transfers.totalDue' | translate }}</span>
-            <span class="font-numeral-lg text-2xl text-secondary-container" dir="ltr">${{ total() | localNumber: { minimumFractionDigits: 2 } }}</span>
+            <span class="font-numeral-lg text-2xl text-secondary-container" dir="ltr">{{ total() | localCurrency }}</span>
           </div>
         </div>
 

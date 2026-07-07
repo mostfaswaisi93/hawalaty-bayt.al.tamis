@@ -2,7 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LocalNumberPipe } from '../../core/localize.pipes';
+import { LocalCurrencyPipe } from '../../core/localize.pipes';
 
 interface Contact {
   nameKey: string;
@@ -11,14 +11,13 @@ interface Contact {
 
 @Component({
   selector: 'app-transfers',
-  imports: [FormsModule, TranslateModule, LocalNumberPipe],
+  imports: [FormsModule, TranslateModule, LocalCurrencyPipe],
   templateUrl: './transfers.html',
 })
 export class Transfers {
   private readonly snackbar = inject(MatSnackBar);
   private readonly translate = inject(TranslateService);
 
-  protected readonly rate = 3.7; // 1 USD = 3.70 ILS
   protected readonly availableBalance = 5240;
   protected readonly transferFee = 12.5;
   protected readonly serviceFee = 2;
@@ -35,7 +34,6 @@ export class Transfers {
   protected readonly amount = signal(1500);
   protected readonly note = signal('');
 
-  protected readonly receiverAmount = computed(() => this.amount() * this.rate);
   protected readonly total = computed(() => this.amount() + this.transferFee + this.serviceFee);
 
   protected select(index: number): void {

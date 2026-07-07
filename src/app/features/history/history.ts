@@ -3,14 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { HistoryTxn, HistStatus, MOCK_HISTORY } from '../../data/history';
-import { LocalNumberPipe, LocalDatePipe } from '../../core/localize.pipes';
+import { LocalNumberPipe, LocalCurrencyPipe, LocalDatePipe } from '../../core/localize.pipes';
 
 type StatusFilter = 'all' | HistStatus;
 type TypeFilter = 'all' | string;
 
 @Component({
   selector: 'app-history',
-  imports: [FormsModule, RouterLink, TranslateModule, LocalNumberPipe, LocalDatePipe],
+  imports: [FormsModule, RouterLink, TranslateModule, LocalNumberPipe, LocalCurrencyPipe, LocalDatePipe],
   templateUrl: './history.html',
 })
 export class History {
