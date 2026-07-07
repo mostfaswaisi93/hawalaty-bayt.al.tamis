@@ -1,0 +1,134 @@
+<div class="page-enter space-y-8">
+  <!-- Header -->
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="font-display-lg text-display-lg text-primary">{{ 'menu.title' | translate }}</h1>
+      <p class="font-body-lg text-on-surface-variant">{{ 'menu.subtitle' | translate }}</p>
+    </div>
+    <button
+      type="button"
+      (click)="openDialog()"
+      class="flex items-center gap-2 rounded-xl bg-brand px-5 py-3 font-bold text-on-brand shadow-lg transition-all hover:brightness-110 active:scale-95">
+      <span class="material-symbols-outlined">add</span>
+      <span>{{ 'menu.addItem' | translate }}</span>
+    </button>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="tonal-elevation flex flex-col gap-4 rounded-3xl border border-outline-variant bg-surface-container-lowest p-6 lg:flex-row lg:items-center lg:justify-between">
+    <div class="flex flex-wrap items-center gap-4">
+      <div class="flex w-full items-center gap-2 rounded-full bg-surface-container px-4 py-2 sm:w-72">
+        <span class="material-symbols-outlined text-outline">search</span>
+        <input
+          type="text"
+          [ngModel]="query()"
+          (ngModelChange)="query.set($event)"
+          [placeholder]="'menu.searchPlaceholder' | translate"
+          class="w-full border-none bg-transparent text-body-sm outline-none focus:ring-0" />
+      </div>
+      <div class="flex flex-wrap gap-1">
+        <button
+          type="button"
+          (click)="setCategory('all')"
+          class="rounded-lg px-3 py-1.5 text-body-sm font-semibold transition-colors"
+          [class.bg-brand]="category() === 'all'"
+          [class.text-on-brand]="category() === 'all'"
+          [class.bg-surface-container]="category() !== 'all'"
+          [class.text-on-surface-variant]="category() !== 'all'"
+          [class.hover:bg-surface-container-high]="category() !== 'all'">
+          {{ 'common.all' | translate }}
+        </button>
+        @for (c of categories; track c) {
+          <button
+            type="button"
+            (click)="setCategory(c)"
+            class="rounded-lg px-3 py-1.5 text-body-sm font-semibold transition-colors"
+            [class.bg-brand]="category() === c"
+            [class.text-on-brand]="category() === c"
+            [class.bg-surface-container]="category() !== c"
+            [class.text-on-surface-variant]="category() !== c"
+            [class.hover:bg-surface-container-high]="category() !== c">
+            {{ c }}
+          </button>
+        }
+      </div>
+    </div>
+    <span class="whitespace-nowrap text-body-sm text-on-surface-variant">{{ 'menu.count' | translate: { count: totalCount() } }}</span>
+  </div>
+
+  <!-- Grouped sections -->
+  @if (groups().length > 0) {
+    <div class="space-y-6">
+      @for (group of groups(); track group.category) {
+        <div class="tonal-elevation overflow-hidden rounded-3xl border border-outline-variant bg-surface-container-lowest">
+          <div class="flex items-center gap-3 border-b border-outline-variant/30 bg-surface-container-low px-6 py-4">
+            <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl" [class]="categoryBadge(group.category)">
+              <span class="material-symbols-outlined">{{ categoryIcon(group.category) }}</span>
+            </div>
+            <div>
+              <h3 class="font-headline-md text-headline-md">{{ group.category }}</h3>
+              <p class="text-body-sm text-on-surface-variant">{{ 'menu.itemCount' | translate: { count: group.items.length } }}</p>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-outline-variant/30 text-outline">
+                  <th class="whitespace-nowrap px-6 pb-3 pt-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'menu.columns.name' | translate }}</th>
+                  <th class="whitespace-nowrap px-6 pb-3 pt-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'menu.columns.price' | translate }}</th>
+                  <th class="whitespace-nowrap px-6 pb-3 pt-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'menu.columns.status' | translate }}</th>
+                  <th class="whitespace-nowrap px-6 pb-3 pt-4 text-end font-label-caps text-[11px] uppercase tracking-wider">{{ 'common.actions' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody class="stagger-rows divide-y divide-outline-variant/20">
+                @for (i of group.items; track i.id) {
+                  <tr class="transition-colors hover:bg-surface-container-low/50">
+                    <td class="whitespace-nowrap px-6 py-4 font-bold">{{ i.name }}</td>
+                    <td class="whitespace-nowrap px-6 py-4 font-bold text-primary" dir="ltr">{{ i.price | localCurrency: i.currency }}</td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-[11px] font-bold"
+                        [class.bg-green-100]="i.active"
+                        [class.text-green-700]="i.active"
+                        [class.dark:bg-green-500/15]="i.active"
+                        [class.dark:text-green-300]="i.active"
+                        [class.bg-surface-container-high]="!i.active"
+                        [class.text-on-surface-variant]="!i.active">
+                        <span class="h-1.5 w-1.5 rounded-full" [class.bg-green-500]="i.active" [class.bg-outline]="!i.active"></span>
+                        {{ (i.active ? 'menu.status.active' : 'menu.status.inactive') | translate }}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center justify-end gap-1">
+                        <button
+                          type="button"
+                          (click)="openDialog(i)"
+                          [attr.aria-label]="'common.edit' | translate"
+                          class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+                          <span class="material-symbols-outlined text-xl">edit</span>
+                        </button>
+                        <button
+                          type="button"
+                          (click)="remove(i)"
+                          [attr.aria-label]="'common.delete' | translate"
+                          class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-error-container hover:text-error">
+                          <span class="material-symbols-outlined text-xl">delete</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="tonal-elevation flex flex-col items-center gap-3 rounded-3xl border border-outline-variant bg-surface-container-lowest py-16 text-center">
+      <span class="material-symbols-outlined text-5xl text-outline/50">restaurant_menu</span>
+      <p class="text-on-surface-variant">{{ 'menu.empty' | translate }}</p>
+    </div>
+  }
+</div>

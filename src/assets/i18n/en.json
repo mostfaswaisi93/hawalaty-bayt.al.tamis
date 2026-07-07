@@ -8,7 +8,7 @@
     "transfers": "Transfers",
     "history": "History",
     "banks": "Banks & Wallets",
-    "catalog": "Products & Services",
+    "foodMenu": "Menu",
     "reports": "Reports",
     "settings": "Settings",
     "menu": "Menu"
@@ -335,39 +335,32 @@
     "saveSuccess": "Saved successfully",
     "deleteSuccess": "Deleted successfully"
   },
-  "catalog": {
-    "title": "Products & Services",
-    "subtitle": "Manage the items and services you offer, with pricing",
+  "menu": {
+    "title": "Menu",
+    "subtitle": "Manage your menu items and their prices, by category",
     "addItem": "Add Item",
     "editItem": "Edit Item",
-    "searchPlaceholder": "Search products or services...",
+    "searchPlaceholder": "Search menu items...",
     "count": "{{count}} items",
-    "empty": "No items found",
+    "itemCount": "{{count}} items",
+    "empty": "No menu items found",
     "columns": {
       "name": "Item",
-      "type": "Type",
-      "category": "Category",
       "price": "Price",
       "status": "Status"
     },
-    "types": {
-      "service": "Service",
-      "good": "Good"
-    },
     "status": {
-      "active": "Active",
-      "inactive": "Inactive"
+      "active": "Available",
+      "inactive": "Unavailable"
     },
     "form": {
       "name": "Item name",
-      "namePlaceholder": "e.g. Mobile phone repair",
-      "type": "Type",
+      "namePlaceholder": "e.g. Margherita pizza",
       "category": "Category",
-      "categoryPlaceholder": "e.g. Electronics",
       "price": "Price",
       "pricePlaceholder": "Enter price",
       "currency": "Currency",
-      "active": "Active"
+      "active": "Available"
     },
     "deleteConfirmTitle": "Delete item",
     "deleteConfirmText": "Are you sure you want to delete this item?",
@@ -377,7 +370,7 @@
   "table": {
     "id": "ID",
     "customer": "Customer",
-    "item": "Item / Service",
+    "item": "Item",
     "amount": "Amount",
     "currency": "Currency",
     "date": "Date",

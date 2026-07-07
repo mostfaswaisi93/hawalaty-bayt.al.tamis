@@ -36,7 +36,7 @@ export class Layout {
     { link: '/transfers', icon: 'send', key: 'nav.transfers' },
     { link: '/history', icon: 'history', key: 'nav.history' },
     { link: '/banks', icon: 'account_balance', key: 'nav.banks' },
-    { link: '/catalog', icon: 'inventory_2', key: 'nav.catalog' },
+    { link: '/menu', icon: 'restaurant_menu', key: 'nav.foodMenu' },
     { link: '/reports', icon: 'assessment', key: 'nav.reports' },
     { link: '/settings', icon: 'settings', key: 'nav.settings' },
   ];

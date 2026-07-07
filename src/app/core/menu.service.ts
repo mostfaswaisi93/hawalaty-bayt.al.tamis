@@ -1,17 +1,17 @@
 import { Injectable, signal } from '@angular/core';
-import { CatalogItem, MOCK_CATALOG } from '../data/catalog';
+import { MenuItem, MOCK_MENU } from '../data/menu';
 
 /**
- * Shared in-memory catalog store so items added/edited on the Catalog page
- * are immediately selectable from the New Transfer dialog (single source of
+ * Shared in-memory menu store so items added/edited on the Menu page are
+ * immediately selectable from the New Transfer dialog (single source of
  * truth instead of each feature holding its own copy).
  */
 @Injectable({ providedIn: 'root' })
-export class CatalogService {
-  private readonly items = signal<CatalogItem[]>([...MOCK_CATALOG]);
+export class MenuService {
+  private readonly items = signal<MenuItem[]>([...MOCK_MENU]);
   readonly all = this.items.asReadonly();
 
-  upsert(item: CatalogItem): void {
+  upsert(item: MenuItem): void {
     this.items.update((list) => {
       const idx = list.findIndex((i) => i.id === item.id);
       if (idx >= 0) {

@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BanksService } from '../../core/banks.service';
-import { CatalogService } from '../../core/catalog.service';
+import { MenuService } from '../../core/menu.service';
 import { LocalCurrencyPipe } from '../../core/localize.pipes';
 import { ChangeMethod, PaymentMethod, Transfer, TransferLineItem } from '../../data/transfers';
 import { FieldError } from '../../shared/field-error/field-error';
@@ -34,14 +34,14 @@ import { FieldError } from '../../shared/field-error/field-error';
 export class TransferDialog {
   private readonly fb = inject(FormBuilder);
   private readonly ref = inject(MatDialogRef<TransferDialog>);
-  private readonly catalog = inject(CatalogService);
+  private readonly menu = inject(MenuService);
   private readonly banksService = inject(BanksService);
   private readonly translate = inject(TranslateService);
 
   /** The business only operates in Shekel — no currency picker in this form. */
   protected readonly currency = 'ILS';
 
-  protected readonly availableItems = computed(() => this.catalog.all().filter((i) => i.active));
+  protected readonly availableItems = computed(() => this.menu.all().filter((i) => i.active));
   protected readonly banks = computed(() => this.banksService.all().filter((b) => b.active && b.type === 'bank'));
   protected readonly wallets = computed(() => this.banksService.all().filter((b) => b.active && b.type === 'wallet'));
 

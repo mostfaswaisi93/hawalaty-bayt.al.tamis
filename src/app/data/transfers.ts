@@ -9,7 +9,7 @@ export interface TransferLineItem {
   itemId: string;
   name: string;
   quantity: number;
-  /** Unit price at the time of the transfer (catalog prices can change later). */
+  /** Unit price at the time of the transfer (menu prices can change later). */
   price: number;
 }
 

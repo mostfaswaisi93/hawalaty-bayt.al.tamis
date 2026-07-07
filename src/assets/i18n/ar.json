@@ -8,7 +8,7 @@
     "transfers": "الحوالات",
     "history": "السجل",
     "banks": "البنوك والمحافظ",
-    "catalog": "المنتجات والخدمات",
+    "foodMenu": "قائمة الطعام",
     "reports": "التقارير",
     "settings": "الإعدادات",
     "menu": "القائمة"
@@ -335,39 +335,32 @@
     "saveSuccess": "تم الحفظ بنجاح",
     "deleteSuccess": "تم الحذف بنجاح"
   },
-  "catalog": {
-    "title": "المنتجات والخدمات",
-    "subtitle": "إدارة السلع والخدمات التي تقدّمها مع تسعيرتها",
+  "menu": {
+    "title": "قائمة الطعام",
+    "subtitle": "إدارة أصناف المنيو وأسعارها حسب القسم",
     "addItem": "إضافة صنف",
     "editItem": "تعديل صنف",
-    "searchPlaceholder": "ابحث عن سلعة أو خدمة...",
+    "searchPlaceholder": "ابحث عن صنف...",
     "count": "{{count}} صنف",
+    "itemCount": "{{count}} صنف",
     "empty": "لا توجد أصناف",
     "columns": {
       "name": "الصنف",
-      "type": "النوع",
-      "category": "الفئة",
       "price": "السعر",
       "status": "الحالة"
     },
-    "types": {
-      "service": "خدمة",
-      "good": "سلعة"
-    },
     "status": {
-      "active": "نشط",
-      "inactive": "غير نشط"
+      "active": "متوفر",
+      "inactive": "غير متوفر"
     },
     "form": {
       "name": "اسم الصنف",
-      "namePlaceholder": "مثال: إصلاح هاتف محمول",
-      "type": "النوع",
-      "category": "الفئة",
-      "categoryPlaceholder": "مثال: إلكترونيات",
+      "namePlaceholder": "مثال: بيتزا مارغريتا",
+      "category": "القسم",
       "price": "السعر",
       "pricePlaceholder": "أدخل السعر",
       "currency": "العملة",
-      "active": "نشط"
+      "active": "متوفر"
     },
     "deleteConfirmTitle": "حذف الصنف",
     "deleteConfirmText": "هل أنت متأكد من حذف هذا الصنف؟",
@@ -377,7 +370,7 @@
   "table": {
     "id": "المعرّف",
     "customer": "العميل",
-    "item": "الصنف / الخدمة",
+    "item": "الصنف",
     "amount": "المبلغ",
     "currency": "العملة",
     "date": "التاريخ",

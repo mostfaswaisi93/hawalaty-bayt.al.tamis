@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Bank, MOCK_BANKS } from '../data/banks';
 
 /**
- * Shared in-memory banks/wallets store — mirrors CatalogService so entries
+ * Shared in-memory banks/wallets store — mirrors MenuService so entries
  * added/edited on the Banks & Wallets page are immediately selectable
  * wherever a bank or wallet needs to be chosen (e.g. the transfer dialog).
  */
