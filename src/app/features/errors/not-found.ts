@@ -8,7 +8,7 @@ import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
   selector: 'app-not-found',
   imports: [RouterLink, TranslateModule, LanguageSwitcher, ThemeToggle],
   template: `
-    <div class="flex min-h-screen flex-col bg-surface text-on-surface">
+    <div class="page-enter flex min-h-screen flex-col bg-surface text-on-surface">
       <header class="flex h-16 items-center justify-between border-b border-outline-variant bg-surface px-inline-md shadow-sm md:px-inline-lg">
         <span class="font-display-lg text-display-lg font-bold leading-none text-primary">{{ 'app.name' | translate }}</span>
         <div class="flex items-center gap-2">

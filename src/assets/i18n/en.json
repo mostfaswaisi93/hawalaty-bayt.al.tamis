@@ -437,6 +437,11 @@
     "from": "From",
     "to": "To",
     "total": "Total",
-    "exportPdf": "Export PDF"
+    "exportPdf": "Export PDF",
+    "stats": {
+      "count": "Total transactions",
+      "total": "Total amount",
+      "average": "Average per transaction"
+    }
   }
 }

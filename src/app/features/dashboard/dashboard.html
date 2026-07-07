@@ -1,4 +1,4 @@
-<div class="space-y-8">
+<div class="page-enter space-y-8">
   <!-- Hero: Balance + Quick actions -->
   <section class="grid grid-cols-1 gap-8 lg:grid-cols-3">
     <!-- Balance card -->
@@ -169,7 +169,7 @@
             <th class="pb-4 text-end font-label-caps text-[11px] uppercase tracking-wider">{{ 'table.amount' | translate }}</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-outline-variant/20">
+        <tbody class="stagger-rows divide-y divide-outline-variant/20">
           @for (t of transactions; track t.nameKey) {
             <tr class="cursor-pointer transition-colors hover:bg-surface-container-low/50">
               <td class="py-5">

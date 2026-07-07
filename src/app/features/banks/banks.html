@@ -1,4 +1,4 @@
-<div class="space-y-8">
+<div class="page-enter space-y-8">
   <!-- Header -->
   <div class="flex flex-wrap items-center justify-between gap-3">
     <div>
@@ -61,7 +61,7 @@
             <th class="whitespace-nowrap pb-4 text-end font-label-caps text-[11px] uppercase tracking-wider">{{ 'common.actions' | translate }}</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-outline-variant/20">
+        <tbody class="stagger-rows divide-y divide-outline-variant/20">
           @for (b of filtered(); track b.id) {
             <tr class="transition-colors hover:bg-surface-container-low/50">
               <td class="py-4">

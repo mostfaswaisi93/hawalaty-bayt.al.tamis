@@ -3,11 +3,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MOCK_TRANSFERS, Transfer } from '../../data/transfers';
 import { LanguageService } from '../../core/language.service';
 import { PdfService } from '../../core/pdf.service';
-import { LocalCurrencyPipe, LocalDatePipe } from '../../core/localize.pipes';
+import { LocalCurrencyPipe, LocalDatePipe, LocalNumberPipe } from '../../core/localize.pipes';
 
 @Component({
   selector: 'app-reports',
-  imports: [TranslateModule, LocalCurrencyPipe, LocalDatePipe],
+  imports: [TranslateModule, LocalCurrencyPipe, LocalDatePipe, LocalNumberPipe],
   templateUrl: './reports.html',
 })
 export class Reports {
@@ -22,6 +22,14 @@ export class Reports {
 
   protected get total(): number {
     return this.transfers.reduce((sum, t) => sum + t.amount, 0);
+  }
+
+  protected get count(): number {
+    return this.transfers.length;
+  }
+
+  protected get average(): number {
+    return this.count === 0 ? 0 : this.total / this.count;
   }
 
   protected async exportPdf(): Promise<void> {

@@ -1,4 +1,4 @@
-<div class="space-y-8">
+<div class="page-enter space-y-8">
   <!-- Header -->
   <div class="flex flex-wrap items-center justify-between gap-3">
     <div>
@@ -17,6 +17,44 @@
       }
       <span>{{ 'reports.exportPdf' | translate }}</span>
     </button>
+  </div>
+
+  <!-- Summary stats -->
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#00236f] to-[#1e3a8a] p-6 text-white shadow-xl">
+      <div class="pointer-events-none absolute -end-6 -top-6 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
+      <div class="relative z-10 flex items-center gap-4">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10">
+          <span class="material-symbols-outlined">receipt_long</span>
+        </div>
+        <div>
+          <p class="text-xs text-white/70">{{ 'reports.stats.count' | translate }}</p>
+          <p class="font-numeral-lg text-2xl" dir="ltr">{{ count | localNumber }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+      <div class="flex items-center gap-4">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
+          <span class="material-symbols-outlined">payments</span>
+        </div>
+        <div>
+          <p class="text-body-sm text-on-surface-variant">{{ 'reports.stats.total' | translate }}</p>
+          <p class="font-numeral-lg text-2xl text-on-surface" dir="ltr">{{ total | localCurrency: 'USD' }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+      <div class="flex items-center gap-4">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <span class="material-symbols-outlined">trending_up</span>
+        </div>
+        <div>
+          <p class="text-body-sm text-on-surface-variant">{{ 'reports.stats.average' | translate }}</p>
+          <p class="font-numeral-lg text-2xl text-on-surface" dir="ltr">{{ average | localCurrency: 'USD' }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Report card -->
@@ -49,7 +87,7 @@
               <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.date' | translate }}</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="stagger-rows">
             @for (t of transfers; track t.id) {
               <tr class="border-b border-slate-100">
                 <td class="whitespace-nowrap py-3 text-sm" dir="ltr">{{ t.id }}</td>
