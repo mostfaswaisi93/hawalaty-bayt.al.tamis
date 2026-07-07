@@ -1,0 +1,90 @@
+<div class="page-enter space-y-8">
+  <!-- Hero -->
+  <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#00236f] to-[#1e3a8a] p-10 text-center text-white shadow-xl sm:p-14">
+    <div class="pointer-events-none absolute -top-20 start-[-10%] h-72 w-72 rounded-full bg-white/10 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-16 end-[-6%] h-64 w-64 rounded-full bg-secondary-container/30 blur-3xl"></div>
+    <div class="relative z-10 mx-auto max-w-2xl">
+      <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-white/10 shadow-lg backdrop-blur-md">
+        <span class="material-symbols-outlined text-3xl" data-weight="fill">support_agent</span>
+      </div>
+      <h1 class="font-display-lg text-display-lg">{{ 'help.title' | translate }}</h1>
+      <p class="mt-3 font-body-lg leading-relaxed text-white/80">{{ 'help.subtitle' | translate }}</p>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="glass-card rounded-3xl p-8">
+    <div class="mb-3 flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary">info</span>
+      <h2 class="font-headline-md text-headline-md text-primary">{{ 'help.about.title' | translate }}</h2>
+    </div>
+    <p class="font-body-lg leading-relaxed text-on-surface-variant">{{ 'help.about.text' | translate }}</p>
+  </section>
+
+  <!-- Feature grid -->
+  <section>
+    <h2 class="mb-4 font-headline-md text-headline-md">{{ 'help.featuresTitle' | translate }}</h2>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      @for (f of features; track f.link) {
+        <a
+          [routerLink]="f.link"
+          class="tonal-elevation group flex flex-col gap-4 rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 transition-all hover:border-primary">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+            <span class="material-symbols-outlined">{{ f.icon }}</span>
+          </div>
+          <div>
+            <h3 class="font-bold text-on-surface">{{ f.titleKey | translate }}</h3>
+            <p class="mt-1 text-body-sm text-on-surface-variant">{{ f.descKey | translate }}</p>
+          </div>
+          <span class="mt-auto flex items-center gap-1 text-body-sm font-bold text-primary opacity-0 transition-opacity group-hover:opacity-100">
+            {{ 'help.openPage' | translate }}
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+          </span>
+        </a>
+      }
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="tonal-elevation rounded-3xl border border-outline-variant bg-surface-container-lowest p-8">
+    <h2 class="mb-6 font-headline-md text-headline-md">{{ 'help.faq.title' | translate }}</h2>
+    <div class="space-y-3">
+      @for (key of faqKeys; track key) {
+        <div class="overflow-hidden rounded-2xl border border-outline-variant/40">
+          <button
+            type="button"
+            (click)="toggleFaq(key)"
+            class="flex w-full items-center justify-between gap-4 bg-surface-container-low px-5 py-4 text-start transition-colors hover:bg-surface-container">
+            <span class="font-bold text-on-surface">{{ 'help.faq.' + key + '.q' | translate }}</span>
+            <span
+              class="material-symbols-outlined shrink-0 text-outline transition-transform duration-300"
+              [class.rotate-180]="openFaq() === key">
+              expand_more
+            </span>
+          </button>
+          @if (openFaq() === key) {
+            <div class="px-5 py-4 text-body-sm leading-relaxed text-on-surface-variant">
+              {{ 'help.faq.' + key + '.a' | translate }}
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Support -->
+  <section class="flex flex-col items-center gap-4 rounded-3xl border border-primary/20 bg-primary/5 p-8 text-center sm:flex-row sm:justify-between sm:text-start">
+    <div class="flex flex-col items-center gap-3 sm:flex-row">
+      <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+        <span class="material-symbols-outlined">contact_support</span>
+      </div>
+      <div>
+        <h3 class="font-bold text-on-surface">{{ 'help.support.title' | translate }}</h3>
+        <p class="text-body-sm text-on-surface-variant">{{ 'help.support.desc' | translate }}</p>
+      </div>
+    </div>
+    <button type="button" class="whitespace-nowrap rounded-xl bg-primary px-6 py-3 font-bold text-on-primary shadow-lg transition-all hover:bg-primary-container hover:text-on-primary-container active:scale-95">
+      {{ 'help.support.action' | translate }}
+    </button>
+  </section>
+</div>

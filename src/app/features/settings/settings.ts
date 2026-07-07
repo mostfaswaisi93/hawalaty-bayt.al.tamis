@@ -4,11 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../core/auth.service';
-import { ConstantsService } from '../../core/constants.service';
-import { MenuService } from '../../core/menu.service';
-import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
+import { MenuCategoriesDialog } from './menu-categories-dialog';
 
 type SettingsTab = 'account' | 'security' | 'notifications' | 'language' | 'constants';
+type ConstantType = 'menuCategories';
 
 @Component({
   selector: 'app-settings',
@@ -17,23 +16,32 @@ type SettingsTab = 'account' | 'security' | 'notifications' | 'language' | 'cons
 })
 export class Settings {
   protected readonly auth = inject(AuthService);
-  protected readonly constants = inject(ConstantsService);
-  private readonly menu = inject(MenuService);
   private readonly dialog = inject(MatDialog);
   private readonly snackbar = inject(MatSnackBar);
   private readonly translate = inject(TranslateService);
 
   protected readonly activeTab = signal<SettingsTab>('account');
 
+  /** Personal, per-user settings. */
   protected readonly tabs: { key: SettingsTab; icon: string; label: string }[] = [
     { key: 'account', icon: 'person', label: 'settings.tabs.account' },
     { key: 'security', icon: 'security', label: 'settings.tabs.security' },
     { key: 'notifications', icon: 'notifications_active', label: 'settings.tabs.notifications' },
     { key: 'language', icon: 'language', label: 'settings.tabs.language' },
-    { key: 'constants', icon: 'tune', label: 'settings.tabs.constants' },
   ];
 
-  protected readonly newCategory = signal('');
+  /**
+   * Business-wide constants — kept separate from the personal tabs above.
+   * Each entry opens its own editor dialog; add new constant types here.
+   */
+  protected readonly constantTypes: { key: ConstantType; icon: string; titleKey: string; descKey: string }[] = [
+    {
+      key: 'menuCategories',
+      icon: 'restaurant_menu',
+      titleKey: 'settings.constants.menuCategories.title',
+      descKey: 'settings.constants.menuCategories.subtitle',
+    },
+  ];
 
   protected readonly form = signal({
     fullName: this.auth.user()?.name ?? '',
@@ -55,37 +63,10 @@ export class Settings {
     this.notify('messages.saveSuccess');
   }
 
-  protected addCategory(): void {
-    const added = this.constants.addMenuCategory(this.newCategory());
-    if (!added) {
-      this.notify('settings.constants.menuCategories.invalid');
-      return;
+  protected openConstantType(key: ConstantType): void {
+    if (key === 'menuCategories') {
+      this.dialog.open(MenuCategoriesDialog, { width: '520px', maxWidth: '95vw' });
     }
-    this.newCategory.set('');
-    this.notify('settings.constants.menuCategories.addSuccess');
-  }
-
-  protected removeCategory(category: string): void {
-    if (this.menu.all().some((i) => i.category === category)) {
-      this.notify('settings.constants.menuCategories.inUse');
-      return;
-    }
-
-    this.dialog
-      .open(ConfirmDialog, {
-        width: '400px',
-        maxWidth: '95vw',
-        data: {
-          titleKey: 'settings.constants.menuCategories.deleteConfirmTitle',
-          messageKey: 'settings.constants.menuCategories.deleteConfirmText',
-        },
-      })
-      .afterClosed()
-      .subscribe((confirmed?: boolean) => {
-        if (!confirmed) return;
-        this.constants.removeMenuCategory(category);
-        this.notify('settings.constants.menuCategories.deleteSuccess');
-      });
   }
 
   private notify(key: string): void {

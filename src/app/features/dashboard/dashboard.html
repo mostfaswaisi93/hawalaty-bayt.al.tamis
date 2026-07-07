@@ -200,8 +200,8 @@
                 }
               </td>
               <td class="py-5 text-body-sm text-on-surface-variant">{{ t.typeKey | translate }}</td>
-              <td class="py-5 text-end font-bold" [class]="txnAmountClass(t.direction)" dir="ltr">
-                {{ t.direction === 'out' ? '- ' : t.direction === 'in' ? '+ ' : '' }}{{ (t.amount < 0 ? -t.amount : t.amount) | localNumber }} {{ currency }}
+              <td class="py-5 text-end font-bold" [class]="txnAmountClass(t.direction)">
+                <span dir="ltr">{{ t.direction === 'out' ? '- ' : t.direction === 'in' ? '+ ' : '' }}{{ (t.amount < 0 ? -t.amount : t.amount) | localNumber }} {{ currency }}</span>
               </td>
             </tr>
           }

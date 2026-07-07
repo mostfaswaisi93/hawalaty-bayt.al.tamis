@@ -71,6 +71,53 @@
     "subtitle": "The page you're looking for doesn't exist or has been moved.",
     "backHome": "Back to dashboard"
   },
+  "help": {
+    "title": "Help Center",
+    "subtitle": "Everything you need to know about using Hawalaty to run your daily orders and sales.",
+    "about": {
+      "title": "What is Hawalaty?",
+      "text": "Hawalaty is your point-of-sale and order management system for بيت التميس. Record every order as a transfer — paid in cash or through a bank/wallet — manage your menu and its categories, track full order history, export professional reports, and keep your banks and wallets up to date, all in one bilingual, dark-mode-ready workspace."
+    },
+    "featuresTitle": "What each page does",
+    "openPage": "Open page",
+    "features": {
+      "dashboard": "Your daily snapshot: available balance, quick actions, scheduled items and recent transactions at a glance.",
+      "transfers": "Send a standalone transfer with a fee breakdown and confirmation summary.",
+      "history": "The full archive of past orders with filters by status, type and time range.",
+      "banks": "Manage the banks and wallets used for payments and giving change back to customers.",
+      "menu": "Manage your menu items, prices and availability, organized by category.",
+      "reports": "Generate and export a professional PDF report with totals and averages.",
+      "settings": "Your profile, security, notifications, and the Constants tab for managing menu categories."
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "newOrder": {
+        "q": "How do I record a new order?",
+        "a": "Click \"New Transfer\" from the sidebar or the Send quick action on the Dashboard, add items from the menu, then choose whether the customer paid in cash or through a bank/wallet."
+      },
+      "addCategory": {
+        "q": "How do I add a new menu category?",
+        "a": "Go to Settings → Constants, type the new category name and click Add. It appears immediately in the Menu page's filters and in the item form."
+      },
+      "exportReport": {
+        "q": "How do I export a report?",
+        "a": "Open the Reports page and click \"Export PDF\" — the report is generated from your transfer history, ready to save or print."
+      },
+      "language": {
+        "q": "How do I switch language or dark mode?",
+        "a": "Use the language toggle (English / العربية) and the sun/moon icon in the top header — both are available on every page and your choice is remembered."
+      },
+      "banksVsWallets": {
+        "q": "What's the difference between a bank and a wallet?",
+        "a": "Banks require a SWIFT/BIC code, wallets don't. Add either from the Banks & Wallets page and pick the right type — this affects what payment and change options appear in the order form."
+      }
+    },
+    "support": {
+      "title": "Still need help?",
+      "desc": "Reach out and we'll walk you through it.",
+      "action": "Contact support"
+    }
+  },
   "transfers": {
     "title": "Send new money",
     "subtitle": "Transfer money securely and quickly anywhere in the world.",
@@ -112,7 +159,8 @@
       "security": "Security",
       "notifications": "Notifications",
       "language": "Language",
-      "constants": "Constants"
+      "constants": "Constants",
+      "businessSection": "Business settings"
     },
     "account": {
       "title": "Account Information",
@@ -152,6 +200,7 @@
       }
     },
     "constants": {
+      "subtitle": "Business-wide values used across the app. Pick a type below to view or edit it.",
       "menuCategories": {
         "title": "Menu Categories",
         "subtitle": "Manage the categories used to organize your menu",

@@ -79,6 +79,26 @@
         <span class="material-symbols-outlined text-sm opacity-50 transition-transform group-hover:translate-x-1">chevron_left</span>
       </button>
     }
+
+    <!-- Business-wide settings: kept visually separate from the personal tabs above. -->
+    <p class="mb-1 mt-6 px-4 font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant/70">
+      {{ 'settings.tabs.businessSection' | translate }}
+    </p>
+    <button
+      type="button"
+      (click)="setTab('constants')"
+      class="group flex w-full items-center justify-between rounded-xl p-4 text-start transition-all"
+      [class.bg-primary]="activeTab() === 'constants'"
+      [class.text-white]="activeTab() === 'constants'"
+      [class.shadow-lg]="activeTab() === 'constants'"
+      [class.text-on-surface-variant]="activeTab() !== 'constants'"
+      [class.hover:bg-white]="activeTab() !== 'constants'">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined">tune</span>
+        <span [class.font-bold]="activeTab() === 'constants'">{{ 'settings.tabs.constants' | translate }}</span>
+      </div>
+      <span class="material-symbols-outlined text-sm opacity-50 transition-transform group-hover:translate-x-1">chevron_left</span>
+    </button>
   </div>
 
   <!-- Content -->
@@ -86,42 +106,26 @@
     @if (activeTab() === 'constants') {
       <div class="glass-card rounded-2xl p-8">
         <div class="mb-6 border-b border-outline-variant/30 pb-4">
-          <h4 class="font-headline-md text-primary">{{ 'settings.constants.menuCategories.title' | translate }}</h4>
-          <p class="text-body-sm text-outline">{{ 'settings.constants.menuCategories.subtitle' | translate }}</p>
+          <h4 class="font-headline-md text-primary">{{ 'settings.tabs.constants' | translate }}</h4>
+          <p class="text-body-sm text-outline">{{ 'settings.constants.subtitle' | translate }}</p>
         </div>
 
-        <div class="mb-6 flex flex-wrap gap-2">
-          @for (c of constants.menuCategories(); track c) {
-            <span class="inline-flex items-center gap-2 rounded-full bg-surface-container px-4 py-2 text-body-sm font-semibold">
-              {{ c }}
-              <button
-                type="button"
-                (click)="removeCategory(c)"
-                [attr.aria-label]="'common.delete' | translate"
-                class="flex h-5 w-5 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-error-container hover:text-error">
-                <span class="material-symbols-outlined text-sm">close</span>
-              </button>
-            </span>
+        <div class="space-y-3">
+          @for (t of constantTypes; track t.key) {
+            <button
+              type="button"
+              (click)="openConstantType(t.key)"
+              class="group flex w-full items-center gap-4 rounded-xl border border-outline-variant/40 bg-surface-container-lowest p-5 text-start transition-all hover:border-primary hover:bg-surface-container">
+              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <span class="material-symbols-outlined">{{ t.icon }}</span>
+              </div>
+              <div class="min-w-0 flex-1">
+                <h5 class="font-bold text-on-surface">{{ t.titleKey | translate }}</h5>
+                <p class="text-body-sm text-on-surface-variant">{{ t.descKey | translate }}</p>
+              </div>
+              <span class="material-symbols-outlined shrink-0 text-outline transition-transform group-hover:-translate-x-1">chevron_left</span>
+            </button>
           }
-        </div>
-
-        <div class="flex flex-col gap-2 sm:flex-row sm:items-end">
-          <div class="flex-1 space-y-2">
-            <label class="block font-label-caps text-on-surface-variant">{{ 'settings.constants.menuCategories.newCategory' | translate }}</label>
-            <input
-              type="text"
-              [ngModel]="newCategory()"
-              (ngModelChange)="newCategory.set($event)"
-              [placeholder]="'settings.constants.menuCategories.newCategoryPlaceholder' | translate"
-              class="w-full rounded-xl border border-outline-variant bg-surface-container-low px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20" />
-          </div>
-          <button
-            type="button"
-            (click)="addCategory()"
-            class="flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 font-bold text-white transition-all hover:shadow-lg active:scale-95">
-            <span class="material-symbols-outlined">add</span>
-            {{ 'settings.constants.menuCategories.add' | translate }}
-          </button>
         </div>
       </div>
     } @else {

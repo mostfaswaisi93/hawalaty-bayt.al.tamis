@@ -97,19 +97,19 @@
           [attr.aria-label]="'header.notifications' | translate">
           <span class="material-symbols-outlined">notifications</span>
         </button>
-        <button
-          type="button"
+        <a
+          routerLink="/help"
           class="flex h-10 w-10 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary"
           [matTooltip]="'header.help' | translate"
           [attr.aria-label]="'header.help' | translate">
           <span class="material-symbols-outlined">help</span>
-        </button>
+        </a>
       </div>
     </div>
   </header>
 
   <!-- Content -->
-  <main class="mx-auto w-full max-w-7xl flex-1 p-inline-lg">
+  <main class="mx-auto w-full max-w-[1680px] flex-1 p-inline-lg">
     <router-outlet />
   </main>
 
