@@ -7,6 +7,8 @@ export interface LogInput {
   entityType: AuditEntityType;
   entityLabel: string;
   category: AuditCategory;
+  /** Overrides the actor's own tenant — needed for super-admin actions performed *on* a tenant (suspend, plan change). */
+  tenantId?: string;
 }
 
 /** Shared in-memory audit-log store. `log()` fills actor/tenant/timestamp from the current session. */
@@ -23,14 +25,16 @@ export class AuditLogService {
 
   log(entry: LogInput): void {
     const user = this.auth.user();
-    if (!user?.tenantId) return; // super-admin actions aren't tenant-scoped; nothing to attribute yet
+    const tenantId = entry.tenantId ?? user?.tenantId;
+    if (!user || !tenantId) return; // no actor, or a super-admin action with no target tenant to attribute it to
+    const { tenantId: _override, ...rest } = entry;
     const full: AuditLogEntry = {
       id: 'LOG-' + Date.now().toString(36).toUpperCase(),
-      tenantId: user.tenantId,
+      tenantId,
       actorName: user.name,
       actorEmail: user.email,
       timestamp: new Date().toISOString(),
-      ...entry,
+      ...rest,
     };
     this.items.update((list) => [full, ...list]);
   }

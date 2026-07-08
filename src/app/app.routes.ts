@@ -1,11 +1,16 @@
 import { Routes } from '@angular/router';
-import { authGuard, guestGuard } from './core/auth.guard';
+import { authGuard, guestGuard, superAdminGuard } from './core/auth.guard';
 
 export const routes: Routes = [
   {
     path: 'login',
     canActivate: [guestGuard],
     loadComponent: () => import('./features/auth/login').then((m) => m.Login),
+  },
+  {
+    path: 'signup',
+    canActivate: [guestGuard],
+    loadComponent: () => import('./features/auth/signup').then((m) => m.Signup),
   },
   {
     path: 'forgot-password',
@@ -51,6 +56,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/constants/constants').then((m) => m.Constants),
       },
       {
+        path: 'team',
+        loadComponent: () => import('./features/team/team').then((m) => m.Team),
+      },
+      {
         path: 'settings',
         loadComponent: () => import('./features/settings/settings').then((m) => m.Settings),
       },
@@ -59,8 +68,36 @@ export const routes: Routes = [
         loadComponent: () => import('./features/devices/devices').then((m) => m.Devices),
       },
       {
+        path: 'activity-log',
+        loadComponent: () => import('./features/activity-log/activity-log').then((m) => m.ActivityLog),
+      },
+      {
         path: 'help',
         loadComponent: () => import('./features/help/help').then((m) => m.Help),
+      },
+    ],
+  },
+  {
+    path: 'admin',
+    canActivate: [superAdminGuard],
+    loadComponent: () => import('./features/admin/admin-layout').then((m) => m.AdminLayout),
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./features/admin/admin-dashboard').then((m) => m.AdminDashboard),
+      },
+      {
+        path: 'tenants',
+        loadComponent: () => import('./features/admin/admin-tenants').then((m) => m.AdminTenants),
+      },
+      {
+        path: 'tenants/:id',
+        loadComponent: () => import('./features/admin/admin-tenant-detail').then((m) => m.AdminTenantDetail),
+      },
+      {
+        path: 'logs',
+        loadComponent: () => import('./features/admin/admin-logs').then((m) => m.AdminLogs),
       },
     ],
   },

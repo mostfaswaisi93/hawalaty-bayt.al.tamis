@@ -1,0 +1,94 @@
+<div class="page-enter space-y-8">
+  <div>
+    <h1 class="font-display-lg text-display-lg text-primary">{{ 'admin.dashboard.title' | translate }}</h1>
+    <p class="font-body-lg text-on-surface-variant">{{ 'admin.dashboard.subtitle' | translate }}</p>
+  </div>
+
+  <!-- Stat tiles -->
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+      <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <span class="material-symbols-outlined">store</span>
+      </div>
+      <p class="text-body-sm text-on-surface-variant">{{ 'admin.dashboard.totalTenants' | translate }}</p>
+      <p class="font-display-lg text-3xl font-bold">{{ stats().total }}</p>
+    </div>
+    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+      <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-green-500/10 text-green-600 dark:text-green-400">
+        <span class="material-symbols-outlined">check_circle</span>
+      </div>
+      <p class="text-body-sm text-on-surface-variant">{{ 'admin.dashboard.activeTenants' | translate }}</p>
+      <p class="font-display-lg text-3xl font-bold">{{ stats().active }}</p>
+    </div>
+    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+      <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
+        <span class="material-symbols-outlined">hourglass_top</span>
+      </div>
+      <p class="text-body-sm text-on-surface-variant">{{ 'admin.dashboard.trialTenants' | translate }}</p>
+      <p class="font-display-lg text-3xl font-bold">{{ stats().trial }}</p>
+    </div>
+    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+      <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-error/10 text-error">
+        <span class="material-symbols-outlined">block</span>
+      </div>
+      <p class="text-body-sm text-on-surface-variant">{{ 'admin.dashboard.suspendedTenants' | translate }}</p>
+      <p class="font-display-lg text-3xl font-bold">{{ stats().suspended }}</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-6 xl:grid-cols-5">
+    <!-- Recent tenants -->
+    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 xl:col-span-2">
+      <div class="mb-4 flex items-center justify-between">
+        <h5 class="font-bold">{{ 'admin.dashboard.recentTenants' | translate }}</h5>
+        <a routerLink="/admin/tenants" class="text-body-sm font-bold text-primary hover:underline">{{ 'admin.dashboard.viewAll' | translate }}</a>
+      </div>
+      <div class="space-y-3">
+        @for (t of recentTenants(); track t.id) {
+          <a
+            [routerLink]="['/admin/tenants', t.id]"
+            class="flex items-center justify-between gap-3 rounded-xl p-3 transition-colors hover:bg-surface-container-low">
+            <div class="min-w-0">
+              <p class="truncate font-bold">{{ t.businessName }}</p>
+              <p class="truncate text-[11px] text-outline" dir="ltr">{{ t.ownerEmail }}</p>
+            </div>
+            <span class="whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold" [class]="statusTone(t.status)">
+              {{ 'admin.tenants.status.' + t.status | translate }}
+            </span>
+          </a>
+        }
+        @if (recentTenants().length === 0) {
+          <p class="py-6 text-center text-body-sm text-on-surface-variant">{{ 'admin.dashboard.noTenants' | translate }}</p>
+        }
+      </div>
+    </div>
+
+    <!-- Recent activity -->
+    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 xl:col-span-3">
+      <div class="mb-4 flex items-center justify-between">
+        <h5 class="font-bold">{{ 'admin.dashboard.recentActivity' | translate }}</h5>
+        <a routerLink="/admin/logs" class="text-body-sm font-bold text-primary hover:underline">{{ 'admin.dashboard.viewAll' | translate }}</a>
+      </div>
+      <div class="space-y-1">
+        @for (e of recentActivity(); track e.id) {
+          <div class="flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-surface-container-low">
+            <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
+              {{ e.actorName.slice(0, 1) }}
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="truncate text-body-sm">
+                <span class="font-bold">{{ e.actorName }}</span>
+                {{ 'auditLog.actions.' + e.action | translate }}
+                {{ 'auditLog.entities.' + e.entityType | translate }} — {{ e.entityLabel }}
+              </p>
+            </div>
+            <span class="whitespace-nowrap text-[11px] text-outline">{{ e.timestamp | localDate: { day: 'numeric', month: 'short' } }}</span>
+          </div>
+        }
+        @if (recentActivity().length === 0) {
+          <p class="py-6 text-center text-body-sm text-on-surface-variant">{{ 'admin.dashboard.noActivity' | translate }}</p>
+        }
+      </div>
+    </div>
+  </div>
+</div>

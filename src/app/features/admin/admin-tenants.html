@@ -1,0 +1,113 @@
+<div class="page-enter space-y-6">
+  <div>
+    <h1 class="font-display-lg text-display-lg text-primary">{{ 'admin.tenants.title' | translate }}</h1>
+    <p class="font-body-lg text-on-surface-variant">{{ 'admin.tenants.subtitle' | translate }}</p>
+  </div>
+
+  <div class="tonal-elevation rounded-3xl border border-outline-variant bg-surface-container-lowest p-6">
+    <div class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="search-pill flex w-full items-center gap-2 rounded-full bg-surface-container px-4 py-2 transition-shadow sm:w-72">
+          <span class="material-symbols-outlined text-outline">search</span>
+          <input
+            type="text"
+            [ngModel]="query()"
+            (ngModelChange)="setQuery($event)"
+            [placeholder]="'admin.tenants.searchPlaceholder' | translate"
+            class="w-full border-none bg-transparent text-body-sm outline-none focus:ring-0" />
+        </div>
+        <div class="flex flex-wrap gap-1">
+          @for (s of statuses; track s) {
+            <button
+              type="button"
+              (click)="setStatus(s)"
+              class="rounded-lg px-3 py-1.5 text-body-sm font-semibold transition-colors"
+              [class.bg-primary]="status() === s"
+              [class.text-on-primary]="status() === s"
+              [class.bg-surface-container]="status() !== s"
+              [class.text-on-surface-variant]="status() !== s"
+              [class.hover:bg-surface-container-high]="status() !== s">
+              {{ (s === 'all' ? 'common.all' : 'admin.tenants.status.' + s) | translate }}
+            </button>
+          }
+        </div>
+      </div>
+      <span class="whitespace-nowrap text-body-sm text-on-surface-variant">{{ 'admin.tenants.count' | translate: { count: filtered().length } }}</span>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-outline-variant/30 text-outline">
+            <th class="whitespace-nowrap pb-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'admin.tenants.columns.business' | translate }}</th>
+            <th class="whitespace-nowrap pb-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'admin.tenants.columns.owner' | translate }}</th>
+            <th class="whitespace-nowrap pb-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'admin.tenants.columns.plan' | translate }}</th>
+            <th class="whitespace-nowrap pb-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'admin.tenants.columns.status' | translate }}</th>
+            <th class="whitespace-nowrap pb-4 text-end font-label-caps text-[11px] uppercase tracking-wider">{{ 'common.actions' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody class="stagger-rows divide-y divide-outline-variant/20">
+          @for (t of filtered(); track t.id) {
+            <tr class="transition-colors hover:bg-surface-container-low/50">
+              <td class="py-4">
+                <a [routerLink]="['/admin/tenants', t.id]" class="flex items-center gap-3 hover:text-primary">
+                  <div class="grid h-10 w-10 flex-shrink-0 place-items-center rounded-lg bg-primary/10 font-bold text-primary">
+                    {{ t.businessName.slice(0, 1) }}
+                  </div>
+                  <span class="whitespace-nowrap font-bold">{{ t.businessName }}</span>
+                </a>
+              </td>
+              <td class="py-4">
+                <p class="whitespace-nowrap text-body-sm">{{ t.ownerName }}</p>
+                <p class="whitespace-nowrap text-[11px] text-outline" dir="ltr">{{ t.ownerEmail }}</p>
+              </td>
+              <td class="whitespace-nowrap py-4">
+                <select
+                  [ngModel]="t.plan"
+                  (ngModelChange)="changePlan(t, $event)"
+                  class="rounded-lg border border-outline-variant bg-surface-container-lowest px-2 py-1.5 text-body-sm outline-none">
+                  @for (p of plans; track p) {
+                    <option [value]="p">{{ 'admin.tenants.plans.' + p | translate }}</option>
+                  }
+                </select>
+              </td>
+              <td class="py-4">
+                <span class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-[11px] font-bold" [class]="statusTone(t.status)">
+                  {{ 'admin.tenants.status.' + t.status | translate }}
+                </span>
+              </td>
+              <td class="py-4">
+                <div class="flex items-center justify-end gap-1">
+                  <a
+                    [routerLink]="['/admin/tenants', t.id]"
+                    [attr.aria-label]="'common.view' | translate"
+                    class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+                    <span class="material-symbols-outlined text-xl">visibility</span>
+                  </a>
+                  <button
+                    type="button"
+                    (click)="toggleStatus(t)"
+                    [attr.aria-label]="(t.status === 'suspended' ? 'common.activate' : 'common.suspend') | translate"
+                    class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors"
+                    [class.hover:bg-error-container]="t.status !== 'suspended'"
+                    [class.hover:text-error]="t.status !== 'suspended'"
+                    [class.hover:bg-green-100]="t.status === 'suspended'"
+                    [class.hover:text-green-700]="t.status === 'suspended'">
+                    <span class="material-symbols-outlined text-xl">{{ t.status === 'suspended' ? 'check_circle' : 'block' }}</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      @if (filtered().length === 0) {
+        <div class="flex flex-col items-center gap-3 py-16 text-center">
+          <span class="material-symbols-outlined text-5xl text-outline/50">store</span>
+          <p class="text-on-surface-variant">{{ 'admin.tenants.empty' | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>

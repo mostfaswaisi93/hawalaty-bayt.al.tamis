@@ -1,0 +1,94 @@
+<!-- Mobile backdrop -->
+@if (sidebarOpen()) {
+  <div class="fixed inset-0 z-40 bg-black/30 lg:hidden" (click)="sidebarOpen.set(false)"></div>
+}
+
+<!-- Sidebar -->
+<aside
+  class="fixed start-0 top-0 z-50 flex h-screen w-64 flex-col border-e border-outline-variant bg-surface-container-low px-inline-md py-stack-md shadow-sm transition-transform duration-300 lg:!translate-x-0"
+  [class.translate-x-0]="sidebarOpen()"
+  [class.-translate-x-full]="!sidebarOpen() && !isRtl()"
+  [class.translate-x-full]="!sidebarOpen() && isRtl()">
+  <div class="mb-10 flex items-center gap-3 px-4">
+    <app-logo />
+    <div class="min-w-0">
+      <span class="block font-display-lg text-display-lg font-bold leading-tight text-primary">{{ 'app.name' | translate }}</span>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">{{ 'admin.badge' | translate }}</p>
+    </div>
+  </div>
+
+  <nav class="flex-1 space-y-2">
+    @for (item of nav; track item.link) {
+      <a
+        [routerLink]="item.link"
+        routerLinkActive
+        #rla="routerLinkActive"
+        (click)="sidebarOpen.set(false)"
+        class="flex items-center gap-3 rounded-lg border-s-4 border-transparent px-4 py-3 font-body-lg text-body-lg transition-all duration-200"
+        [class.bg-surface-container-high]="rla.isActive"
+        [class.text-primary]="rla.isActive"
+        [class.font-bold]="rla.isActive"
+        [class.!border-primary]="rla.isActive"
+        [class.text-on-surface-variant]="!rla.isActive"
+        [class.hover:bg-surface-container-highest]="!rla.isActive">
+        <span class="material-symbols-outlined" [attr.data-weight]="rla.isActive ? 'fill' : null">{{ item.icon }}</span>
+        <span>{{ item.key | translate }}</span>
+      </a>
+    }
+  </nav>
+
+  <div class="mt-auto border-t border-outline-variant pt-6">
+    <div class="flex items-center gap-3 px-2">
+      <div class="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-secondary-container font-bold text-on-secondary-fixed">
+        {{ auth.initials() }}
+      </div>
+      <div class="min-w-0 flex-1 overflow-hidden">
+        <p class="truncate text-sm font-bold">{{ auth.user()?.name }}</p>
+        <p class="truncate text-xs text-on-surface-variant">{{ auth.user()?.email }}</p>
+      </div>
+      <button
+        type="button"
+        class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-error"
+        (click)="logout()"
+        [matTooltip]="'user.logout' | translate"
+        [attr.aria-label]="'user.logout' | translate">
+        <span class="material-symbols-outlined">logout</span>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<!-- Main wrapper -->
+<div class="flex min-h-screen flex-col lg:ms-64">
+  <!-- Header -->
+  <header
+    class="sticky top-0 z-30 flex h-16 w-full items-center justify-between gap-4 border-b border-outline-variant bg-surface px-inline-lg">
+    <div class="flex flex-1 items-center gap-3">
+      <button
+        type="button"
+        class="text-on-surface-variant lg:hidden"
+        (click)="sidebarOpen.set(!sidebarOpen())"
+        [attr.aria-label]="'nav.menu' | translate">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <span class="inline-flex items-center gap-1.5 rounded-full bg-secondary-container/40 px-3 py-1 text-[11px] font-bold text-secondary">
+        <span class="material-symbols-outlined text-sm">shield_person</span>
+        {{ 'admin.badge' | translate }}
+      </span>
+    </div>
+
+    <div class="flex items-center gap-4 md:gap-6">
+      <app-language-switcher />
+      <app-theme-toggle />
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="mx-auto w-full max-w-[1680px] flex-1 p-inline-lg">
+    <router-outlet />
+  </main>
+
+  <footer class="mt-auto border-t border-outline-variant/40 p-6 text-center text-body-sm text-outline">
+    <p>{{ 'footer.rights' | translate }}</p>
+  </footer>
+</div>

@@ -1,0 +1,120 @@
+@if (tenant(); as t) {
+  <div class="page-enter space-y-6">
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          (click)="back()"
+          class="flex h-10 w-10 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container-high"
+          [attr.aria-label]="'common.back' | translate">
+          <span class="material-symbols-outlined rtl:-scale-x-100">arrow_back</span>
+        </button>
+        <div>
+          <h1 class="font-display-lg text-display-lg text-primary">{{ t.businessName }}</h1>
+          <p class="font-body-lg text-on-surface-variant" dir="ltr">{{ t.ownerEmail }}</p>
+        </div>
+      </div>
+      <span class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[12px] font-bold" [class]="statusTone(t.status)">
+        {{ 'admin.tenants.status.' + t.status | translate }}
+      </span>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+      <!-- Tenant info + controls -->
+      <div class="tonal-elevation space-y-5 rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 xl:col-span-1">
+        <h5 class="font-bold">{{ 'admin.tenantDetail.info' | translate }}</h5>
+        <div class="space-y-3 text-body-sm">
+          <div class="flex justify-between gap-3">
+            <span class="text-on-surface-variant">{{ 'admin.tenantDetail.owner' | translate }}</span>
+            <span class="font-semibold">{{ t.ownerName }}</span>
+          </div>
+          <div class="flex justify-between gap-3">
+            <span class="text-on-surface-variant">{{ 'admin.tenantDetail.phone' | translate }}</span>
+            <span class="font-semibold" dir="ltr">{{ t.phone }}</span>
+          </div>
+          <div class="flex justify-between gap-3">
+            <span class="text-on-surface-variant">{{ 'admin.tenantDetail.usersCount' | translate }}</span>
+            <span class="font-semibold">{{ members().length }}</span>
+          </div>
+          <div class="flex justify-between gap-3">
+            <span class="text-on-surface-variant">{{ 'admin.tenantDetail.createdAt' | translate }}</span>
+            <span class="font-semibold">{{ t.createdAt | localDate: { day: 'numeric', month: 'long', year: 'numeric' } }}</span>
+          </div>
+        </div>
+
+        <div class="border-t border-outline-variant/30 pt-4">
+          <label class="mb-1 block font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant">{{ 'admin.tenants.columns.plan' | translate }}</label>
+          <select
+            [ngModel]="t.plan"
+            (ngModelChange)="changePlan($event)"
+            class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-body-sm outline-none">
+            @for (p of plans; track p) {
+              <option [value]="p">{{ 'admin.tenants.plans.' + p | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <button
+          type="button"
+          (click)="toggleStatus()"
+          class="flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 font-bold transition-colors"
+          [class.bg-error-container]="t.status !== 'suspended'"
+          [class.text-error]="t.status !== 'suspended'"
+          [class.bg-green-100]="t.status === 'suspended'"
+          [class.text-green-700]="t.status === 'suspended'">
+          <span class="material-symbols-outlined text-lg">{{ t.status === 'suspended' ? 'check_circle' : 'block' }}</span>
+          {{ (t.status === 'suspended' ? 'admin.tenants.activate' : 'admin.tenants.suspend') | translate }}
+        </button>
+      </div>
+
+      <!-- Team roster -->
+      <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 xl:col-span-1">
+        <h5 class="mb-4 font-bold">{{ 'admin.tenantDetail.team' | translate }}</h5>
+        <div class="space-y-2">
+          @for (m of members(); track m.id) {
+            <div class="flex items-center gap-3 rounded-xl p-2.5 transition-colors hover:bg-surface-container-low">
+              <div class="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full bg-primary-container font-bold text-on-primary-container">
+                {{ m.name.slice(0, 1) }}
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="truncate text-body-sm font-bold">{{ m.name }}</p>
+                <p class="truncate text-[11px] text-outline" dir="ltr">{{ m.email }}</p>
+              </div>
+              <span class="whitespace-nowrap rounded-md bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">{{ roleName(m.roleId) }}</span>
+            </div>
+          }
+          @if (members().length === 0) {
+            <p class="py-6 text-center text-body-sm text-on-surface-variant">{{ 'admin.tenantDetail.noTeam' | translate }}</p>
+          }
+        </div>
+      </div>
+
+      <!-- Recent activity -->
+      <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 xl:col-span-1">
+        <h5 class="mb-4 font-bold">{{ 'admin.tenantDetail.recentActivity' | translate }}</h5>
+        <div class="space-y-1">
+          @for (e of recentActivity(); track e.id) {
+            <div class="rounded-xl p-2.5 transition-colors hover:bg-surface-container-low">
+              <p class="text-body-sm">
+                <span class="font-bold">{{ e.actorName }}</span>
+                {{ 'auditLog.actions.' + e.action | translate }}
+                {{ 'auditLog.entities.' + e.entityType | translate }}
+              </p>
+              <p class="text-[11px] text-outline">{{ e.entityLabel }} · {{ e.timestamp | localDate: { day: 'numeric', month: 'short' } }}</p>
+            </div>
+          }
+          @if (recentActivity().length === 0) {
+            <p class="py-6 text-center text-body-sm text-on-surface-variant">{{ 'admin.dashboard.noActivity' | translate }}</p>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="page-enter flex flex-col items-center gap-3 py-24 text-center">
+    <span class="material-symbols-outlined text-5xl text-outline/50">search_off</span>
+    <p class="text-on-surface-variant">{{ 'admin.tenantDetail.notFound' | translate }}</p>
+    <a routerLink="/admin/tenants" class="font-bold text-primary hover:underline">{{ 'admin.tenantDetail.backToList' | translate }}</a>
+  </div>
+}

@@ -106,18 +106,34 @@
     </div>
   </div>
 
-  <!-- Registered devices -->
-  <div class="glass-card flex items-start gap-4 rounded-2xl border-s-4 border-primary p-6">
-    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-      <span class="material-symbols-outlined">devices</span>
+  <!-- Registered devices + Activity log -->
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <div class="glass-card flex items-start gap-4 rounded-2xl border-s-4 border-primary p-6">
+      <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <span class="material-symbols-outlined">devices</span>
+      </div>
+      <div>
+        <h5 class="font-bold text-on-surface">{{ 'settings.security.devices.title' | translate }}</h5>
+        <p class="mt-1 text-body-sm text-outline">{{ 'settings.security.devices.desc' | translate }}</p>
+        <a routerLink="/devices" class="mt-4 flex items-center gap-1 font-bold text-body-sm text-primary hover:underline">
+          {{ 'settings.security.devices.action' | translate }}
+          <span class="material-symbols-outlined text-sm">chevron_left</span>
+        </a>
+      </div>
     </div>
-    <div>
-      <h5 class="font-bold text-on-surface">{{ 'settings.security.devices.title' | translate }}</h5>
-      <p class="mt-1 text-body-sm text-outline">{{ 'settings.security.devices.desc' | translate }}</p>
-      <a routerLink="/devices" class="mt-4 flex items-center gap-1 font-bold text-body-sm text-primary hover:underline">
-        {{ 'settings.security.devices.action' | translate }}
-        <span class="material-symbols-outlined text-sm">chevron_left</span>
-      </a>
+
+    <div class="glass-card flex items-start gap-4 rounded-2xl border-s-4 border-secondary p-6">
+      <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
+        <span class="material-symbols-outlined">history_toggle_off</span>
+      </div>
+      <div>
+        <h5 class="font-bold text-on-surface">{{ 'settings.security.activityLog.title' | translate }}</h5>
+        <p class="mt-1 text-body-sm text-outline">{{ 'settings.security.activityLog.desc' | translate }}</p>
+        <a routerLink="/activity-log" class="mt-4 flex items-center gap-1 font-bold text-body-sm text-secondary hover:underline">
+          {{ 'settings.security.activityLog.action' | translate }}
+          <span class="material-symbols-outlined text-sm">chevron_left</span>
+        </a>
+      </div>
     </div>
   </div>
 </div>

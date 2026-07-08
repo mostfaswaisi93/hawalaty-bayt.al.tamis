@@ -1,0 +1,150 @@
+<div class="page-enter space-y-6">
+  <div>
+    <h1 class="font-display-lg text-display-lg text-primary">{{ 'admin.logs.title' | translate }}</h1>
+    <p class="font-body-lg text-on-surface-variant">{{ 'admin.logs.subtitle' | translate }}</p>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="rounded-2xl border border-outline-variant bg-surface-container-lowest p-4">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <div class="flex flex-1 flex-wrap gap-4">
+        <div class="flex flex-col gap-1">
+          <label class="font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant">{{ 'common.search' | translate }}</label>
+          <div class="search-pill flex items-center gap-2 rounded-full bg-surface-container px-3 py-2 transition-shadow">
+            <span class="material-symbols-outlined text-lg text-outline">search</span>
+            <input
+              type="text"
+              [ngModel]="query()"
+              (ngModelChange)="setQuery($event)"
+              [placeholder]="'activityLog.searchPlaceholder' | translate"
+              class="w-40 border-none bg-transparent text-body-sm outline-none focus:ring-0 sm:w-56" />
+          </div>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant">{{ 'admin.logs.tenant' | translate }}</label>
+          <select
+            [ngModel]="tenantId()"
+            (ngModelChange)="setTenant($event)"
+            class="rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 text-body-sm outline-none">
+            <option value="all">{{ 'common.all' | translate }}</option>
+            @for (t of tenants(); track t.id) {
+              <option [value]="t.id">{{ t.businessName }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant">{{ 'activityLog.category' | translate }}</label>
+        <div class="flex flex-wrap gap-1">
+          @for (c of categories; track c) {
+            <button
+              type="button"
+              (click)="setCategory(c)"
+              class="rounded-lg px-3 py-1.5 text-body-sm font-semibold transition-colors"
+              [class.bg-primary]="category() === c"
+              [class.text-on-primary]="category() === c"
+              [class.bg-surface-container]="category() !== c"
+              [class.text-on-surface-variant]="category() !== c"
+              [class.hover:bg-surface-container-high]="category() !== c">
+              {{ (c === 'all' ? 'common.all' : 'activityLog.categories.' + c) | translate }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="tonal-elevation overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-lowest">
+    @if (filtered().length === 0) {
+      <div class="flex flex-col items-center gap-3 py-16 text-center">
+        <span class="material-symbols-outlined text-5xl text-outline/50">history_toggle_off</span>
+        <p class="text-on-surface-variant">{{ 'activityLog.empty' | translate }}</p>
+      </div>
+    } @else {
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="bg-surface-container-low text-outline">
+              <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'activityLog.columns.actor' | translate }}</th>
+              <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'admin.logs.tenant' | translate }}</th>
+              <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'activityLog.columns.action' | translate }}</th>
+              <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'activityLog.columns.entity' | translate }}</th>
+              <th class="whitespace-nowrap px-5 py-4 text-end font-label-caps text-[11px] uppercase tracking-wider">{{ 'activityLog.columns.time' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody class="stagger-rows divide-y divide-outline-variant/20">
+            @for (e of paged(); track e.id) {
+              <tr class="transition-colors hover:bg-surface-container-low/40">
+                <td class="px-5 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
+                      {{ initials(e.actorName) }}
+                    </div>
+                    <div>
+                      <p class="whitespace-nowrap text-body-sm font-bold">{{ e.actorName }}</p>
+                      <p class="whitespace-nowrap text-[11px] text-outline" dir="ltr">{{ e.actorEmail }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="whitespace-nowrap px-5 py-4 text-body-sm text-on-surface-variant">{{ tenantName(e.tenantId) }}</td>
+                <td class="whitespace-nowrap px-5 py-4">
+                  <span class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-[11px] font-bold" [class]="actionTone(e.action)">
+                    {{ 'auditLog.actions.' + e.action | translate }}
+                  </span>
+                </td>
+                <td class="px-5 py-4">
+                  <p class="whitespace-nowrap text-body-sm font-bold">{{ 'auditLog.entities.' + e.entityType | translate }}</p>
+                  <p class="max-w-[220px] truncate text-[11px] text-outline">{{ e.entityLabel }}</p>
+                </td>
+                <td class="whitespace-nowrap px-5 py-4 text-end text-body-sm text-on-surface-variant">
+                  {{ e.timestamp | localDate: { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' } }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex flex-wrap items-center justify-between gap-3 border-t border-outline-variant/30 px-5 py-4">
+        <span class="text-body-sm text-on-surface-variant">
+          {{ 'history.showing' | translate: { from: rangeFrom(), to: rangeTo(), total: filtered().length } }}
+        </span>
+        <div class="flex items-center gap-1">
+          <button
+            type="button"
+            (click)="goPage(page() - 1)"
+            [disabled]="page() === 1"
+            class="flex h-9 w-9 items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant transition-colors hover:bg-surface-container disabled:opacity-40"
+            [attr.aria-label]="'history.prev' | translate">
+            <span class="material-symbols-outlined text-xl">chevron_right</span>
+          </button>
+          @for (p of pages(); track p) {
+            <button
+              type="button"
+              (click)="goPage(p)"
+              class="flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-body-sm font-bold transition-colors"
+              [class.bg-primary]="page() === p"
+              [class.text-on-primary]="page() === p"
+              [class.border]="page() !== p"
+              [class.border-outline-variant]="page() !== p"
+              [class.text-on-surface-variant]="page() !== p"
+              [class.hover:bg-surface-container]="page() !== p">
+              {{ p | localNumber }}
+            </button>
+          }
+          <button
+            type="button"
+            (click)="goPage(page() + 1)"
+            [disabled]="page() === totalPages()"
+            class="flex h-9 w-9 items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant transition-colors hover:bg-surface-container disabled:opacity-40"
+            [attr.aria-label]="'history.next' | translate">
+            <span class="material-symbols-outlined text-xl">chevron_left</span>
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -12,6 +12,7 @@
     "expenses": "Expenses",
     "reports": "Reports",
     "constants": "Constants",
+    "team": "Team",
     "settings": "Settings",
     "menu": "Menu"
   },
@@ -116,6 +117,11 @@
         "title": "Logged Devices",
         "desc": "You are currently logged in on 3 active devices.",
         "action": "Manage Devices"
+      },
+      "activityLog": {
+        "title": "Activity Log",
+        "desc": "Review every action taken on your account and team.",
+        "action": "View Activity Log"
       }
     }
   },
