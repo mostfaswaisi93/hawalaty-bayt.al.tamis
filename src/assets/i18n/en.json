@@ -16,48 +16,17 @@
     "menu": "Menu"
   },
   "history": {
-    "title": "Transaction History",
-    "subtitle": "Track all your past financial transactions with ease.",
+    "title": "Order History",
+    "subtitle": "Track all past restaurant orders with ease.",
     "exportReport": "Export report",
-    "totalTransfers": "Total transactions (this month)",
-    "vsLastMonth": "vs last month",
-    "timeRange": "Time range",
-    "last30": "Last 30 days",
-    "operationType": "Operation type",
+    "totalRevenue": "Total revenue",
+    "orderCount": "{{count}} orders",
+    "paymentMethod": "Payment method",
+    "searchPlaceholder": "Search by customer, item or reference...",
     "prev": "Previous",
     "next": "Next",
-    "showing": "Showing {{from}}-{{to}} of {{total}} transactions",
-    "statuses": {
-      "completed": "Completed",
-      "processing": "Processing",
-      "cancelled": "Cancelled"
-    },
-    "types": {
-      "international": "International transfer",
-      "domestic": "Domestic transfer",
-      "autopay": "Auto payment",
-      "cash": "Cash withdrawal"
-    },
-    "subs": {
-      "intlBank": "International bank",
-      "rinCash": "Rin Cash wallet",
-      "bills": "Bill payment",
-      "personal": "Personal transfer",
-      "localBank": "Local bank"
-    },
-    "names": {
-      "john": "John Smith",
-      "asiacell": "Asiacell Telecom",
-      "mohammedAhmed": "Mohammed Ahmed"
-    },
-    "columns": {
-      "recipient": "Recipient",
-      "dateTime": "Date & time",
-      "type": "Operation type",
-      "reference": "Reference",
-      "status": "Status",
-      "amount": "Amount"
-    }
+    "showing": "Showing {{from}}-{{to}} of {{total}} orders",
+    "empty": "No orders found"
   },
   "forgot": {
     "title": "Reset password",
@@ -83,9 +52,9 @@
     "featuresTitle": "What each page does",
     "openPage": "Open page",
     "features": {
-      "dashboard": "Your daily snapshot: available balance, quick actions, scheduled items and recent transactions at a glance.",
+      "dashboard": "Your daily snapshot: today's sales, quick actions, recent expenses and a weekly sales trend at a glance.",
       "transfers": "Send a standalone transfer with a fee breakdown and confirmation summary.",
-      "history": "The full archive of past orders with filters by status, type and time range.",
+      "history": "The full archive of past orders, searchable and filterable by status and payment method.",
       "banks": "Manage the banks and wallets used for payments and giving change back to customers.",
       "menu": "Manage your menu items, prices and availability, organized by category.",
       "expenses": "Log what your business bought and which bank or wallet paid for it.",
@@ -294,24 +263,15 @@
     "title": "Dashboard",
     "subtitle": "Overview of your transfer activity",
     "newTransfer": "New Transfer",
-    "balance": {
-      "available": "Total available balance",
-      "account": "Account number",
-      "details": "Balance details"
+    "today": {
+      "salesLabel": "Today's Sales",
+      "ordersLabel": "Orders",
+      "viewReports": "View Reports"
     },
-    "quickActions": {
-      "send": "Send",
-      "request": "Request",
-      "topup": "Top up",
-      "more": "More"
-    },
-    "scheduled": {
-      "title": "Scheduled transfers",
+    "recentExpenses": {
+      "title": "Recent Expenses",
       "viewAll": "View all",
-      "dueLabel": "Due",
-      "tomorrow": "Tomorrow",
-      "rent": "Office rent - monthly",
-      "utilities": "Utilities bill"
+      "empty": "No expenses yet"
     },
     "parties": {
       "sara": "Sara Ali",
@@ -327,28 +287,23 @@
       "yassin": "Yassin Omar"
     },
     "insights": {
-      "title": "Spending insights",
-      "monthlySpending": "This month's spending"
+      "title": "Weekly Sales",
+      "weeklyTotal": "Total this week"
     },
     "days": {
-      "sat": "Sat",
       "sun": "Sun",
       "mon": "Mon",
       "tue": "Tue",
-      "wed": "Wed"
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
     },
     "transactions": {
-      "title": "Recent transactions",
-      "subtitle": "Track your latest financial activity in one place",
-      "party": "Recipient / Sender",
-      "type": "Type",
-      "loadMore": "Load more transactions",
-      "online": "Online purchase",
-      "incoming": "Incoming account transfer",
-      "expenseShare": "Expense sharing",
-      "direct": "Direct debit",
-      "bankTransfer": "Bank transfer",
-      "requestType": "Transfer request"
+      "title": "Recent Orders",
+      "subtitle": "Track your latest orders in one place",
+      "viewAll": "View all orders",
+      "empty": "No orders yet"
     }
   },
   "banks": {

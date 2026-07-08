@@ -1,85 +1,76 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LocalNumberPipe, LocalDatePipe } from '../../core/localize.pipes';
-import { Transfer } from '../../data/transfers';
+import { LocalCurrencyPipe, LocalDatePipe, LocalNumberPipe } from '../../core/localize.pipes';
+import { ExpensesService } from '../../core/expenses.service';
+import { MOCK_TRANSFERS, Transfer } from '../../data/transfers';
 import { TransferDialog } from './transfer-dialog';
 
-interface ScheduledItem {
-  nameKey: string;
-  noteKey: string;
-  amount: number;
-  dueDate?: string;
-  dueKey?: string;
-  icon: string;
-}
+const WEEKDAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 
-interface Txn {
-  nameKey: string;
-  noteKey: string;
-  date: string;
-  status: 'completed' | 'pending';
-  typeKey: string;
-  amount: number;
-  direction: 'in' | 'out' | 'neutral';
-  icon: string;
+function toLocalIsoDate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterLink, MatIconModule, TranslateModule, LocalNumberPipe, LocalDatePipe],
+  imports: [RouterLink, MatIconModule, TranslateModule, LocalCurrencyPipe, LocalNumberPipe, LocalDatePipe],
   templateUrl: './dashboard.html',
 })
 export class Dashboard {
   private readonly dialog = inject(MatDialog);
   private readonly snackbar = inject(MatSnackBar);
   private readonly translate = inject(TranslateService);
+  private readonly expensesService = inject(ExpensesService);
 
-  protected readonly currency = 'ILS';
-  protected readonly balance = 12450.0;
-  protected readonly accountTail = '8824';
-  protected readonly monthlySpending = 4120;
+  private readonly allTransfers: Transfer[] = MOCK_TRANSFERS;
 
-  protected readonly bars = [40, 65, 85, 50, 30];
-  protected readonly days = ['sat', 'sun', 'mon', 'tue', 'wed'];
+  private readonly todaysTransfers = this.allTransfers.filter((t) => t.date === toLocalIsoDate(new Date()));
+  protected readonly todaysSales = this.todaysTransfers.reduce((sum, t) => sum + t.amount, 0);
+  protected readonly todaysOrderCount = this.todaysTransfers.length;
 
-  protected readonly scheduled: ScheduledItem[] = [
-    { nameKey: 'dashboard.parties.sara', noteKey: 'dashboard.scheduled.rent', amount: 500, dueDate: '2023-10-25', icon: 'person' },
-    { nameKey: 'dashboard.parties.electricity', noteKey: 'dashboard.scheduled.utilities', amount: 75, dueKey: 'dashboard.scheduled.tomorrow', icon: 'bolt' },
-  ];
+  protected readonly recentTransfers = [...this.allTransfers].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4);
 
-  protected readonly transactions: Txn[] = [
-    { nameKey: 'dashboard.parties.amazon', noteKey: 'dashboard.transactions.online', date: '2023-10-20', status: 'completed', typeKey: 'dashboard.transactions.direct', amount: -145, direction: 'out', icon: 'shopping_bag' },
-    { nameKey: 'dashboard.parties.rafidain', noteKey: 'dashboard.transactions.incoming', date: '2023-10-18', status: 'completed', typeKey: 'dashboard.transactions.bankTransfer', amount: 2500, direction: 'in', icon: 'account_balance' },
-    { nameKey: 'dashboard.parties.jasim', noteKey: 'dashboard.transactions.expenseShare', date: '2023-10-15', status: 'pending', typeKey: 'dashboard.transactions.requestType', amount: 50, direction: 'neutral', icon: 'person' },
-  ];
+  protected readonly dailySales = (() => {
+    const totals = new Map<string, number>();
+    for (const t of this.allTransfers) {
+      totals.set(t.date, (totals.get(t.date) ?? 0) + t.amount);
+    }
+    return [...totals.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .slice(-5)
+      .map(([date, amount]) => ({ date, amount, dayKey: WEEKDAY_KEYS[new Date(`${date}T00:00:00`).getDay()] }));
+  })();
 
-  protected txnIconClass(direction: Txn['direction']): string {
-    switch (direction) {
-      case 'out':
-        return 'bg-secondary-container/10 text-secondary';
-      case 'in':
-        return 'bg-primary/10 text-primary';
+  protected readonly weeklyTotal = this.dailySales.reduce((sum, d) => sum + d.amount, 0);
+  protected readonly maxDailySale = Math.max(1, ...this.dailySales.map((d) => d.amount));
+
+  protected readonly recentExpenses = computed(() =>
+    [...this.expensesService.all()].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3),
+  );
+
+  protected statusPillClass(status: Transfer['status']): string {
+    switch (status) {
+      case 'completed':
+        return 'bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-300';
+      case 'pending':
+        return 'bg-secondary-container/20 text-secondary';
       default:
-        return 'bg-surface-dim/40 text-on-surface-variant';
+        return 'bg-error-container text-error dark:bg-error/15';
     }
   }
 
-  protected txnAmountClass(direction: Txn['direction']): string {
-    switch (direction) {
-      case 'out':
-        return 'text-error';
-      case 'in':
-        return 'text-primary';
-      default:
-        return 'text-on-surface';
-    }
+  protected statusDotClass(status: Transfer['status']): string {
+    return status === 'completed' ? 'bg-green-500' : status === 'pending' ? 'bg-secondary-container' : 'bg-error';
   }
 
-  protected newTransfer(): void {
+  protected newOrder(): void {
     this.dialog
       .open(TransferDialog, { width: '480px', maxWidth: '95vw' })
       .afterClosed()
