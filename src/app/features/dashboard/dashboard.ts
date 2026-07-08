@@ -1,13 +1,10 @@
 import { Component, computed, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { LocalCurrencyPipe, LocalDatePipe, LocalNumberPipe } from '../../core/localize.pipes';
 import { ExpensesService } from '../../core/expenses.service';
 import { MOCK_TRANSFERS, Transfer } from '../../data/transfers';
-import { TransferDialog } from './transfer-dialog';
 
 const WEEKDAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 
@@ -24,9 +21,6 @@ function toLocalIsoDate(d: Date): string {
   templateUrl: './dashboard.html',
 })
 export class Dashboard {
-  private readonly dialog = inject(MatDialog);
-  private readonly snackbar = inject(MatSnackBar);
-  private readonly translate = inject(TranslateService);
   private readonly expensesService = inject(ExpensesService);
 
   private readonly allTransfers: Transfer[] = MOCK_TRANSFERS;
@@ -68,19 +62,5 @@ export class Dashboard {
 
   protected statusDotClass(status: Transfer['status']): string {
     return status === 'completed' ? 'bg-green-500' : status === 'pending' ? 'bg-secondary-container' : 'bg-error';
-  }
-
-  protected newOrder(): void {
-    this.dialog
-      .open(TransferDialog, { width: '560px', maxWidth: '95vw' })
-      .afterClosed()
-      .subscribe((result?: Transfer) => {
-        if (!result) return;
-        this.snackbar.open(
-          this.translate.instant('messages.saveSuccess'),
-          this.translate.instant('common.close'),
-          { duration: 3000 },
-        );
-      });
   }
 }

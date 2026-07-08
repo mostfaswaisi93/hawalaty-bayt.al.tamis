@@ -1,7 +1,10 @@
 <div class="page-enter flex min-h-screen flex-col bg-surface text-on-surface">
   <!-- Top header -->
   <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between border-b border-outline-variant bg-surface px-inline-md shadow-sm md:px-inline-lg">
-    <span class="font-display-lg text-display-lg font-bold leading-none text-primary">{{ 'app.name' | translate }}</span>
+    <div class="flex items-center gap-3">
+      <app-logo />
+      <span class="font-display-lg text-display-lg font-bold leading-none text-primary">{{ 'app.name' | translate }}</span>
+    </div>
     <div class="flex items-center gap-2">
       <app-language-switcher />
       <app-theme-toggle />
@@ -140,7 +143,10 @@
   <!-- Footer -->
   <footer class="z-20 flex flex-col items-center justify-between gap-3 border-t border-outline-variant bg-surface-container-lowest px-inline-md py-stack-md md:flex-row md:px-inline-lg">
     <div class="flex flex-col items-center gap-2 md:flex-row md:gap-4">
-      <span class="font-headline-md text-headline-md text-primary">{{ 'app.name' | translate }}</span>
+      <div class="flex items-center gap-2">
+        <app-logo />
+        <span class="font-headline-md text-headline-md text-primary">{{ 'app.name' | translate }}</span>
+      </div>
       <span class="font-body-sm text-on-surface-variant">{{ 'login.copyright' | translate }}</span>
     </div>
     <nav class="flex flex-wrap justify-center gap-4">

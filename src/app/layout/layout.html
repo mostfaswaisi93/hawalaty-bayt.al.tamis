@@ -9,9 +9,12 @@
   [class.translate-x-0]="sidebarOpen()"
   [class.-translate-x-full]="!sidebarOpen() && !isRtl()"
   [class.translate-x-full]="!sidebarOpen() && isRtl()">
-  <div class="mb-10 px-4">
-    <span class="block font-display-lg text-display-lg font-bold text-primary">{{ 'app.name' | translate }}</span>
-    <p class="font-body-sm text-body-sm text-on-surface-variant">My Transfers</p>
+  <div class="mb-10 flex items-center gap-3 px-4">
+    <app-logo />
+    <div class="min-w-0">
+      <span class="block font-display-lg text-display-lg font-bold leading-tight text-primary">{{ 'app.name' | translate }}</span>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">My Transfers</p>
+    </div>
   </div>
 
   <nav class="flex-1 space-y-2">

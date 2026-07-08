@@ -3,12 +3,13 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageSwitcher } from '../../shared/language-switcher/language-switcher';
+import { Logo } from '../../shared/logo/logo';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 import { FieldError } from '../../shared/field-error/field-error';
 
 @Component({
   selector: 'app-forgot-password',
-  imports: [ReactiveFormsModule, RouterLink, TranslateModule, LanguageSwitcher, ThemeToggle, FieldError],
+  imports: [ReactiveFormsModule, RouterLink, TranslateModule, LanguageSwitcher, Logo, ThemeToggle, FieldError],
   templateUrl: './forgot-password.html',
 })
 export class ForgotPassword {

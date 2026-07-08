@@ -1,4 +1,4 @@
-<div class="page-enter space-y-6">
+<div class="page-enter space-y-6 pb-20 lg:pb-0">
   <!-- Header -->
   <div>
     <h1 class="font-display-lg text-display-lg text-primary">{{ 'form.newTransfer' | translate }}</h1>
@@ -111,7 +111,7 @@
     </div>
 
     <!-- Right: order + payment -->
-    <div class="h-fit space-y-6 lg:sticky lg:top-6">
+    <div #orderPanel class="h-fit space-y-6 scroll-mt-6 lg:sticky lg:top-6">
       <!-- Order summary -->
       <div class="tonal-elevation rounded-3xl border border-outline-variant bg-surface-container-lowest p-6">
         <h3 class="mb-4 font-headline-md text-headline-md">{{ 'form.yourOrder' | translate }}</h3>
@@ -289,3 +289,26 @@
     </div>
   </div>
 </div>
+
+<!-- Mobile-only floating cart bar: rendered OUTSIDE .page-enter deliberately — that wrapper's
+     entrance animation keeps a non-`none` `transform` after it finishes, which turns it into a CSS
+     containing block for any `position: fixed` descendant and would anchor this bar to the page
+     instead of the viewport. The order panel is sticky at lg+, but scrolls out of view on smaller
+     screens, so this keeps the running total reachable while browsing the menu. -->
+@if (cartCount() > 0) {
+    <div class="fixed inset-x-0 bottom-0 z-40 border-t border-outline-variant bg-surface-container-lowest p-3 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] lg:hidden">
+      <button
+        type="button"
+        (click)="scrollToOrder()"
+        class="flex w-full items-center justify-between gap-3 rounded-xl bg-primary px-4 py-3 text-on-primary shadow-lg active:scale-[0.98]">
+        <span class="flex items-center gap-2 font-bold">
+          <span class="flex h-6 min-w-6 items-center justify-center rounded-full bg-on-primary/20 px-1.5 text-xs" dir="ltr">{{ cartCount() }}</span>
+          {{ 'form.yourOrder' | translate }}
+        </span>
+        <span class="flex items-center gap-1 font-bold">
+          <span dir="ltr">{{ subtotal() | localCurrency }}</span>
+          <span class="material-symbols-outlined rtl:-scale-x-100">chevron_left</span>
+        </span>
+      </button>
+    </div>
+  }

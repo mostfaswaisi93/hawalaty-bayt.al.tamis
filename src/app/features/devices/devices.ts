@@ -17,8 +17,15 @@ export class Devices {
   private readonly snackbar = inject(MatSnackBar);
   private readonly translate = inject(TranslateService);
 
-  protected readonly devices = this.devicesService.all;
+  /** Current device always leads, regardless of mock-data / service ordering. */
+  protected readonly devices = computed(() =>
+    [...this.devicesService.all()].sort((a, b) => Number(b.isCurrent) - Number(a.isCurrent)),
+  );
   protected readonly otherCount = computed(() => this.devices().filter((d) => !d.isCurrent).length);
+
+  protected isActiveNow(device: Device): boolean {
+    return device.lastActiveKey === 'devices.activity.now';
+  }
 
   protected signOut(device: Device): void {
     this.dialog

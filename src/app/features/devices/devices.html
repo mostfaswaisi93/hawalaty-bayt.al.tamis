@@ -1,4 +1,4 @@
-<div class="page-enter space-y-8">
+<div class="page-enter space-y-6">
   <!-- Header -->
   <div class="flex flex-wrap items-center justify-between gap-3">
     <div>
@@ -14,6 +14,17 @@
         <span>{{ 'devices.signOutAllOthers' | translate }}</span>
       </button>
     }
+  </div>
+
+  <!-- Security tip -->
+  <div class="glass-card flex items-start gap-4 rounded-2xl border-s-4 border-secondary-container p-5">
+    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary-container/20 text-secondary">
+      <span class="material-symbols-outlined">shield</span>
+    </div>
+    <div>
+      <h5 class="font-bold text-on-surface">{{ 'devices.securityTipTitle' | translate }}</h5>
+      <p class="mt-1 text-body-sm text-on-surface-variant">{{ 'devices.securityTipText' | translate }}</p>
+    </div>
   </div>
 
   <!-- Device cards -->
@@ -43,9 +54,12 @@
             <span class="material-symbols-outlined align-middle text-sm">location_on</span>
             {{ d.locationKey | translate }}
           </p>
-          <p class="text-body-sm text-outline">
+          <p class="flex items-center gap-1.5 text-body-sm text-outline">
             <span class="material-symbols-outlined align-middle text-sm">schedule</span>
             {{ d.lastActiveKey | translate }}
+            @if (isActiveNow(d)) {
+              <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500" [attr.aria-label]="'devices.activity.now' | translate"></span>
+            }
           </p>
           @if (!d.isCurrent) {
             <button

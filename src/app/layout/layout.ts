@@ -10,6 +10,7 @@ import { TransferDialog } from '../features/dashboard/transfer-dialog';
 import { Transfer } from '../data/transfers';
 import { ConfirmDialog } from '../shared/confirm-dialog/confirm-dialog';
 import { LanguageSwitcher } from '../shared/language-switcher/language-switcher';
+import { Logo } from '../shared/logo/logo';
 import { ThemeToggle } from '../shared/theme-toggle/theme-toggle';
 
 @Component({
@@ -21,6 +22,7 @@ import { ThemeToggle } from '../shared/theme-toggle/theme-toggle';
     MatTooltipModule,
     TranslateModule,
     LanguageSwitcher,
+    Logo,
     ThemeToggle,
   ],
   templateUrl: './layout.html',

@@ -374,6 +374,8 @@
   "devices": {
     "title": "Manage Devices",
     "subtitle": "Devices currently signed in to your account",
+    "securityTipTitle": "Don't recognize a device?",
+    "securityTipText": "If you see a device you don't recognize, sign out of it immediately and change your password.",
     "currentDevice": "Current device",
     "signOut": "Sign out",
     "signOutAllOthers": "Sign out all other devices",

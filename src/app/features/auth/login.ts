@@ -5,12 +5,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService, DEMO_EMAIL, DEMO_PASSWORD } from '../../core/auth.service';
 import { LanguageSwitcher } from '../../shared/language-switcher/language-switcher';
+import { Logo } from '../../shared/logo/logo';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 import { FieldError } from '../../shared/field-error/field-error';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink, TranslateModule, LanguageSwitcher, ThemeToggle, FieldError],
+  imports: [ReactiveFormsModule, RouterLink, TranslateModule, LanguageSwitcher, Logo, ThemeToggle, FieldError],
   templateUrl: './login.html',
 })
 export class Login {

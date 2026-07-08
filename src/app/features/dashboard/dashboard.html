@@ -30,14 +30,14 @@
 
     <!-- Quick actions -->
     <div class="grid grid-cols-2 gap-4">
-      <button
-        (click)="newOrder()"
+      <a
+        routerLink="/transfers"
         class="tonal-elevation group flex flex-col items-center justify-center gap-3 rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 transition-all hover:border-primary hover:bg-surface-container">
         <div class="flex h-12 w-12 items-center justify-center rounded-full bg-secondary-container/10 text-secondary transition-colors group-hover:bg-secondary-container group-hover:text-white">
           <mat-icon>add_shopping_cart</mat-icon>
         </div>
         <span class="text-body-sm font-bold">{{ 'dashboard.newTransfer' | translate }}</span>
-      </button>
+      </a>
 
       <a
         routerLink="/menu"

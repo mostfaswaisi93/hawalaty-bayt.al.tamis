@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -92,6 +92,13 @@ export class Transfers {
   protected readonly cartCount = computed(() => this.lines().reduce((sum, l) => sum + l.quantity, 0));
   protected readonly submitted = signal(false);
   protected readonly showItemsError = computed(() => this.submitted() && this.lines().length === 0);
+
+  /** Lets the mobile floating cart bar jump the page to the order panel (hidden lg+, where it's already sticky). */
+  private readonly orderPanel = viewChild<ElementRef<HTMLElement>>('orderPanel');
+
+  protected scrollToOrder(): void {
+    this.orderPanel()?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   protected qtyFor(itemId: string): number {
     return this.lines().find((l) => l.itemId === itemId)?.quantity ?? 0;
