@@ -92,30 +92,9 @@
     }
   },
   "transfers": {
-    "title": "Send new money",
-    "subtitle": "Transfer money securely and quickly anywhere in the world.",
-    "chooseRecipient": "Choose recipient",
-    "addRecipient": "Add new recipient",
-    "searchRecipient": "Search by name, email, or phone number...",
-    "frequentRecipients": "Frequent recipients",
-    "new": "New",
-    "detailsTitle": "Transfer details",
-    "amountSent": "Amount sent",
-    "availableBalance": "Available balance",
-    "notes": "Notes (optional)",
-    "notesPlaceholder": "Add a short message for the recipient...",
-    "summary": "Transaction summary",
-    "baseAmount": "Base amount",
-    "transferFee": "Transfer fee",
-    "serviceFee": "Service fee",
-    "totalDue": "Total due",
-    "etaTitle": "Estimated arrival time",
-    "etaValue": "Within 15-30 minutes to the recipient's account",
-    "confirmSend": "Confirm & send",
-    "securityTitle": "Full protection",
-    "securityDesc": "All your transactions are encrypted and protected with the highest global security standards.",
-    "promoTitle": "Save 50% on fees",
-    "promoDesc": "Use code FIRST50 on your first transfer this month."
+    "subtitle": "Build an order from the menu and record how it was paid",
+    "emptyCart": "No items added yet",
+    "confirmOrder": "Confirm order"
   },
   "settings": {
     "verifiedAccount": "Verified Account",
@@ -257,12 +236,13 @@
     "status": "Status",
     "filter": "Filter",
     "increase": "Increase",
-    "decrease": "Decrease"
+    "decrease": "Decrease",
+    "back": "Back"
   },
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "Overview of your transfer activity",
-    "newTransfer": "New Transfer",
+    "newTransfer": "New Order",
     "today": {
       "salesLabel": "Today's Sales",
       "ordersLabel": "Orders",
@@ -272,19 +252,6 @@
       "title": "Recent Expenses",
       "viewAll": "View all",
       "empty": "No expenses yet"
-    },
-    "parties": {
-      "sara": "Sara Ali",
-      "electricity": "Electricity Company",
-      "amazon": "Amazon Global",
-      "rafidain": "Rafidain Bank",
-      "jasim": "Jasim Abbas",
-      "ali": "Ali Hassan",
-      "emirates": "Emirates NBD",
-      "reem": "Reem Hamad",
-      "mohammed": "Mohammed Jasim",
-      "layla": "Layla Ahmad",
-      "yassin": "Yassin Omar"
     },
     "insights": {
       "title": "Weekly Sales",
@@ -442,12 +409,17 @@
     "failed": "Failed"
   },
   "form": {
-    "newTransfer": "New Transfer",
+    "newTransfer": "New Order",
     "walkInCustomer": "Walk-in customer",
     "items": "Items",
     "selectItem": "Select an item",
     "itemsRequired": "Please add at least one item",
     "total": "Total",
+    "stepChooseItems": "Step 1: Choose items",
+    "stepPayment": "Step 2: Payment details",
+    "backToCategories": "Back to categories",
+    "yourOrder": "Your order",
+    "continueToPayment": "Continue to Payment",
     "paymentMethod": "Payment method",
     "paymentCash": "Cash",
     "paymentBank": "Bank / wallet transfer",

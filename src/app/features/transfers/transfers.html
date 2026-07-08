@@ -1,162 +1,290 @@
-<div class="flex flex-col gap-stack-md">
+<div class="page-enter space-y-6">
   <!-- Header -->
-  <section class="flex flex-col gap-2">
-    <h2 class="font-display-lg text-display-lg text-primary">{{ 'transfers.title' | translate }}</h2>
+  <div>
+    <h1 class="font-display-lg text-display-lg text-primary">{{ 'form.newTransfer' | translate }}</h1>
     <p class="font-body-lg text-on-surface-variant">{{ 'transfers.subtitle' | translate }}</p>
-  </section>
+  </div>
 
-  <div class="grid grid-cols-1 gap-stack-md lg:grid-cols-12">
-    <!-- Left column -->
-    <div class="flex flex-col gap-stack-md lg:col-span-8">
-      <!-- Recipient selection -->
-      <div class="rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 shadow-sm">
-        <div class="mb-6 flex items-center justify-between">
-          <h3 class="font-headline-md text-headline-md">{{ 'transfers.chooseRecipient' | translate }}</h3>
-          <button type="button" class="flex items-center gap-1 font-bold text-primary hover:underline">
-            <span class="material-symbols-outlined text-sm">group_add</span>
-            <span class="font-body-sm">{{ 'transfers.addRecipient' | translate }}</span>
-          </button>
-        </div>
-
-        <div class="relative mb-8">
-          <span class="material-symbols-outlined absolute end-4 top-1/2 -translate-y-1/2 text-outline">search</span>
-          <input
-            type="text"
-            [placeholder]="'transfers.searchRecipient' | translate"
-            class="w-full rounded-xl border border-outline-variant py-4 pe-12 ps-4 font-body-lg outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20" />
-        </div>
-
-        <h4 class="mb-4 font-label-caps text-label-caps uppercase text-on-surface-variant">
-          {{ 'transfers.frequentRecipients' | translate }}
-        </h4>
-        <div class="custom-scrollbar flex gap-6 overflow-x-auto pb-4">
-          <button type="button" class="group flex min-w-[80px] flex-col items-center gap-2">
-            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-md transition-transform group-hover:scale-105">
-              <span class="material-symbols-outlined">add</span>
-            </div>
-            <span class="font-body-sm text-xs">{{ 'transfers.new' | translate }}</span>
-          </button>
-
-          @for (c of contacts; track c.nameKey; let i = $index) {
-            <button type="button" class="group flex min-w-[80px] cursor-pointer flex-col items-center gap-2" (click)="select(i)">
-              <div
-                class="grid h-14 w-14 place-items-center rounded-full border-2 font-bold transition-all"
-                [class.bg-surface-container-high]="selected() !== i"
-                [class.text-on-surface-variant]="selected() !== i"
-                [class.border-transparent]="selected() !== i"
-                [class.group-hover:border-primary]="selected() !== i"
-                [class.bg-primary]="selected() === i"
-                [class.text-white]="selected() === i"
-                [class.border-primary]="selected() === i"
-                [class.ring-4]="selected() === i"
-                [class.ring-primary/10]="selected() === i">
-                {{ c.initials }}
-              </div>
-              <span class="whitespace-nowrap text-center font-body-sm text-xs" [class.font-bold]="selected() === i" [class.text-primary]="selected() === i" [class.font-semibold]="selected() !== i">
-                {{ c.nameKey | translate }}
-              </span>
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <!-- Left: browse the menu -->
+    <div class="space-y-6 lg:col-span-2">
+      <!-- Toolbar -->
+      <div class="tonal-elevation flex flex-col gap-4 rounded-3xl border border-outline-variant bg-surface-container-lowest p-6 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex flex-wrap items-center gap-4">
+          <div class="search-pill flex w-full items-center gap-2 rounded-full bg-surface-container px-4 py-2 transition-shadow sm:w-72">
+            <span class="material-symbols-outlined text-outline">search</span>
+            <input
+              type="text"
+              [ngModel]="query()"
+              (ngModelChange)="query.set($event)"
+              [placeholder]="'menu.searchPlaceholder' | translate"
+              class="w-full border-none bg-transparent text-body-sm outline-none focus:ring-0" />
+          </div>
+          <div class="flex flex-wrap gap-1">
+            <button
+              type="button"
+              (click)="setCategory('all')"
+              class="rounded-lg px-3 py-1.5 text-body-sm font-semibold transition-colors"
+              [class.bg-primary]="category() === 'all'"
+              [class.text-on-primary]="category() === 'all'"
+              [class.bg-surface-container]="category() !== 'all'"
+              [class.text-on-surface-variant]="category() !== 'all'"
+              [class.hover:bg-surface-container-high]="category() !== 'all'">
+              {{ 'common.all' | translate }}
             </button>
+            @for (c of categories(); track c) {
+              <button
+                type="button"
+                (click)="setCategory(c)"
+                class="rounded-lg px-3 py-1.5 text-body-sm font-semibold transition-colors"
+                [class.bg-primary]="category() === c"
+                [class.text-on-primary]="category() === c"
+                [class.bg-surface-container]="category() !== c"
+                [class.text-on-surface-variant]="category() !== c"
+                [class.hover:bg-surface-container-high]="category() !== c">
+                {{ c }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Grouped menu items -->
+      @if (groups().length > 0) {
+        <div class="space-y-6">
+          @for (group of groups(); track group.category) {
+            <div class="tonal-elevation overflow-hidden rounded-3xl border border-outline-variant bg-surface-container-lowest">
+              <div class="flex items-center gap-3 border-b border-outline-variant/30 bg-surface-container-low px-6 py-4">
+                <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl" [class]="categoryBadge(group.category)">
+                  <span class="material-symbols-outlined">{{ categoryIcon(group.category) }}</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md">{{ group.category }}</h3>
+              </div>
+
+              <div class="divide-y divide-outline-variant/20">
+                @for (item of group.items; track item.id) {
+                  <div class="flex items-center gap-4 px-6 py-4">
+                    <div class="min-w-0 flex-1">
+                      <p class="truncate font-bold">{{ item.name }}</p>
+                      <p class="text-body-sm text-primary" dir="ltr">{{ item.price | localCurrency }}</p>
+                    </div>
+                    @if (qtyFor(item.id) === 0) {
+                      <button
+                        mat-mini-fab
+                        color="primary"
+                        type="button"
+                        (click)="addItem(item)"
+                        [attr.aria-label]="'common.add' | translate">
+                        <mat-icon>add</mat-icon>
+                      </button>
+                    } @else {
+                      <div class="flex items-center gap-1 rounded-lg border border-outline-variant">
+                        <button
+                          type="button"
+                          class="flex h-9 w-9 items-center justify-center text-on-surface-variant hover:text-primary"
+                          (click)="decrementQty(item.id)"
+                          [attr.aria-label]="'common.decrease' | translate">
+                          <mat-icon>remove</mat-icon>
+                        </button>
+                        <span class="w-6 text-center font-bold">{{ qtyFor(item.id) }}</span>
+                        <button
+                          type="button"
+                          class="flex h-9 w-9 items-center justify-center text-on-surface-variant hover:text-primary"
+                          (click)="incrementQty(item.id)"
+                          [attr.aria-label]="'common.increase' | translate">
+                          <mat-icon>add</mat-icon>
+                        </button>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
           }
         </div>
-      </div>
-
-      <!-- Transfer details -->
-      <div class="rounded-2xl border border-outline-variant bg-surface-container-lowest p-8 shadow-sm">
-        <h3 class="mb-6 font-headline-md text-headline-md">{{ 'transfers.detailsTitle' | translate }}</h3>
-        <div class="flex flex-col gap-2">
-          <label class="font-label-caps text-label-caps text-on-surface-variant">{{ 'transfers.amountSent' | translate }}</label>
-          <div class="relative">
-            <input
-              type="number"
-              [ngModel]="amount()"
-              (ngModelChange)="amount.set($event || 0)"
-              class="w-full rounded-xl border-2 border-outline-variant py-4 pe-16 ps-4 font-numeral-lg text-display-lg outline-none transition-all focus:border-primary" />
-            <div class="absolute inset-y-0 end-0 flex items-center pe-4">
-              <span class="font-bold text-primary">₪</span>
-            </div>
-          </div>
-          <p class="mt-1 text-xs text-on-surface-variant">
-            {{ 'transfers.availableBalance' | translate }}: <span dir="ltr">{{ availableBalance | localCurrency }}</span>
-          </p>
+      } @else {
+        <div class="tonal-elevation flex flex-col items-center gap-3 rounded-3xl border border-outline-variant bg-surface-container-lowest py-16 text-center">
+          <span class="material-symbols-outlined text-5xl text-outline/50">restaurant_menu</span>
+          <p class="text-on-surface-variant">{{ 'menu.empty' | translate }}</p>
         </div>
-
-        <div class="mt-8 flex flex-col gap-2">
-          <label class="font-label-caps text-label-caps text-on-surface-variant">{{ 'transfers.notes' | translate }}</label>
-          <textarea
-            rows="3"
-            [ngModel]="note()"
-            (ngModelChange)="note.set($event)"
-            [placeholder]="'transfers.notesPlaceholder' | translate"
-            class="w-full rounded-xl border border-outline-variant p-4 font-body-lg outline-none transition-all focus:border-primary"></textarea>
-        </div>
-      </div>
+      }
     </div>
 
-    <!-- Right column -->
-    <div class="flex flex-col gap-stack-md lg:col-span-4">
-      <!-- Summary -->
-      <div class="relative overflow-hidden rounded-2xl bg-[#00236f] p-8 text-white shadow-xl">
-        <div class="pointer-events-none absolute end-0 top-0 -mt-16 -me-16 h-32 w-32 rounded-full bg-white/5 blur-3xl"></div>
-        <div class="pointer-events-none absolute bottom-0 start-0 -mb-12 -ms-12 h-24 w-24 rounded-full bg-secondary/20 blur-2xl"></div>
+    <!-- Right: order + payment -->
+    <div class="h-fit space-y-6 lg:sticky lg:top-6">
+      <!-- Order summary -->
+      <div class="tonal-elevation rounded-3xl border border-outline-variant bg-surface-container-lowest p-6">
+        <h3 class="mb-4 font-headline-md text-headline-md">{{ 'form.yourOrder' | translate }}</h3>
 
-        <h3 class="mb-8 font-headline-md text-headline-md">{{ 'transfers.summary' | translate }}</h3>
-        <div class="mb-8 space-y-4">
-          <div class="flex items-center justify-between opacity-80">
-            <span class="font-body-sm">{{ 'transfers.baseAmount' | translate }}</span>
-            <span class="font-numeral-lg text-lg" dir="ltr">{{ amount() | localCurrency }}</span>
+        @if (lines().length === 0) {
+          <p class="text-body-sm text-on-surface-variant">{{ 'transfers.emptyCart' | translate }}</p>
+        } @else {
+          <div class="space-y-2">
+            @for (line of lines(); track line.itemId) {
+              <div class="flex items-center gap-2">
+                <span class="flex-1 truncate text-sm font-medium">{{ line.name }} ×{{ line.quantity }}</span>
+                <span class="whitespace-nowrap text-end text-sm font-bold" dir="ltr">
+                  {{ line.price * line.quantity | localCurrency }}
+                </span>
+                <button
+                  type="button"
+                  class="flex h-7 w-7 flex-shrink-0 items-center justify-center text-outline hover:text-error"
+                  (click)="removeLine(line.itemId)"
+                  [attr.aria-label]="'common.delete' | translate">
+                  <mat-icon class="!text-base">close</mat-icon>
+                </button>
+              </div>
+            }
           </div>
-          <div class="flex items-center justify-between opacity-80">
-            <span class="font-body-sm">{{ 'transfers.transferFee' | translate }}</span>
-            <span class="font-numeral-lg text-lg" dir="ltr">{{ transferFee | localCurrency }}</span>
+          <div class="mt-3 flex items-center justify-between border-t border-outline-variant pt-3">
+            <span class="font-bold">{{ 'form.total' | translate }}</span>
+            <span class="font-bold text-primary" dir="ltr">{{ subtotal() | localCurrency }}</span>
           </div>
-          <div class="flex items-center justify-between opacity-80">
-            <span class="font-body-sm">{{ 'transfers.serviceFee' | translate }}</span>
-            <span class="font-numeral-lg text-lg" dir="ltr">{{ serviceFee | localCurrency }}</span>
-          </div>
-          <div class="flex items-center justify-between border-t border-white/20 pt-4">
-            <span class="font-body-lg font-bold">{{ 'transfers.totalDue' | translate }}</span>
-            <span class="font-numeral-lg text-2xl text-secondary-container" dir="ltr">{{ total() | localCurrency }}</span>
-          </div>
-        </div>
+        }
 
-        <div class="mb-8 rounded-xl bg-white/10 p-4">
-          <div class="flex items-start gap-3">
-            <span class="material-symbols-outlined text-secondary-container">info</span>
-            <div>
-              <p class="mb-1 text-xs font-bold">{{ 'transfers.etaTitle' | translate }}</p>
-              <p class="text-xs opacity-80">{{ 'transfers.etaValue' | translate }}</p>
+        @if (showItemsError()) {
+          <span class="mt-2 block text-xs text-red-600">{{ 'form.itemsRequired' | translate }}</span>
+        }
+      </div>
+
+      <!-- Payment -->
+      <div class="tonal-elevation rounded-3xl border border-outline-variant bg-surface-container-lowest p-6">
+        <form [formGroup]="form" class="flex flex-col gap-2">
+          <div>
+            <label class="mb-2 block text-sm font-semibold text-on-surface-variant">{{ 'form.paymentMethod' | translate }}</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                (click)="setPaymentMethod('cash')"
+                class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
+                [class.bg-primary]="form.controls.paymentMethod.value === 'cash'"
+                [class.text-on-primary]="form.controls.paymentMethod.value === 'cash'"
+                [class.bg-surface-container]="form.controls.paymentMethod.value !== 'cash'"
+                [class.text-on-surface-variant]="form.controls.paymentMethod.value !== 'cash'">
+                {{ 'form.paymentCash' | translate }}
+              </button>
+              <button
+                type="button"
+                (click)="setPaymentMethod('bank')"
+                class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
+                [class.bg-primary]="form.controls.paymentMethod.value === 'bank'"
+                [class.text-on-primary]="form.controls.paymentMethod.value === 'bank'"
+                [class.bg-surface-container]="form.controls.paymentMethod.value !== 'bank'"
+                [class.text-on-surface-variant]="form.controls.paymentMethod.value !== 'bank'">
+                {{ 'form.paymentBank' | translate }}
+              </button>
             </div>
           </div>
-        </div>
+
+          <!-- Cash scenario -->
+          @if (form.controls.paymentMethod.value === 'cash') {
+            <div class="mt-3 rounded-xl border border-outline-variant p-3">
+              <mat-slide-toggle formControlName="hasChange" (change)="onHasChangeToggle($event.checked)">
+                {{ 'form.hasChange' | translate }}
+              </mat-slide-toggle>
+
+              @if (form.controls.hasChange.value) {
+                <div class="mt-3 flex flex-col gap-2">
+                  <label class="block text-sm font-semibold text-on-surface-variant">{{ 'form.changeMethod' | translate }}</label>
+                  <div class="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      (click)="setChangeMethod('cash')"
+                      class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
+                      [class.bg-primary]="form.controls.changeMethod.value === 'cash'"
+                      [class.text-on-primary]="form.controls.changeMethod.value === 'cash'"
+                      [class.bg-surface-container]="form.controls.changeMethod.value !== 'cash'"
+                      [class.text-on-surface-variant]="form.controls.changeMethod.value !== 'cash'">
+                      {{ 'form.changeCash' | translate }}
+                    </button>
+                    <button
+                      type="button"
+                      (click)="setChangeMethod('bank')"
+                      class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
+                      [class.bg-primary]="form.controls.changeMethod.value === 'bank'"
+                      [class.text-on-primary]="form.controls.changeMethod.value === 'bank'"
+                      [class.bg-surface-container]="form.controls.changeMethod.value !== 'bank'"
+                      [class.text-on-surface-variant]="form.controls.changeMethod.value !== 'bank'">
+                      {{ 'form.changeBank' | translate }}
+                    </button>
+                  </div>
+
+                  @if (form.controls.changeMethod.value === 'bank') {
+                    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                      <mat-label>{{ 'form.selectBank' | translate }}</mat-label>
+                      <mat-select formControlName="changeBankId">
+                        <mat-optgroup [label]="'banks.types.bank' | translate">
+                          @for (b of banks(); track b.id) {
+                            <mat-option [value]="b.id">{{ b.name }}</mat-option>
+                          }
+                        </mat-optgroup>
+                        <mat-optgroup [label]="'banks.types.wallet' | translate">
+                          @for (w of wallets(); track w.id) {
+                            <mat-option [value]="w.id">{{ w.name }}</mat-option>
+                          }
+                        </mat-optgroup>
+                      </mat-select>
+                    </mat-form-field>
+                    <app-field-error [control]="form.controls.changeBankId" />
+                  }
+
+                  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                    <mat-label>{{ 'form.changeAmount' | translate }}</mat-label>
+                    <input matInput type="number" formControlName="changeAmount" />
+                  </mat-form-field>
+                  <app-field-error [control]="form.controls.changeAmount" />
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Bank/wallet transfer scenario -->
+          @if (form.controls.paymentMethod.value === 'bank') {
+            <div class="mt-3 flex flex-col gap-2 rounded-xl border border-outline-variant p-3">
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>{{ 'form.selectBank' | translate }}</mat-label>
+                <mat-select formControlName="bankId">
+                  <mat-optgroup [label]="'banks.types.bank' | translate">
+                    @for (b of banks(); track b.id) {
+                      <mat-option [value]="b.id">{{ b.name }}</mat-option>
+                    }
+                  </mat-optgroup>
+                  <mat-optgroup [label]="'banks.types.wallet' | translate">
+                    @for (w of wallets(); track w.id) {
+                      <mat-option [value]="w.id">{{ w.name }}</mat-option>
+                    }
+                  </mat-optgroup>
+                </mat-select>
+              </mat-form-field>
+              <app-field-error [control]="form.controls.bankId" />
+
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>{{ 'form.senderName' | translate }}</mat-label>
+                <input matInput formControlName="senderName" [placeholder]="'form.senderNamePlaceholder' | translate" />
+              </mat-form-field>
+              <app-field-error [control]="form.controls.senderName" />
+
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>{{ 'form.transferredAmount' | translate }}</mat-label>
+                <input matInput type="number" formControlName="transferredAmount" />
+              </mat-form-field>
+              <app-field-error [control]="form.controls.transferredAmount" />
+            </div>
+          }
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="mt-2">
+            <mat-label>{{ 'form.notes' | translate }}</mat-label>
+            <textarea matInput rows="2" formControlName="notes" [placeholder]="'form.notesPlaceholder' | translate"></textarea>
+          </mat-form-field>
+        </form>
 
         <button
           type="button"
-          (click)="confirm()"
-          class="flex w-full items-center justify-center gap-2 rounded-xl bg-secondary-container py-4 font-bold text-on-secondary-fixed shadow-lg transition-all hover:brightness-110 active:scale-[0.98]">
-          <span>{{ 'transfers.confirmSend' | translate }}</span>
-          <span class="material-symbols-outlined">arrow_back</span>
+          (click)="submit()"
+          class="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 font-bold text-on-primary shadow-lg transition-all hover:bg-primary-container hover:text-on-primary-container active:scale-[0.98]">
+          <span class="material-symbols-outlined">check_circle</span>
+          <span>{{ 'transfers.confirmOrder' | translate }}</span>
         </button>
-      </div>
-
-      <!-- Security badge -->
-      <div class="flex items-center gap-4 rounded-2xl border border-outline-variant bg-surface-container-high p-6">
-        <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white text-primary shadow-sm">
-          <span class="material-symbols-outlined" data-weight="fill">verified_user</span>
-        </div>
-        <div>
-          <p class="text-sm font-bold">{{ 'transfers.securityTitle' | translate }}</p>
-          <p class="text-xs text-on-surface-variant">{{ 'transfers.securityDesc' | translate }}</p>
-        </div>
-      </div>
-
-      <!-- Promo card -->
-      <div class="group relative h-40 cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br from-[#00236f] to-[#1e3a8a] shadow-lg">
-        <div class="pointer-events-none absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 3px 3px, white 1px, transparent 0); background-size: 22px 22px;"></div>
-        <div class="pointer-events-none absolute -end-8 -top-8 h-28 w-28 rounded-full bg-secondary-container/30 blur-2xl transition-transform duration-700 group-hover:scale-125"></div>
-        <div class="absolute inset-x-5 bottom-5">
-          <p class="text-sm font-bold text-white">{{ 'transfers.promoTitle' | translate }}</p>
-          <p class="mt-1 text-xs text-white/70">{{ 'transfers.promoDesc' | translate }}</p>
-        </div>
       </div>
     </div>
   </div>

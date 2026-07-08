@@ -6,6 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../core/auth.service';
 import { LanguageService } from '../core/language.service';
+import { TransferDialog } from '../features/dashboard/transfer-dialog';
+import { Transfer } from '../data/transfers';
 import { ConfirmDialog } from '../shared/confirm-dialog/confirm-dialog';
 import { LanguageSwitcher } from '../shared/language-switcher/language-switcher';
 import { ThemeToggle } from '../shared/theme-toggle/theme-toggle';
@@ -45,6 +47,20 @@ export class Layout {
     { link: '/constants', icon: 'tune', key: 'nav.constants' },
     { link: '/settings', icon: 'settings', key: 'nav.settings' },
   ];
+
+  protected newOrder(): void {
+    this.dialog
+      .open(TransferDialog, { width: '560px', maxWidth: '95vw' })
+      .afterClosed()
+      .subscribe((result?: Transfer) => {
+        if (!result) return;
+        this.snackbar.open(
+          this.translate.instant('messages.saveSuccess'),
+          this.translate.instant('common.close'),
+          { duration: 3000 },
+        );
+      });
+  }
 
   protected logout(): void {
     this.dialog

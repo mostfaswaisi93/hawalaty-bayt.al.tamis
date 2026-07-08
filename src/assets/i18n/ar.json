@@ -92,30 +92,9 @@
     }
   },
   "transfers": {
-    "title": "إرسال أموال جديدة",
-    "subtitle": "قم بتحويل الأموال بأمان وسرعة إلى أي مكان في العالم.",
-    "chooseRecipient": "اختر المستلم",
-    "addRecipient": "إضافة مستلم جديد",
-    "searchRecipient": "ابحث بالاسم، البريد الإلكتروني، أو رقم الهاتف...",
-    "frequentRecipients": "المستلمون المتكررون",
-    "new": "جديد",
-    "detailsTitle": "تفاصيل التحويل",
-    "amountSent": "المبلغ المرسل",
-    "availableBalance": "الرصيد المتاح",
-    "notes": "ملاحظات (اختياري)",
-    "notesPlaceholder": "أضف رسالة قصيرة للمستلم...",
-    "summary": "ملخص العملية",
-    "baseAmount": "المبلغ الأساسي",
-    "transferFee": "رسوم التحويل",
-    "serviceFee": "رسوم الخدمة",
-    "totalDue": "الإجمالي المطلوب",
-    "etaTitle": "وقت الوصول المتوقع",
-    "etaValue": "خلال 15-30 دقيقة إلى حساب المستلم",
-    "confirmSend": "تأكيد وإرسال",
-    "securityTitle": "حماية متكاملة",
-    "securityDesc": "جميع معاملاتك مشفرة ومحمية بأعلى معايير الأمان العالمية.",
-    "promoTitle": "وفّر 50% على الرسوم",
-    "promoDesc": "استخدم الكود FIRST50 في أول عملية تحويل لك هذا الشهر."
+    "subtitle": "جهّز الطلب من القائمة وسجّل كيف تم الدفع",
+    "emptyCart": "لم تتم إضافة أي صنف بعد",
+    "confirmOrder": "تأكيد الطلب"
   },
   "settings": {
     "verifiedAccount": "حساب موثّق",
@@ -257,12 +236,13 @@
     "status": "الحالة",
     "filter": "فلترة",
     "increase": "زيادة",
-    "decrease": "إنقاص"
+    "decrease": "إنقاص",
+    "back": "رجوع"
   },
   "dashboard": {
     "title": "لوحة التحكم",
     "subtitle": "نظرة عامة على نشاط حوالاتك",
-    "newTransfer": "حوالة جديدة",
+    "newTransfer": "طلب جديد",
     "today": {
       "salesLabel": "مبيعات اليوم",
       "ordersLabel": "الطلبات",
@@ -272,19 +252,6 @@
       "title": "أحدث المصروفات",
       "viewAll": "عرض الكل",
       "empty": "لا توجد مصروفات بعد"
-    },
-    "parties": {
-      "sara": "سارة علي",
-      "electricity": "شركة الكهرباء",
-      "amazon": "أمازون جلوبال",
-      "rafidain": "بنك الرافدين",
-      "jasim": "جاسم عباس",
-      "ali": "علي حسن",
-      "emirates": "بنك الإمارات دبي الوطني",
-      "reem": "ريم حمد",
-      "mohammed": "محمد جاسم",
-      "layla": "ليلى أحمد",
-      "yassin": "ياسين عمر"
     },
     "insights": {
       "title": "مبيعات الأسبوع",
@@ -442,12 +409,17 @@
     "failed": "فاشلة"
   },
   "form": {
-    "newTransfer": "حوالة جديدة",
+    "newTransfer": "طلب جديد",
     "walkInCustomer": "زبون حاضر",
     "items": "الأصناف",
     "selectItem": "اختر صنفاً",
     "itemsRequired": "الرجاء إضافة صنف واحد على الأقل",
     "total": "الإجمالي",
+    "stepChooseItems": "الخطوة 1: اختر الأصناف",
+    "stepPayment": "الخطوة 2: بيانات الدفع",
+    "backToCategories": "رجوع للأقسام",
+    "yourOrder": "طلبك",
+    "continueToPayment": "المتابعة إلى الدفع",
     "paymentMethod": "طريقة الدفع",
     "paymentCash": "نقدي",
     "paymentBank": "تحويل بنكي / محفظة",

@@ -35,13 +35,13 @@
   </nav>
 
   <div class="mt-auto border-t border-outline-variant pt-6">
-    <a
-      routerLink="/transfers"
-      (click)="sidebarOpen.set(false)"
+    <button
+      type="button"
+      (click)="newOrder(); sidebarOpen.set(false)"
       class="flex w-full items-center justify-center gap-2 rounded-xl bg-secondary-container px-4 py-3 font-bold text-on-secondary-fixed shadow-lg transition-transform active:scale-95">
       <span class="material-symbols-outlined">add</span>
       <span>{{ 'dashboard.newTransfer' | translate }}</span>
-    </a>
+    </button>
 
     <div class="mt-6 flex items-center gap-3 px-2">
       <div class="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-primary-container font-bold text-on-primary-container">

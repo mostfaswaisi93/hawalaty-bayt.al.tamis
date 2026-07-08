@@ -29,19 +29,19 @@ import { FieldError } from '../../shared/field-error/field-error';
 
     <mat-dialog-content>
       <form [formGroup]="form" class="flex flex-col gap-2 pt-2">
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
           <mat-label>{{ 'expenses.form.description' | translate }}</mat-label>
           <input matInput formControlName="description" [placeholder]="'expenses.form.descriptionPlaceholder' | translate" />
         </mat-form-field>
         <app-field-error [control]="form.controls.description" />
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
           <mat-label>{{ 'expenses.form.amount' | translate }}</mat-label>
           <input matInput type="number" formControlName="amount" [placeholder]="'expenses.form.amountPlaceholder' | translate" />
         </mat-form-field>
         <app-field-error [control]="form.controls.amount" />
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
           <mat-label>{{ 'expenses.form.paidFrom' | translate }}</mat-label>
           <mat-select formControlName="bankId">
             <mat-optgroup [label]="'banks.types.bank' | translate">
@@ -58,7 +58,7 @@ import { FieldError } from '../../shared/field-error/field-error';
         </mat-form-field>
         <app-field-error [control]="form.controls.bankId" />
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
           <mat-label>{{ 'expenses.form.date' | translate }}</mat-label>
           <input matInput type="date" formControlName="date" />
         </mat-form-field>

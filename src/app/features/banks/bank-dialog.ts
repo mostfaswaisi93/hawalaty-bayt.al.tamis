@@ -30,7 +30,7 @@ import { FieldError } from '../../shared/field-error/field-error';
 
     <mat-dialog-content>
       <form [formGroup]="form" class="flex flex-col gap-2 pt-2">
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
           <mat-label>{{ 'banks.form.type' | translate }}</mat-label>
           <mat-select formControlName="type">
             <mat-option value="bank">{{ 'banks.types.bank' | translate }}</mat-option>
@@ -38,13 +38,13 @@ import { FieldError } from '../../shared/field-error/field-error';
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
           <mat-label>{{ 'banks.form.name' | translate }}</mat-label>
           <input matInput formControlName="name" [placeholder]="'banks.form.namePlaceholder' | translate" />
         </mat-form-field>
         <app-field-error [control]="form.controls.name" />
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
           <mat-label>{{ 'banks.form.code' | translate }}</mat-label>
           <input matInput formControlName="code" [placeholder]="'banks.form.codePlaceholder' | translate" />
         </mat-form-field>

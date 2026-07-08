@@ -9,10 +9,20 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BanksService } from '../../core/banks.service';
+import { ConstantsService } from '../../core/constants.service';
 import { MenuService } from '../../core/menu.service';
+import { menuCategoryBadge, menuCategoryIcon } from '../../core/menu-category-style';
 import { LocalCurrencyPipe } from '../../core/localize.pipes';
+import { MenuItem } from '../../data/menu';
 import { ChangeMethod, PaymentMethod, Transfer, TransferLineItem } from '../../data/transfers';
 import { FieldError } from '../../shared/field-error/field-error';
+
+type Step = 'menu' | 'payment';
+
+interface CategoryCard {
+  category: string;
+  items: MenuItem[];
+}
 
 @Component({
   selector: 'app-transfer-dialog',
@@ -35,42 +45,51 @@ export class TransferDialog {
   private readonly fb = inject(FormBuilder);
   private readonly ref = inject(MatDialogRef<TransferDialog>);
   private readonly menu = inject(MenuService);
+  private readonly constants = inject(ConstantsService);
   private readonly banksService = inject(BanksService);
   private readonly translate = inject(TranslateService);
 
-  protected readonly availableItems = computed(() => this.menu.all().filter((i) => i.active));
   protected readonly banks = computed(() => this.banksService.all().filter((b) => b.active && b.type === 'bank'));
   protected readonly wallets = computed(() => this.banksService.all().filter((b) => b.active && b.type === 'wallet'));
 
-  // --- Cart (items + quantities) ---
-  protected readonly pendingItemId = signal<string | null>(null);
+  // --- Step 1: browse the menu by category, build the order ---
+  protected readonly step = signal<Step>('menu');
+  protected readonly activeCategory = signal<string | null>(null);
+
+  private readonly availableItems = computed(() => this.menu.all().filter((i) => i.active));
+
+  /** Categories that currently have at least one available item, in printed-menu order. */
+  protected readonly categoryCards = computed<CategoryCard[]>(() =>
+    this.constants
+      .menuCategories()
+      .map((category) => ({ category, items: this.availableItems().filter((i) => i.category === category) }))
+      .filter((c) => c.items.length > 0),
+  );
+
+  protected readonly activeItems = computed(() => {
+    const category = this.activeCategory();
+    return category ? this.availableItems().filter((i) => i.category === category) : [];
+  });
+
   protected readonly lines = signal<TransferLineItem[]>([]);
   protected readonly subtotal = computed(() => this.lines().reduce((sum, l) => sum + l.price * l.quantity, 0));
+  protected readonly cartCount = computed(() => this.lines().reduce((sum, l) => sum + l.quantity, 0));
   protected readonly submitted = signal(false);
   protected readonly showItemsError = computed(() => this.submitted() && this.lines().length === 0);
 
-  protected readonly form = this.fb.nonNullable.group({
-    paymentMethod: ['cash' as PaymentMethod, Validators.required],
+  protected openCategory(category: string): void {
+    this.activeCategory.set(category);
+  }
 
-    // Cash scenario
-    hasChange: [false],
-    changeMethod: ['cash' as ChangeMethod],
-    changeBankId: [null as string | null],
-    changeAmount: [null as number | null],
+  protected backToCategories(): void {
+    this.activeCategory.set(null);
+  }
 
-    // Bank/wallet scenario
-    bankId: [null as string | null],
-    senderName: [''],
-    transferredAmount: [null as number | null],
+  protected qtyFor(itemId: string): number {
+    return this.lines().find((l) => l.itemId === itemId)?.quantity ?? 0;
+  }
 
-    notes: [''],
-  });
-
-  protected addPendingItem(): void {
-    const itemId = this.pendingItemId();
-    const item = this.availableItems().find((i) => i.id === itemId);
-    if (!item) return;
-
+  protected addItem(item: MenuItem): void {
     this.lines.update((list) => {
       const idx = list.findIndex((l) => l.itemId === item.id);
       if (idx >= 0) {
@@ -80,7 +99,6 @@ export class TransferDialog {
       }
       return [...list, { itemId: item.id, name: item.name, quantity: 1, price: item.price }];
     });
-    this.pendingItemId.set(null);
   }
 
   protected incrementQty(itemId: string): void {
@@ -100,6 +118,46 @@ export class TransferDialog {
   protected removeLine(itemId: string): void {
     this.lines.update((list) => list.filter((l) => l.itemId !== itemId));
   }
+
+  protected categoryIcon(category: string): string {
+    return menuCategoryIcon(category);
+  }
+
+  protected categoryBadge(category: string): string {
+    return menuCategoryBadge(category);
+  }
+
+  protected goToPayment(): void {
+    if (this.lines().length === 0) {
+      this.submitted.set(true);
+      return;
+    }
+    // Default the transferred-amount field to the order total; still editable afterward.
+    this.form.controls.transferredAmount.setValue(this.subtotal());
+    this.step.set('payment');
+  }
+
+  protected backToMenu(): void {
+    this.step.set('menu');
+  }
+
+  // --- Step 2: payment details (unchanged logic) ---
+  protected readonly form = this.fb.nonNullable.group({
+    paymentMethod: ['cash' as PaymentMethod, Validators.required],
+
+    // Cash scenario
+    hasChange: [false],
+    changeMethod: ['cash' as ChangeMethod],
+    changeBankId: [null as string | null],
+    changeAmount: [null as number | null],
+
+    // Bank/wallet scenario
+    bankId: [null as string | null],
+    senderName: [''],
+    transferredAmount: [null as number | null],
+
+    notes: [''],
+  });
 
   protected setPaymentMethod(method: PaymentMethod): void {
     this.form.controls.paymentMethod.setValue(method);

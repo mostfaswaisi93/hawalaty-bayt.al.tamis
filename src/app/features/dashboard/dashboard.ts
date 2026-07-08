@@ -72,7 +72,7 @@ export class Dashboard {
 
   protected newOrder(): void {
     this.dialog
-      .open(TransferDialog, { width: '480px', maxWidth: '95vw' })
+      .open(TransferDialog, { width: '560px', maxWidth: '95vw' })
       .afterClosed()
       .subscribe((result?: Transfer) => {
         if (!result) return;

@@ -31,13 +31,13 @@ import { FieldError } from '../../shared/field-error/field-error';
 
     <mat-dialog-content>
       <form [formGroup]="form" class="flex flex-col gap-2 pt-2">
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
           <mat-label>{{ 'menu.form.name' | translate }}</mat-label>
           <input matInput formControlName="name" [placeholder]="'menu.form.namePlaceholder' | translate" />
         </mat-form-field>
         <app-field-error [control]="form.controls.name" />
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
           <mat-label>{{ 'menu.form.category' | translate }}</mat-label>
           <mat-select formControlName="category">
             @for (c of categories(); track c) {
@@ -47,7 +47,7 @@ import { FieldError } from '../../shared/field-error/field-error';
         </mat-form-field>
         <app-field-error [control]="form.controls.category" />
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
           <mat-label>{{ 'menu.form.price' | translate }}</mat-label>
           <input matInput type="number" formControlName="price" [placeholder]="'menu.form.pricePlaceholder' | translate" />
         </mat-form-field>
