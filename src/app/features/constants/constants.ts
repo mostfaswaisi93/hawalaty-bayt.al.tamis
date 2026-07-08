@@ -1,7 +1,9 @@
 import { Component, computed, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuditLogService } from '../../core/audit-log.service';
 import { ConstantsService, CustomConstantList } from '../../core/constants.service';
+import { PermissionsService } from '../../core/permissions.service';
 import { AddConstantDialog } from './add-constant-dialog';
 import { CustomListDialog } from './custom-list-dialog';
 import { MenuCategoriesDialog } from './menu-categories-dialog';
@@ -24,6 +26,8 @@ interface ConstantCard {
 export class Constants {
   protected readonly constants = inject(ConstantsService);
   private readonly dialog = inject(MatDialog);
+  private readonly auditLog = inject(AuditLogService);
+  protected readonly permissions = inject(PermissionsService);
 
   protected readonly cards = computed<ConstantCard[]>(() => [
     { key: 'menuCategories', icon: 'restaurant_menu', titleKey: 'constants.menuCategories.title', descKey: 'constants.menuCategories.subtitle' },
@@ -46,6 +50,7 @@ export class Constants {
       .afterClosed()
       .subscribe((created?: CustomConstantList) => {
         if (!created) return;
+        this.auditLog.log({ action: 'created', entityType: 'constant', entityLabel: created.title, category: 'constants' });
         this.dialog.open(CustomListDialog, { width: '520px', maxWidth: '95vw', data: { key: created.key, title: created.title } });
       });
   }

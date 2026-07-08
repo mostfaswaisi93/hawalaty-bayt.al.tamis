@@ -2,7 +2,9 @@ import { Component, computed, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuditLogService } from '../../core/audit-log.service';
 import { DevicesService } from '../../core/devices.service';
+import { PermissionsService } from '../../core/permissions.service';
 import { Device } from '../../data/devices';
 import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 
@@ -16,6 +18,8 @@ export class Devices {
   private readonly dialog = inject(MatDialog);
   private readonly snackbar = inject(MatSnackBar);
   private readonly translate = inject(TranslateService);
+  private readonly auditLog = inject(AuditLogService);
+  protected readonly permissions = inject(PermissionsService);
 
   /** Current device always leads, regardless of mock-data / service ordering. */
   protected readonly devices = computed(() =>
@@ -38,6 +42,7 @@ export class Devices {
       .subscribe((confirmed?: boolean) => {
         if (!confirmed) return;
         this.devicesService.signOut(device.id);
+        this.auditLog.log({ action: 'signedOut', entityType: 'device', entityLabel: device.name, category: 'devices' });
         this.notify('devices.signOutSuccess');
       });
   }
@@ -53,6 +58,7 @@ export class Devices {
       .subscribe((confirmed?: boolean) => {
         if (!confirmed) return;
         this.devicesService.signOutAllOthers();
+        this.auditLog.log({ action: 'signedOut', entityType: 'device', entityLabel: 'all other devices', category: 'devices' });
         this.notify('devices.signOutSuccess');
       });
   }

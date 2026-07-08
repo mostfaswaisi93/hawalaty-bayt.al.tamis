@@ -3,10 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuditLogService } from '../../core/audit-log.service';
 import { MenuService } from '../../core/menu.service';
 import { ConstantsService } from '../../core/constants.service';
 import { LocalCurrencyPipe } from '../../core/localize.pipes';
 import { menuCategoryBadge, menuCategoryIcon } from '../../core/menu-category-style';
+import { PermissionsService } from '../../core/permissions.service';
 import { MenuItem } from '../../data/menu';
 import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 import { ItemDialog } from './item-dialog';
@@ -27,6 +29,8 @@ export class Menu {
   private readonly dialog = inject(MatDialog);
   private readonly snackbar = inject(MatSnackBar);
   private readonly translate = inject(TranslateService);
+  private readonly auditLog = inject(AuditLogService);
+  protected readonly permissions = inject(PermissionsService);
 
   protected readonly query = signal('');
   protected readonly category = signal<'all' | string>('all');
@@ -62,7 +66,9 @@ export class Menu {
       .afterClosed()
       .subscribe((result?: MenuItem) => {
         if (!result) return;
+        const isNew = !this.menu.all().some((i) => i.id === result.id);
         this.menu.upsert(result);
+        this.auditLog.log({ action: isNew ? 'created' : 'updated', entityType: 'menuItem', entityLabel: result.name, category: 'menu' });
         this.notify('menu.saveSuccess');
       });
   }
@@ -78,6 +84,7 @@ export class Menu {
       .subscribe((confirmed?: boolean) => {
         if (!confirmed) return;
         this.menu.remove(item.id);
+        this.auditLog.log({ action: 'deleted', entityType: 'menuItem', entityLabel: item.name, category: 'menu' });
         this.notify('menu.deleteSuccess');
       });
   }

@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuditLogService } from '../../core/audit-log.service';
 import { BanksService } from '../../core/banks.service';
 import { ConstantsService } from '../../core/constants.service';
 import { MenuService } from '../../core/menu.service';
@@ -46,6 +47,7 @@ export class Transfers {
   private readonly banksService = inject(BanksService);
   private readonly snackbar = inject(MatSnackBar);
   private readonly translate = inject(TranslateService);
+  private readonly auditLog = inject(AuditLogService);
 
   protected readonly banks = computed(() => this.banksService.all().filter((b) => b.active && b.type === 'bank'));
   protected readonly wallets = computed(() => this.banksService.all().filter((b) => b.active && b.type === 'wallet'));
@@ -261,6 +263,7 @@ export class Transfers {
           }),
     };
 
+    this.auditLog.log({ action: 'created', entityType: 'order', entityLabel: result.id, category: 'transfers' });
     this.snackbar.open(this.translate.instant('messages.saveSuccess'), this.translate.instant('common.close'), {
       duration: 3000,
     });

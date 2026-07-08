@@ -5,13 +5,15 @@
       <h1 class="font-display-lg text-display-lg text-primary">{{ 'banks.title' | translate }}</h1>
       <p class="font-body-lg text-on-surface-variant">{{ 'banks.subtitle' | translate }}</p>
     </div>
-    <button
-      type="button"
-      (click)="openDialog()"
-      class="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-bold text-on-primary shadow-lg transition-all hover:bg-primary-container hover:text-on-primary-container active:scale-95">
-      <span class="material-symbols-outlined">add</span>
-      <span>{{ 'banks.addEntity' | translate }}</span>
-    </button>
+    @if (permissions.can('banks.manage')) {
+      <button
+        type="button"
+        (click)="openDialog()"
+        class="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-bold text-on-primary shadow-lg transition-all hover:bg-primary-container hover:text-on-primary-container active:scale-95">
+        <span class="material-symbols-outlined">add</span>
+        <span>{{ 'banks.addEntity' | translate }}</span>
+      </button>
+    }
   </div>
 
   <!-- Table card -->
@@ -101,20 +103,22 @@
               </td>
               <td class="py-4">
                 <div class="flex items-center justify-end gap-1">
-                  <button
-                    type="button"
-                    (click)="openDialog(b)"
-                    [attr.aria-label]="'common.edit' | translate"
-                    class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
-                    <span class="material-symbols-outlined text-xl">edit</span>
-                  </button>
-                  <button
-                    type="button"
-                    (click)="remove(b)"
-                    [attr.aria-label]="'common.delete' | translate"
-                    class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-error-container hover:text-error">
-                    <span class="material-symbols-outlined text-xl">delete</span>
-                  </button>
+                  @if (permissions.can('banks.manage')) {
+                    <button
+                      type="button"
+                      (click)="openDialog(b)"
+                      [attr.aria-label]="'common.edit' | translate"
+                      class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+                      <span class="material-symbols-outlined text-xl">edit</span>
+                    </button>
+                    <button
+                      type="button"
+                      (click)="remove(b)"
+                      [attr.aria-label]="'common.delete' | translate"
+                      class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-error-container hover:text-error">
+                      <span class="material-symbols-outlined text-xl">delete</span>
+                    </button>
+                  }
                 </div>
               </td>
             </tr>

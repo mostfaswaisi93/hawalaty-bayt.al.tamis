@@ -1,46 +1,59 @@
 import { computed, DOCUMENT, inject, Injectable, signal } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { MOCK_SUPER_ADMINS } from '../data/super-admins';
+import { TeamService } from './team.service';
 
 export interface AuthUser {
   name: string;
   email: string;
-  role: string;
+  /** null for super admins — they aren't scoped to any one tenant. */
+  tenantId: string | null;
+  /** null for super admins. */
+  roleId: string | null;
+  isSuperAdmin?: boolean;
 }
 
-/** Demo credentials — replace with a real backend call in `login()`. */
+/** Demo credentials for the seeded Owner account of the first tenant (بيت التميس). */
 export const DEMO_EMAIL = 'admin@hawalaty.com';
 export const DEMO_PASSWORD = '123456';
 
 const STORAGE_KEY = 'hawalaty.auth';
 
 /**
- * Client-side auth for the demo: validates against hard-coded credentials and
- * persists the session in localStorage. Swap `login()` for an HTTP call and
+ * Client-side auth for the demo: validates against the seeded team-member/super-admin
+ * rosters and persists the session in localStorage. Swap `login()` for an HTTP call and
  * store a real token when a backend is available.
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly document = inject(DOCUMENT);
+  private readonly team = inject(TeamService);
 
   readonly user = signal<AuthUser | null>(this.restore());
   readonly isAuthenticated = computed(() => this.user() !== null);
 
   /** Simulated async login. Emits the signed-in user, or errors on bad creds. */
   login(email: string, password: string): Observable<AuthUser> {
-    const ok =
-      email.trim().toLowerCase() === DEMO_EMAIL && password === DEMO_PASSWORD;
+    const normalized = email.trim().toLowerCase();
 
-    if (!ok) {
-      // Simulated rejected network call.
-      return new Observable<AuthUser>((sub) => {
-        const t = setTimeout(() => sub.error(new Error('invalid_credentials')), 600);
-        return () => clearTimeout(t);
-      });
+    const superAdmin = MOCK_SUPER_ADMINS.find((s) => s.email === normalized && s.password === password);
+    if (superAdmin) {
+      const user: AuthUser = { name: superAdmin.name, email: superAdmin.email, tenantId: null, roleId: null, isSuperAdmin: true };
+      return of(user).pipe(delay(600));
     }
 
-    const user: AuthUser = { name: 'Admin', email: email.trim().toLowerCase(), role: 'user.role' };
-    return of(user).pipe(delay(600));
+    const member = this.team.findByEmail(normalized);
+    if (member && member.password === password && member.active) {
+      const user: AuthUser = { name: member.name, email: member.email, tenantId: member.tenantId, roleId: member.roleId };
+      return of(user).pipe(delay(600));
+    }
+
+    // Simulated rejected network call.
+    return new Observable<AuthUser>((sub) => {
+      const t = setTimeout(() => sub.error(new Error('invalid_credentials')), 600);
+      return () => clearTimeout(t);
+    });
   }
 
   completeLogin(user: AuthUser): void {

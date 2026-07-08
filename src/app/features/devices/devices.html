@@ -5,7 +5,7 @@
       <h1 class="font-display-lg text-display-lg text-primary">{{ 'devices.title' | translate }}</h1>
       <p class="font-body-lg text-on-surface-variant">{{ 'devices.subtitle' | translate }}</p>
     </div>
-    @if (otherCount() > 0) {
+    @if (otherCount() > 0 && permissions.can('devices.manage')) {
       <button
         type="button"
         (click)="signOutAllOthers()"
@@ -61,7 +61,7 @@
               <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500" [attr.aria-label]="'devices.activity.now' | translate"></span>
             }
           </p>
-          @if (!d.isCurrent) {
+          @if (!d.isCurrent && permissions.can('devices.manage')) {
             <button
               type="button"
               (click)="signOut(d)"

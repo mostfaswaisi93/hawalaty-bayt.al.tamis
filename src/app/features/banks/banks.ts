@@ -3,7 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuditLogService } from '../../core/audit-log.service';
 import { BanksService } from '../../core/banks.service';
+import { PermissionsService } from '../../core/permissions.service';
 import { Bank, BankEntityType } from '../../data/banks';
 import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 import { BankDialog } from './bank-dialog';
@@ -20,6 +22,8 @@ export class Banks {
   private readonly dialog = inject(MatDialog);
   private readonly snackbar = inject(MatSnackBar);
   private readonly translate = inject(TranslateService);
+  private readonly auditLog = inject(AuditLogService);
+  protected readonly permissions = inject(PermissionsService);
 
   protected readonly banks = this.banksService.all;
   protected readonly query = signal('');
@@ -46,7 +50,9 @@ export class Banks {
       .afterClosed()
       .subscribe((result?: Bank) => {
         if (!result) return;
+        const isNew = !this.banksService.all().some((b) => b.id === result.id);
         this.banksService.upsert(result);
+        this.auditLog.log({ action: isNew ? 'created' : 'updated', entityType: 'bank', entityLabel: result.name, category: 'banks' });
         this.notify('banks.saveSuccess');
       });
   }
@@ -62,6 +68,7 @@ export class Banks {
       .subscribe((confirmed?: boolean) => {
         if (!confirmed) return;
         this.banksService.remove(bank.id);
+        this.auditLog.log({ action: 'deleted', entityType: 'bank', entityLabel: bank.name, category: 'banks' });
         this.notify('banks.deleteSuccess');
       });
   }

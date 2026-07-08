@@ -3,9 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuditLogService } from '../../core/audit-log.service';
 import { BanksService } from '../../core/banks.service';
 import { ExpensesService } from '../../core/expenses.service';
 import { LocalCurrencyPipe, LocalDatePipe, LocalNumberPipe } from '../../core/localize.pipes';
+import { PermissionsService } from '../../core/permissions.service';
 import { Expense } from '../../data/expenses';
 import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 import { ExpenseDialog } from './expense-dialog';
@@ -21,6 +23,8 @@ export class Expenses {
   private readonly dialog = inject(MatDialog);
   private readonly snackbar = inject(MatSnackBar);
   private readonly translate = inject(TranslateService);
+  private readonly auditLog = inject(AuditLogService);
+  protected readonly permissions = inject(PermissionsService);
 
   protected readonly query = signal('');
   protected readonly bankId = signal<'all' | string>('all');
@@ -61,7 +65,9 @@ export class Expenses {
       .afterClosed()
       .subscribe((result?: Expense) => {
         if (!result) return;
+        const isNew = !this.expensesService.all().some((e) => e.id === result.id);
         this.expensesService.upsert(result);
+        this.auditLog.log({ action: isNew ? 'created' : 'updated', entityType: 'expense', entityLabel: result.description, category: 'expenses' });
         this.notify('expenses.saveSuccess');
       });
   }
@@ -77,6 +83,7 @@ export class Expenses {
       .subscribe((confirmed?: boolean) => {
         if (!confirmed) return;
         this.expensesService.remove(expense.id);
+        this.auditLog.log({ action: 'deleted', entityType: 'expense', entityLabel: expense.description, category: 'expenses' });
         this.notify('expenses.deleteSuccess');
       });
   }
