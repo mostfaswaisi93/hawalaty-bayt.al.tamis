@@ -77,7 +77,62 @@
       </span>
     </div>
 
-    <div class="flex items-center gap-4 md:gap-6">
+    <div class="flex items-center gap-2 md:gap-4">
+      <!-- Notifications -->
+      <div class="relative">
+        <button
+          type="button"
+          (click)="toggleNotifications()"
+          [matTooltip]="'admin.notifications.title' | translate"
+          [attr.aria-label]="'admin.notifications.title' | translate"
+          class="relative flex h-10 w-10 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary">
+          <span class="material-symbols-outlined">notifications</span>
+          @if (notifications().length > 0) {
+            <span class="absolute end-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-error px-1 text-[10px] font-bold text-white">
+              {{ notifications().length }}
+            </span>
+          }
+        </button>
+
+        @if (notificationsOpen()) {
+          <div class="fixed inset-0 z-40" (click)="notificationsOpen.set(false)"></div>
+          <div class="absolute end-0 top-12 z-50 w-80 overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-lowest shadow-2xl">
+            <div class="border-b border-outline-variant/50 px-4 py-3">
+              <p class="font-bold">{{ 'admin.notifications.title' | translate }}</p>
+            </div>
+            <div class="max-h-80 overflow-y-auto">
+              @for (n of notifications(); track n.tenantId + n.kind) {
+                <a
+                  [routerLink]="['/admin/tenants', n.tenantId]"
+                  (click)="notificationsOpen.set(false)"
+                  class="flex items-center gap-3 border-b border-outline-variant/30 px-4 py-3 transition-colors last:border-0 hover:bg-surface-container-low">
+                  <div
+                    class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full"
+                    [class.bg-error-container]="n.kind === 'suspended'"
+                    [class.text-error]="n.kind === 'suspended'"
+                    [class.bg-green-100]="n.kind === 'signup'"
+                    [class.text-green-700]="n.kind === 'signup'"
+                    [class.dark:bg-green-500/15]="n.kind === 'signup'"
+                    [class.dark:text-green-300]="n.kind === 'signup'">
+                    <span class="material-symbols-outlined text-lg">{{ n.kind === 'suspended' ? 'block' : 'celebration' }}</span>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <p class="truncate text-body-sm font-bold">{{ n.businessName }}</p>
+                    <p class="text-[11px] text-outline">
+                      {{ (n.kind === 'suspended' ? 'admin.notifications.suspended' : 'admin.notifications.newSignup') | translate }}
+                      · {{ n.timestamp | localDate: { day: 'numeric', month: 'short' } }}
+                    </p>
+                  </div>
+                </a>
+              }
+              @if (notifications().length === 0) {
+                <p class="px-4 py-8 text-center text-body-sm text-on-surface-variant">{{ 'admin.notifications.empty' | translate }}</p>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
       <app-language-switcher />
       <app-theme-toggle />
     </div>

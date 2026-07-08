@@ -662,7 +662,8 @@
     "nav": {
       "dashboard": "Dashboard",
       "tenants": "Businesses",
-      "logs": "Platform Log"
+      "logs": "Platform Log",
+      "backups": "Backups"
     },
     "dashboard": {
       "title": "Platform Dashboard",
@@ -671,11 +672,23 @@
       "activeTenants": "Active",
       "trialTenants": "On trial",
       "suspendedTenants": "Suspended",
+      "platformStatus": "Platform status",
+      "statusStable": "Stable",
+      "statusAttention": "Needs attention",
       "recentTenants": "Recent businesses",
       "recentActivity": "Recent activity",
       "viewAll": "View all",
       "noTenants": "No businesses yet",
-      "noActivity": "No activity yet"
+      "noActivity": "No activity yet",
+      "exportReport": "Export report",
+      "quickActions": "Quick actions",
+      "quickActionsDesc": "Run critical admin tasks with a single click",
+      "addTenantAction": "Add a business",
+      "viewLogsAction": "View platform log",
+      "exportReportAction": "Export overview as PDF",
+      "activityChart": "Platform activity (7 days)",
+      "tenantAdded": "{{name}} was added successfully",
+      "backupsAction": "Manage backups"
     },
     "tenants": {
       "title": "Businesses",
@@ -688,6 +701,7 @@
         "active": "Active",
         "suspended": "Suspended"
       },
+      "addTenant": "Add Business",
       "columns": {
         "business": "Business",
         "owner": "Owner",
@@ -725,6 +739,54 @@
       "title": "Platform Log",
       "subtitle": "Every action across every business on the platform",
       "tenant": "Business"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "suspended": "Suspended",
+      "newSignup": "New business signed up",
+      "empty": "You're all caught up"
+    },
+    "backups": {
+      "title": "System Backups",
+      "subtitle": "Manage and secure platform data with manual and scheduled backups",
+      "lastSuccess": "Last successful backup",
+      "hoursAgo": "{{count}} hours ago",
+      "none": "No backups yet",
+      "nextScheduled": "Next run",
+      "totalStorage": "Total storage used",
+      "usedPercent": "{{percent}}% used",
+      "createManual": "Create manual backup",
+      "createManualDesc": "The system will build a full snapshot of the current database and files and store it in the secure archive.",
+      "creating": "Backing up...",
+      "startBackup": "Start backup now",
+      "encryptionTitle": "Encrypted at rest",
+      "encryptionDesc": "Every backup is encrypted with AES-256 before it's stored.",
+      "history": "Backup history",
+      "searchPlaceholder": "Search by backup ID or actor...",
+      "empty": "No backups match your search",
+      "automatedSystem": "Automated system",
+      "columns": {
+        "id": "Backup ID",
+        "date": "Date & time",
+        "size": "Size",
+        "by": "Triggered by",
+        "status": "Status"
+      },
+      "status": {
+        "completed": "Completed",
+        "failed": "Failed",
+        "inProgress": "In progress"
+      },
+      "download": "Download",
+      "restore": "Restore",
+      "showing": "Showing {{from}}-{{to}} of {{total}} backups",
+      "createSuccess": "Backup created successfully",
+      "restoreConfirmTitle": "Restore this backup",
+      "restoreConfirmText": "This will roll the system back to this backup's snapshot. This is a simulated action — no live data will change.",
+      "restoreSuccess": "Restored from {{id}} successfully",
+      "deleteConfirmTitle": "Delete backup",
+      "deleteConfirmText": "Are you sure you want to permanently delete this backup?",
+      "deleteSuccess": "Backup deleted successfully"
     }
   },
   "whatsapp": {

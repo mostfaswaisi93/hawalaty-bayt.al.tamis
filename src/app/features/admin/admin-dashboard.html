@@ -1,93 +1,195 @@
 <div class="page-enter space-y-8">
-  <div>
-    <h1 class="font-display-lg text-display-lg text-primary">{{ 'admin.dashboard.title' | translate }}</h1>
-    <p class="font-body-lg text-on-surface-variant">{{ 'admin.dashboard.subtitle' | translate }}</p>
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="font-display-lg text-display-lg text-primary">{{ 'admin.dashboard.title' | translate }}</h1>
+      <p class="font-body-lg text-on-surface-variant">{{ 'admin.dashboard.subtitle' | translate }}</p>
+    </div>
+    <button
+      type="button"
+      [disabled]="exporting"
+      (click)="exportReport()"
+      class="flex items-center gap-2 rounded-xl border border-outline-variant bg-surface-container-lowest px-4 py-2.5 font-bold transition-colors hover:bg-surface-container disabled:opacity-70">
+      @if (exporting) {
+        <span class="h-4 w-4 animate-spin rounded-full border-2 border-primary/40 border-t-primary"></span>
+      } @else {
+        <span class="material-symbols-outlined text-lg">picture_as_pdf</span>
+      }
+      <span>{{ 'admin.dashboard.exportReport' | translate }}</span>
+    </button>
   </div>
 
-  <!-- Stat tiles -->
-  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
-      <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-        <span class="material-symbols-outlined">store</span>
+  <div #report class="space-y-8">
+    <!-- Stat tiles -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-5">
+      <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+        <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <span class="material-symbols-outlined">store</span>
+        </div>
+        <p class="text-body-sm text-on-surface-variant">{{ 'admin.dashboard.totalTenants' | translate }}</p>
+        <p class="font-display-lg text-3xl font-bold">{{ stats().total | localNumber }}</p>
       </div>
-      <p class="text-body-sm text-on-surface-variant">{{ 'admin.dashboard.totalTenants' | translate }}</p>
-      <p class="font-display-lg text-3xl font-bold">{{ stats().total }}</p>
+      <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+        <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-green-500/10 text-green-600 dark:text-green-400">
+          <span class="material-symbols-outlined">check_circle</span>
+        </div>
+        <p class="text-body-sm text-on-surface-variant">{{ 'admin.dashboard.activeTenants' | translate }}</p>
+        <p class="font-display-lg text-3xl font-bold">{{ stats().active | localNumber }}</p>
+      </div>
+      <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+        <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
+          <span class="material-symbols-outlined">hourglass_top</span>
+        </div>
+        <p class="text-body-sm text-on-surface-variant">{{ 'admin.dashboard.trialTenants' | translate }}</p>
+        <p class="font-display-lg text-3xl font-bold">{{ stats().trial | localNumber }}</p>
+      </div>
+      <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+        <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-error/10 text-error">
+          <span class="material-symbols-outlined">block</span>
+        </div>
+        <p class="text-body-sm text-on-surface-variant">{{ 'admin.dashboard.suspendedTenants' | translate }}</p>
+        <p class="font-display-lg text-3xl font-bold">{{ stats().suspended | localNumber }}</p>
+      </div>
+      <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+        <div
+          class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl"
+          [class.bg-green-500/10]="platformHealthy()"
+          [class.text-green-600]="platformHealthy()"
+          [class.dark:text-green-400]="platformHealthy()"
+          [class.bg-secondary/10]="!platformHealthy()"
+          [class.text-secondary]="!platformHealthy()">
+          <span class="material-symbols-outlined">{{ platformHealthy() ? 'verified' : 'warning' }}</span>
+        </div>
+        <p class="text-body-sm text-on-surface-variant">{{ 'admin.dashboard.platformStatus' | translate }}</p>
+        <p class="font-display-lg text-xl font-bold">
+          {{ (platformHealthy() ? 'admin.dashboard.statusStable' : 'admin.dashboard.statusAttention') | translate }}
+        </p>
+      </div>
     </div>
-    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
-      <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-green-500/10 text-green-600 dark:text-green-400">
-        <span class="material-symbols-outlined">check_circle</span>
+
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-5">
+      <!-- Recent tenants -->
+      <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 xl:col-span-2">
+        <div class="mb-4 flex items-center justify-between">
+          <h5 class="font-bold">{{ 'admin.dashboard.recentTenants' | translate }}</h5>
+          <a routerLink="/admin/tenants" class="text-body-sm font-bold text-primary hover:underline">{{ 'admin.dashboard.viewAll' | translate }}</a>
+        </div>
+        <div class="space-y-3">
+          @for (t of recentTenants(); track t.id) {
+            <a
+              [routerLink]="['/admin/tenants', t.id]"
+              class="flex items-center justify-between gap-3 rounded-xl p-3 transition-colors hover:bg-surface-container-low">
+              <div class="min-w-0">
+                <p class="truncate font-bold">{{ t.businessName }}</p>
+                <p class="truncate text-[11px] text-outline" dir="ltr">{{ t.ownerEmail }}</p>
+              </div>
+              <span class="whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold" [class]="statusTone(t.status)">
+                {{ 'admin.tenants.status.' + t.status | translate }}
+              </span>
+            </a>
+          }
+          @if (recentTenants().length === 0) {
+            <p class="py-6 text-center text-body-sm text-on-surface-variant">{{ 'admin.dashboard.noTenants' | translate }}</p>
+          }
+        </div>
       </div>
-      <p class="text-body-sm text-on-surface-variant">{{ 'admin.dashboard.activeTenants' | translate }}</p>
-      <p class="font-display-lg text-3xl font-bold">{{ stats().active }}</p>
-    </div>
-    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
-      <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
-        <span class="material-symbols-outlined">hourglass_top</span>
+
+      <!-- Recent activity -->
+      <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 xl:col-span-3">
+        <div class="mb-4 flex items-center justify-between">
+          <h5 class="font-bold">{{ 'admin.dashboard.recentActivity' | translate }}</h5>
+          <a routerLink="/admin/logs" class="text-body-sm font-bold text-primary hover:underline">{{ 'admin.dashboard.viewAll' | translate }}</a>
+        </div>
+        <div class="space-y-1">
+          @for (e of recentActivity(); track e.id) {
+            <div class="flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-surface-container-low">
+              <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
+                {{ e.actorName.slice(0, 1) }}
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="truncate text-body-sm">
+                  <span class="font-bold">{{ e.actorName }}</span>
+                  {{ 'auditLog.actions.' + e.action | translate }}
+                  {{ 'auditLog.entities.' + e.entityType | translate }} — {{ e.entityLabel }}
+                </p>
+              </div>
+              <span class="whitespace-nowrap text-[11px] text-outline">{{ e.timestamp | localDate: { day: 'numeric', month: 'short' } }}</span>
+            </div>
+          }
+          @if (recentActivity().length === 0) {
+            <p class="py-6 text-center text-body-sm text-on-surface-variant">{{ 'admin.dashboard.noActivity' | translate }}</p>
+          }
+        </div>
       </div>
-      <p class="text-body-sm text-on-surface-variant">{{ 'admin.dashboard.trialTenants' | translate }}</p>
-      <p class="font-display-lg text-3xl font-bold">{{ stats().trial }}</p>
-    </div>
-    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
-      <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-error/10 text-error">
-        <span class="material-symbols-outlined">block</span>
-      </div>
-      <p class="text-body-sm text-on-surface-variant">{{ 'admin.dashboard.suspendedTenants' | translate }}</p>
-      <p class="font-display-lg text-3xl font-bold">{{ stats().suspended }}</p>
     </div>
   </div>
 
+  <!-- Quick actions + platform activity (interactive — kept out of the exported report) -->
   <div class="grid grid-cols-1 gap-6 xl:grid-cols-5">
-    <!-- Recent tenants -->
-    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 xl:col-span-2">
-      <div class="mb-4 flex items-center justify-between">
-        <h5 class="font-bold">{{ 'admin.dashboard.recentTenants' | translate }}</h5>
-        <a routerLink="/admin/tenants" class="text-body-sm font-bold text-primary hover:underline">{{ 'admin.dashboard.viewAll' | translate }}</a>
+    <!-- Quick actions -->
+    <div class="tonal-elevation relative overflow-hidden rounded-2xl bg-[#00236f] p-6 text-white xl:col-span-2">
+      <div class="pointer-events-none absolute -end-8 -top-8 h-32 w-32 rounded-full bg-white/5 blur-2xl"></div>
+      <div class="relative z-10 mb-5 flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
+          <span class="material-symbols-outlined">bolt</span>
+        </div>
+        <div>
+          <h5 class="font-bold">{{ 'admin.dashboard.quickActions' | translate }}</h5>
+          <p class="text-xs text-white/60">{{ 'admin.dashboard.quickActionsDesc' | translate }}</p>
+        </div>
       </div>
-      <div class="space-y-3">
-        @for (t of recentTenants(); track t.id) {
-          <a
-            [routerLink]="['/admin/tenants', t.id]"
-            class="flex items-center justify-between gap-3 rounded-xl p-3 transition-colors hover:bg-surface-container-low">
-            <div class="min-w-0">
-              <p class="truncate font-bold">{{ t.businessName }}</p>
-              <p class="truncate text-[11px] text-outline" dir="ltr">{{ t.ownerEmail }}</p>
-            </div>
-            <span class="whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold" [class]="statusTone(t.status)">
-              {{ 'admin.tenants.status.' + t.status | translate }}
-            </span>
-          </a>
-        }
-        @if (recentTenants().length === 0) {
-          <p class="py-6 text-center text-body-sm text-on-surface-variant">{{ 'admin.dashboard.noTenants' | translate }}</p>
-        }
+      <div class="relative z-10 flex flex-col gap-2.5">
+        <button
+          type="button"
+          (click)="openAddTenant()"
+          class="flex items-center gap-2 rounded-xl bg-white/10 px-4 py-3 text-start font-bold transition-colors hover:bg-white/20">
+          <span class="material-symbols-outlined">add_business</span>
+          {{ 'admin.dashboard.addTenantAction' | translate }}
+        </button>
+        <a
+          routerLink="/admin/logs"
+          class="flex items-center gap-2 rounded-xl bg-white/10 px-4 py-3 font-bold transition-colors hover:bg-white/20">
+          <span class="material-symbols-outlined">history_toggle_off</span>
+          {{ 'admin.dashboard.viewLogsAction' | translate }}
+        </a>
+        <a
+          routerLink="/admin/backups"
+          class="flex items-center gap-2 rounded-xl bg-white/10 px-4 py-3 font-bold transition-colors hover:bg-white/20">
+          <span class="material-symbols-outlined">cloud_upload</span>
+          {{ 'admin.dashboard.backupsAction' | translate }}
+        </a>
+        <button
+          type="button"
+          [disabled]="exporting"
+          (click)="exportReport()"
+          class="flex items-center gap-2 rounded-xl bg-white/10 px-4 py-3 text-start font-bold transition-colors hover:bg-white/20 disabled:opacity-60">
+          <span class="material-symbols-outlined">picture_as_pdf</span>
+          {{ 'admin.dashboard.exportReportAction' | translate }}
+        </button>
       </div>
     </div>
 
-    <!-- Recent activity -->
-    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 xl:col-span-3">
-      <div class="mb-4 flex items-center justify-between">
-        <h5 class="font-bold">{{ 'admin.dashboard.recentActivity' | translate }}</h5>
-        <a routerLink="/admin/logs" class="text-body-sm font-bold text-primary hover:underline">{{ 'admin.dashboard.viewAll' | translate }}</a>
-      </div>
-      <div class="space-y-1">
-        @for (e of recentActivity(); track e.id) {
-          <div class="flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-surface-container-low">
-            <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
-              {{ e.actorName.slice(0, 1) }}
-            </div>
-            <div class="min-w-0 flex-1">
-              <p class="truncate text-body-sm">
-                <span class="font-bold">{{ e.actorName }}</span>
-                {{ 'auditLog.actions.' + e.action | translate }}
-                {{ 'auditLog.entities.' + e.entityType | translate }} — {{ e.entityLabel }}
-              </p>
-            </div>
-            <span class="whitespace-nowrap text-[11px] text-outline">{{ e.timestamp | localDate: { day: 'numeric', month: 'short' } }}</span>
-          </div>
-        }
-        @if (recentActivity().length === 0) {
-          <p class="py-6 text-center text-body-sm text-on-surface-variant">{{ 'admin.dashboard.noActivity' | translate }}</p>
-        }
+    <!-- Platform activity mini chart -->
+    <div class="tonal-elevation relative overflow-hidden rounded-2xl bg-inverse-surface p-6 text-inverse-on-surface xl:col-span-3">
+      <div class="relative z-10 flex h-full flex-col">
+        <div class="mb-6 flex items-center justify-between">
+          <h5 class="font-bold">{{ 'admin.dashboard.activityChart' | translate }}</h5>
+          <span class="material-symbols-outlined text-secondary-container">bar_chart</span>
+        </div>
+        <div class="mt-auto flex h-24 items-end gap-2">
+          @for (d of activityByDay(); track d.date) {
+            <div
+              class="w-full rounded-t-lg transition-all duration-500"
+              [class.bg-secondary-container]="d.count === maxDailyActivity()"
+              [class.bg-primary-container]="d.count !== maxDailyActivity()"
+              [class.opacity-40]="d.count !== maxDailyActivity()"
+              [style.height.%]="(d.count / maxDailyActivity()) * 100"></div>
+          }
+        </div>
+        <div class="mt-2 flex justify-between font-label-caps text-[10px] opacity-50">
+          @for (d of activityByDay(); track d.date) {
+            <span>{{ 'dashboard.days.' + d.dayKey | translate }}</span>
+          }
+        </div>
       </div>
     </div>
   </div>

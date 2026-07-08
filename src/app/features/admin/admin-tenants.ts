@@ -8,6 +8,7 @@ import { AuditLogService } from '../../core/audit-log.service';
 import { TenantsService } from '../../core/tenants.service';
 import { Tenant, TenantPlan, TenantStatus } from '../../data/tenants';
 import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
+import { AddTenantResult, AdminAddTenantDialog } from './admin-add-tenant-dialog';
 
 type StatusFilter = 'all' | TenantStatus;
 
@@ -47,6 +48,16 @@ export class AdminTenants {
 
   protected setStatus(s: StatusFilter): void {
     this.status.set(s);
+  }
+
+  protected openAddTenant(): void {
+    this.dialog
+      .open(AdminAddTenantDialog, { width: '480px', maxWidth: '95vw' })
+      .afterClosed()
+      .subscribe((result?: AddTenantResult) => {
+        if (!result) return;
+        this.notify('admin.dashboard.tenantAdded', { name: result.businessName });
+      });
   }
 
   protected statusTone(status: TenantStatus): string {
@@ -93,7 +104,7 @@ export class AdminTenants {
       });
   }
 
-  private notify(key: string): void {
-    this.snackbar.open(this.translate.instant(key), this.translate.instant('common.close'), { duration: 3000 });
+  private notify(key: string, params?: Record<string, unknown>): void {
+    this.snackbar.open(this.translate.instant(key, params), this.translate.instant('common.close'), { duration: 3000 });
   }
 }

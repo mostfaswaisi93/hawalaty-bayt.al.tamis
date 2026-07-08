@@ -1,7 +1,16 @@
 <div class="page-enter space-y-6">
-  <div>
-    <h1 class="font-display-lg text-display-lg text-primary">{{ 'admin.tenants.title' | translate }}</h1>
-    <p class="font-body-lg text-on-surface-variant">{{ 'admin.tenants.subtitle' | translate }}</p>
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="font-display-lg text-display-lg text-primary">{{ 'admin.tenants.title' | translate }}</h1>
+      <p class="font-body-lg text-on-surface-variant">{{ 'admin.tenants.subtitle' | translate }}</p>
+    </div>
+    <button
+      type="button"
+      (click)="openAddTenant()"
+      class="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-bold text-on-primary shadow-lg transition-all hover:bg-primary-container hover:text-on-primary-container active:scale-95">
+      <span class="material-symbols-outlined">add_business</span>
+      <span>{{ 'admin.tenants.addTenant' | translate }}</span>
+    </button>
   </div>
 
   <div class="tonal-elevation rounded-3xl border border-outline-variant bg-surface-container-lowest p-6">

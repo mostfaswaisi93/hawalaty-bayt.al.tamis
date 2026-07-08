@@ -662,7 +662,8 @@
     "nav": {
       "dashboard": "لوحة التحكم",
       "tenants": "الأنشطة التجارية",
-      "logs": "سجل المنصة"
+      "logs": "سجل المنصة",
+      "backups": "النسخ الاحتياطي"
     },
     "dashboard": {
       "title": "لوحة تحكم المنصة",
@@ -671,11 +672,23 @@
       "activeTenants": "نشط",
       "trialTenants": "فترة تجريبية",
       "suspendedTenants": "معلّق",
+      "platformStatus": "حالة المنصة",
+      "statusStable": "مستقرة",
+      "statusAttention": "تحتاج انتباه",
       "recentTenants": "أحدث الأنشطة التجارية",
       "recentActivity": "أحدث النشاطات",
       "viewAll": "عرض الكل",
       "noTenants": "لا توجد أنشطة تجارية بعد",
-      "noActivity": "لا يوجد نشاط بعد"
+      "noActivity": "لا يوجد نشاط بعد",
+      "exportReport": "تصدير تقرير",
+      "quickActions": "إجراءات سريعة",
+      "quickActionsDesc": "نفّذ المهام الإدارية الحرجة بنقرة واحدة",
+      "addTenantAction": "إضافة نشاط تجاري",
+      "viewLogsAction": "عرض سجل المنصة",
+      "exportReportAction": "تصدير النظرة العامة كـ PDF",
+      "activityChart": "نشاط المنصة (7 أيام)",
+      "tenantAdded": "تمت إضافة {{name}} بنجاح",
+      "backupsAction": "إدارة النسخ الاحتياطي"
     },
     "tenants": {
       "title": "الأنشطة التجارية",
@@ -688,6 +701,7 @@
         "active": "نشط",
         "suspended": "معلّق"
       },
+      "addTenant": "إضافة نشاط تجاري",
       "columns": {
         "business": "النشاط التجاري",
         "owner": "المالك",
@@ -725,6 +739,54 @@
       "title": "سجل المنصة",
       "subtitle": "كل إجراء عبر كل نشاط تجاري على المنصة",
       "tenant": "النشاط التجاري"
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "suspended": "معلّق",
+      "newSignup": "نشاط تجاري جديد انضم",
+      "empty": "لا توجد إشعارات جديدة"
+    },
+    "backups": {
+      "title": "إدارة نسخ النظام",
+      "subtitle": "قم بإدارة وتأمين بيانات النظام عبر النسخ الاحتياطي اليدوي والمجدول",
+      "lastSuccess": "آخر نسخة ناجحة",
+      "hoursAgo": "منذ {{count}} ساعة",
+      "none": "لا توجد نسخ بعد",
+      "nextScheduled": "التالي",
+      "totalStorage": "إجمالي مساحة التخزين المستخدمة",
+      "usedPercent": "{{percent}}% مستخدم",
+      "createManual": "إنشاء نسخة يدوية",
+      "createManualDesc": "سيقوم النظام بإنشاء نسخة كاملة من قاعدة البيانات والملفات الحالية وتخزينها في الأرشيف الآمن.",
+      "creating": "جارٍ إنشاء النسخة...",
+      "startBackup": "ابدأ النسخ الاحتياطي الآن",
+      "encryptionTitle": "حماية البيانات المشفّرة",
+      "encryptionDesc": "يتم تشفير جميع النسخ الاحتياطية بمعيار AES-256 قبل التخزين.",
+      "history": "سجل النسخ الاحتياطية",
+      "searchPlaceholder": "ابحث بمعرّف النسخة أو المسؤول...",
+      "empty": "لا توجد نسخ مطابقة لبحثك",
+      "automatedSystem": "نظام تلقائي",
+      "columns": {
+        "id": "معرّف النسخة",
+        "date": "التاريخ والوقت",
+        "size": "الحجم",
+        "by": "بواسطة",
+        "status": "الحالة"
+      },
+      "status": {
+        "completed": "مكتمل",
+        "failed": "فشل",
+        "inProgress": "قيد التنفيذ"
+      },
+      "download": "تحميل",
+      "restore": "استعادة",
+      "showing": "عرض {{from}}-{{to}} من أصل {{total}} نسخة احتياطية",
+      "createSuccess": "تم إنشاء النسخة الاحتياطية بنجاح",
+      "restoreConfirmTitle": "استعادة هذه النسخة",
+      "restoreConfirmText": "سيؤدي هذا إلى إرجاع النظام لحالة هذه النسخة. هذا إجراء محاكاة — لن تتغير أي بيانات حقيقية.",
+      "restoreSuccess": "تمت الاستعادة من {{id}} بنجاح",
+      "deleteConfirmTitle": "حذف النسخة الاحتياطية",
+      "deleteConfirmText": "هل أنت متأكد من حذف هذه النسخة الاحتياطية نهائياً؟",
+      "deleteSuccess": "تم حذف النسخة الاحتياطية بنجاح"
     }
   },
   "whatsapp": {

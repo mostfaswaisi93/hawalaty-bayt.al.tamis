@@ -99,6 +99,10 @@ export const routes: Routes = [
         path: 'logs',
         loadComponent: () => import('./features/admin/admin-logs').then((m) => m.AdminLogs),
       },
+      {
+        path: 'backups',
+        loadComponent: () => import('./features/admin/admin-backups').then((m) => m.AdminBackups),
+      },
     ],
   },
   {

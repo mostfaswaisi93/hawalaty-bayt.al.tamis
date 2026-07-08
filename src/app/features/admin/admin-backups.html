@@ -1,0 +1,200 @@
+<div class="page-enter space-y-6">
+  <div>
+    <h1 class="font-display-lg text-display-lg text-primary">{{ 'admin.backups.title' | translate }}</h1>
+    <p class="font-body-lg text-on-surface-variant">{{ 'admin.backups.subtitle' | translate }}</p>
+  </div>
+
+  <!-- Info cards -->
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <!-- Last successful backup -->
+    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+      <div class="flex items-center justify-between">
+        <p class="text-body-sm text-on-surface-variant">{{ 'admin.backups.lastSuccess' | translate }}</p>
+        <span class="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-300">
+          <span class="material-symbols-outlined text-lg">check_circle</span>
+        </span>
+      </div>
+      @if (hoursSinceLastSuccess(); as hours) {
+        <p class="mt-2 text-xl font-bold">{{ 'admin.backups.hoursAgo' | translate: { count: hours } }}</p>
+      } @else {
+        <p class="mt-2 text-xl font-bold text-on-surface-variant">{{ 'admin.backups.none' | translate }}</p>
+      }
+      <p class="mt-3 text-[11px] text-outline">
+        {{ 'admin.backups.nextScheduled' | translate }}: {{ nextScheduled | localDate: { hour: 'numeric', minute: '2-digit' } }}
+      </p>
+    </div>
+
+    <!-- Storage usage -->
+    <div class="tonal-elevation rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+      <p class="text-body-sm text-on-surface-variant">{{ 'admin.backups.totalStorage' | translate }}</p>
+      <p class="mt-2 text-xl font-bold" dir="ltr">{{ (usedStorageMb() / 1024).toFixed(1) }} GB</p>
+      <div class="mt-3 h-2 w-full overflow-hidden rounded-full bg-surface-container">
+        <div class="h-full rounded-full bg-primary transition-all duration-500" [style.width.%]="usedPercent()"></div>
+      </div>
+      <p class="mt-2 text-[11px] text-outline">{{ 'admin.backups.usedPercent' | translate: { percent: usedPercent() } }}</p>
+    </div>
+
+    <!-- Create manual backup -->
+    <div class="tonal-elevation flex flex-col rounded-2xl border border-outline-variant bg-surface-container-lowest p-6">
+      <div class="flex items-center gap-3">
+        <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-container/40 text-secondary">
+          <span class="material-symbols-outlined">cloud_upload</span>
+        </span>
+        <p class="font-bold">{{ 'admin.backups.createManual' | translate }}</p>
+      </div>
+      <p class="mt-2 flex-1 text-[11px] text-outline">{{ 'admin.backups.createManualDesc' | translate }}</p>
+      <button
+        type="button"
+        [disabled]="creating()"
+        (click)="createBackup()"
+        class="mt-4 flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-bold text-on-primary shadow-lg transition-all hover:bg-primary-container hover:text-on-primary-container active:scale-95 disabled:opacity-70">
+        @if (creating()) {
+          <span class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>
+          <span>{{ 'admin.backups.creating' | translate }}</span>
+        } @else {
+          <span class="material-symbols-outlined text-lg">add</span>
+          <span>{{ 'admin.backups.startBackup' | translate }}</span>
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Encryption banner -->
+  <div class="tonal-elevation flex items-center gap-4 rounded-2xl bg-[#00236f] p-5 text-white">
+    <span class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-white/10">
+      <span class="material-symbols-outlined">encrypted</span>
+    </span>
+    <div>
+      <p class="font-bold">{{ 'admin.backups.encryptionTitle' | translate }}</p>
+      <p class="text-sm text-white/70">{{ 'admin.backups.encryptionDesc' | translate }}</p>
+    </div>
+  </div>
+
+  <!-- Backup history -->
+  <div class="tonal-elevation overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-lowest">
+    <div class="flex flex-col gap-4 border-b border-outline-variant/50 p-6 lg:flex-row lg:items-center lg:justify-between">
+      <h5 class="font-bold">{{ 'admin.backups.history' | translate }}</h5>
+      <div class="search-pill flex w-full items-center gap-2 rounded-full bg-surface-container px-4 py-2 transition-shadow sm:w-72">
+        <span class="material-symbols-outlined text-outline">search</span>
+        <input
+          type="text"
+          [ngModel]="query()"
+          (ngModelChange)="setQuery($event)"
+          [placeholder]="'admin.backups.searchPlaceholder' | translate"
+          class="w-full border-none bg-transparent text-body-sm outline-none focus:ring-0" />
+      </div>
+    </div>
+
+    @if (filtered().length === 0) {
+      <div class="flex flex-col items-center gap-3 py-16 text-center">
+        <span class="material-symbols-outlined text-5xl text-outline/50">cloud_off</span>
+        <p class="text-on-surface-variant">{{ 'admin.backups.empty' | translate }}</p>
+      </div>
+    } @else {
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="bg-surface-container-low text-outline">
+              <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider"><span dir="ltr">{{ 'admin.backups.columns.id' | translate }}</span></th>
+              <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'admin.backups.columns.date' | translate }}</th>
+              <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'admin.backups.columns.size' | translate }}</th>
+              <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'admin.backups.columns.by' | translate }}</th>
+              <th class="whitespace-nowrap px-5 py-4 text-start font-label-caps text-[11px] uppercase tracking-wider">{{ 'admin.backups.columns.status' | translate }}</th>
+              <th class="whitespace-nowrap px-5 py-4 text-end font-label-caps text-[11px] uppercase tracking-wider">{{ 'common.actions' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody class="stagger-rows divide-y divide-outline-variant/20">
+            @for (b of paged(); track b.id) {
+              <tr class="transition-colors hover:bg-surface-container-low/40">
+                <td class="whitespace-nowrap px-5 py-4 font-mono text-body-sm text-on-surface-variant"><span dir="ltr">{{ b.id }}</span></td>
+                <td class="whitespace-nowrap px-5 py-4 text-body-sm text-on-surface-variant">{{ b.createdAt | localDate: { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' } }}</td>
+                <td class="whitespace-nowrap px-5 py-4 text-body-sm text-on-surface-variant">
+                  @if (b.sizeMb) { <span dir="ltr">{{ b.sizeMb | localNumber }} MB</span> } @else { — }
+                </td>
+                <td class="whitespace-nowrap px-5 py-4 text-body-sm">
+                  <span class="inline-flex items-center gap-1.5">
+                    <span class="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
+                      {{ actorLabel(b).slice(0, 1) }}
+                    </span>
+                    {{ actorLabel(b) }}
+                  </span>
+                </td>
+                <td class="whitespace-nowrap px-5 py-4">
+                  <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold" [class]="statusTone(b.status)">
+                    {{ 'admin.backups.status.' + b.status | translate }}
+                  </span>
+                </td>
+                <td class="px-5 py-4">
+                  <div class="flex items-center justify-end gap-1">
+                    @if (b.status === 'completed') {
+                      <button
+                        type="button"
+                        (click)="downloadBackup(b)"
+                        [attr.aria-label]="'admin.backups.download' | translate"
+                        class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+                        <span class="material-symbols-outlined text-xl">download</span>
+                      </button>
+                      <button
+                        type="button"
+                        (click)="restoreBackup(b)"
+                        [attr.aria-label]="'admin.backups.restore' | translate"
+                        class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+                        <span class="material-symbols-outlined text-xl">restore</span>
+                      </button>
+                    }
+                    <button
+                      type="button"
+                      (click)="deleteBackup(b)"
+                      [attr.aria-label]="'common.delete' | translate"
+                      class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-error-container hover:text-error">
+                      <span class="material-symbols-outlined text-xl">delete</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex flex-wrap items-center justify-between gap-3 border-t border-outline-variant/30 px-5 py-4">
+        <span class="text-body-sm text-on-surface-variant">
+          {{ 'admin.backups.showing' | translate: { from: rangeFrom(), to: rangeTo(), total: filtered().length } }}
+        </span>
+        <div class="flex items-center gap-1">
+          <button
+            type="button"
+            (click)="goPage(page() - 1)"
+            [disabled]="page() === 1"
+            class="flex h-9 w-9 items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant transition-colors hover:bg-surface-container disabled:opacity-40"
+            [attr.aria-label]="'history.prev' | translate">
+            <span class="material-symbols-outlined text-xl rtl:-scale-x-100">chevron_left</span>
+          </button>
+          @for (p of pages(); track p) {
+            <button
+              type="button"
+              (click)="goPage(p)"
+              class="flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-body-sm font-bold transition-colors"
+              [class.bg-primary]="page() === p"
+              [class.text-on-primary]="page() === p"
+              [class.border]="page() !== p"
+              [class.border-outline-variant]="page() !== p"
+              [class.text-on-surface-variant]="page() !== p"
+              [class.hover:bg-surface-container]="page() !== p">
+              {{ p | localNumber }}
+            </button>
+          }
+          <button
+            type="button"
+            (click)="goPage(page() + 1)"
+            [disabled]="page() === totalPages()"
+            class="flex h-9 w-9 items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant transition-colors hover:bg-surface-container disabled:opacity-40"
+            [attr.aria-label]="'history.next' | translate">
+            <span class="material-symbols-outlined text-xl rtl:-scale-x-100">chevron_right</span>
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>
