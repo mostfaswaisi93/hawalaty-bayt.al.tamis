@@ -1,6 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { LanguageService } from './language.service';
 
 /**
@@ -10,12 +8,22 @@ import { LanguageService } from './language.service';
  * layout come "for free" from the browser — the PDF looks exactly like the
  * on-screen report in whichever language is active (RTL for Arabic,
  * LTR for English), without embedding Arabic TTF fonts into jsPDF.
+ *
+ * jsPDF + html2canvas (~110 kB gzipped together) are dynamically imported
+ * inside exportElement() rather than at module scope, so visiting Reports or
+ * the admin dashboard doesn't pull them in for the (common) case where the
+ * user never actually exports a PDF.
  */
 @Injectable({ providedIn: 'root' })
 export class PdfService {
   private readonly lang = inject(LanguageService);
 
   async exportElement(element: HTMLElement, fileName = 'report'): Promise<void> {
+    const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([
+      import('jspdf'),
+      import('html2canvas'),
+    ]);
+
     const canvas = await html2canvas(element, {
       scale: 2,
       backgroundColor: '#ffffff',

@@ -76,7 +76,8 @@
             </div>
           </div>
 
-          <div class="overflow-x-auto">
+          <!-- Desktop/tablet table -->
+          <div class="hidden overflow-x-auto md:block">
             <table class="w-full">
               <thead>
                 <tr class="border-b border-outline-variant/30 text-outline">
@@ -130,6 +131,40 @@
                 }
               </tbody>
             </table>
+          </div>
+
+          <!-- Mobile card list -->
+          <div class="divide-y divide-outline-variant/20 md:hidden">
+            @for (i of group.items; track i.id) {
+              <div class="flex items-center gap-3 px-6 py-4">
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-2">
+                    <span class="truncate font-bold">{{ i.name }}</span>
+                    <span class="h-1.5 w-1.5 flex-shrink-0 rounded-full" [class.bg-green-500]="i.active" [class.bg-outline]="!i.active"></span>
+                  </div>
+                  <p class="truncate text-[11px] text-outline">{{ (i.active ? 'menu.status.active' : 'menu.status.inactive') | translate }}</p>
+                </div>
+                <span class="whitespace-nowrap font-bold text-primary" dir="ltr">{{ i.price | localCurrency }}</span>
+                @if (permissions.can('menu.manage')) {
+                  <div class="flex flex-shrink-0 items-center gap-1">
+                    <button
+                      type="button"
+                      (click)="openDialog(i)"
+                      [attr.aria-label]="'common.edit' | translate"
+                      class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+                      <span class="material-symbols-outlined text-xl">edit</span>
+                    </button>
+                    <button
+                      type="button"
+                      (click)="remove(i)"
+                      [attr.aria-label]="'common.delete' | translate"
+                      class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-error-container hover:text-error">
+                      <span class="material-symbols-outlined text-xl">delete</span>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
           </div>
         </div>
       }

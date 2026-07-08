@@ -91,7 +91,8 @@
         <p class="text-on-surface-variant">{{ 'admin.backups.empty' | translate }}</p>
       </div>
     } @else {
-      <div class="overflow-x-auto">
+      <!-- Desktop/tablet table -->
+      <div class="hidden overflow-x-auto md:block">
         <table class="w-full">
           <thead>
             <tr class="bg-surface-container-low text-outline">
@@ -155,6 +156,57 @@
             }
           </tbody>
         </table>
+      </div>
+
+      <!-- Mobile card list -->
+      <div class="divide-y divide-outline-variant/20 md:hidden">
+        @for (b of paged(); track b.id) {
+          <div class="flex flex-col gap-2.5 p-4">
+            <div class="flex items-center justify-between gap-3">
+              <span class="font-mono text-body-sm font-bold text-on-surface-variant" dir="ltr">{{ b.id }}</span>
+              <span class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold" [class]="statusTone(b.status)">
+                {{ 'admin.backups.status.' + b.status | translate }}
+              </span>
+            </div>
+            <p class="text-[11px] text-outline">
+              {{ b.createdAt | localDate: { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' } }}
+              @if (b.sizeMb) { · <span dir="ltr">{{ b.sizeMb | localNumber }} MB</span> }
+            </p>
+            <div class="flex items-center justify-between gap-2">
+              <span class="inline-flex items-center gap-1.5 text-body-sm">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
+                  {{ actorLabel(b).slice(0, 1) }}
+                </span>
+                {{ actorLabel(b) }}
+              </span>
+              <div class="flex items-center gap-1">
+                @if (b.status === 'completed') {
+                  <button
+                    type="button"
+                    (click)="downloadBackup(b)"
+                    [attr.aria-label]="'admin.backups.download' | translate"
+                    class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+                    <span class="material-symbols-outlined text-xl">download</span>
+                  </button>
+                  <button
+                    type="button"
+                    (click)="restoreBackup(b)"
+                    [attr.aria-label]="'admin.backups.restore' | translate"
+                    class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+                    <span class="material-symbols-outlined text-xl">restore</span>
+                  </button>
+                }
+                <button
+                  type="button"
+                  (click)="deleteBackup(b)"
+                  [attr.aria-label]="'common.delete' | translate"
+                  class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-error-container hover:text-error">
+                  <span class="material-symbols-outlined text-xl">delete</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
       </div>
 
       <!-- Pagination -->

@@ -165,7 +165,8 @@
         <p class="text-on-surface-variant">{{ 'dashboard.transactions.empty' | translate }}</p>
       </div>
     } @else {
-      <div class="overflow-x-auto">
+      <!-- Desktop/tablet table -->
+      <div class="hidden overflow-x-auto md:block">
         <table class="w-full">
           <thead>
             <tr class="border-b border-outline-variant/30 text-outline">
@@ -205,6 +206,31 @@
             }
           </tbody>
         </table>
+      </div>
+
+      <!-- Mobile card list -->
+      <div class="divide-y divide-outline-variant/20 md:hidden">
+        @for (t of recentTransfers; track t.id) {
+          <div class="flex flex-col gap-2.5 py-4">
+            <div class="flex items-center gap-3">
+              <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <mat-icon class="!text-xl">{{ t.paymentMethod === 'cash' ? 'payments' : 'account_balance' }}</mat-icon>
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="truncate text-body-sm font-bold">{{ t.customer }}</p>
+                <p class="truncate text-[11px] text-outline">{{ t.paymentMethod === 'cash' ? ('form.paymentCash' | translate) : t.bankName }}</p>
+              </div>
+              <p class="whitespace-nowrap font-bold text-primary"><span dir="ltr">+{{ t.amount | localCurrency }}</span></p>
+            </div>
+            <div class="flex items-center justify-between gap-2 ps-[52px]">
+              <span class="truncate text-[11px] text-outline">{{ t.itemName || '—' }} · {{ t.date | localDate: { day: 'numeric', month: 'short' } }}</span>
+              <span class="inline-flex flex-shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold" [class]="statusPillClass(t.status)">
+                <span class="h-1.5 w-1.5 rounded-full" [class]="statusDotClass(t.status)"></span>
+                {{ 'status.' + t.status | translate }}
+              </span>
+            </div>
+          </div>
+        }
       </div>
     }
   </section>

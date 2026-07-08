@@ -98,8 +98,8 @@
       <span class="whitespace-nowrap text-body-sm text-on-surface-variant">{{ 'expenses.count' | translate: { count: totalCount() } }}</span>
     </div>
 
-    <!-- Table -->
-    <div class="overflow-x-auto">
+    <!-- Desktop/tablet table -->
+    <div class="hidden overflow-x-auto md:block">
       <table class="w-full">
         <thead>
           <tr class="border-b border-outline-variant/30 text-outline">
@@ -151,6 +151,46 @@
         </tbody>
       </table>
 
+      @if (filtered().length === 0) {
+        <div class="flex flex-col items-center gap-3 py-16 text-center">
+          <span class="material-symbols-outlined text-5xl text-outline/50">payments</span>
+          <p class="text-on-surface-variant">{{ 'expenses.empty' | translate }}</p>
+        </div>
+      }
+    </div>
+
+    <!-- Mobile card list -->
+    <div class="divide-y divide-outline-variant/20 md:hidden">
+      @for (e of filtered(); track e.id) {
+        <div class="flex items-center gap-3 py-4">
+          <span class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <span class="material-symbols-outlined text-lg">{{ payerIcon(e.bankId) }}</span>
+          </span>
+          <div class="min-w-0 flex-1">
+            <p class="truncate font-bold">{{ e.description }}</p>
+            <p class="truncate text-[11px] text-outline">{{ e.bankName }} · {{ e.date | localDate: { day: 'numeric', month: 'short' } }}</p>
+          </div>
+          <span class="whitespace-nowrap font-bold text-error" dir="ltr">-{{ e.amount | localCurrency }}</span>
+          @if (permissions.can('expenses.manage')) {
+            <div class="flex flex-shrink-0 items-center gap-1">
+              <button
+                type="button"
+                (click)="openDialog(e)"
+                [attr.aria-label]="'common.edit' | translate"
+                class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+                <span class="material-symbols-outlined text-xl">edit</span>
+              </button>
+              <button
+                type="button"
+                (click)="remove(e)"
+                [attr.aria-label]="'common.delete' | translate"
+                class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-error-container hover:text-error">
+                <span class="material-symbols-outlined text-xl">delete</span>
+              </button>
+            </div>
+          }
+        </div>
+      }
       @if (filtered().length === 0) {
         <div class="flex flex-col items-center gap-3 py-16 text-center">
           <span class="material-symbols-outlined text-5xl text-outline/50">payments</span>
