@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MOCK_TRANSFERS, Transfer } from '../../data/transfers';
 import { LanguageService } from '../../core/language.service';
 import { PdfService } from '../../core/pdf.service';
+import { ThemeService } from '../../core/theme.service';
 import { LocalCurrencyPipe, LocalDatePipe, LocalNumberPipe } from '../../core/localize.pipes';
 
 type ReportPeriod = 'daily' | 'weekly' | 'monthly' | 'all';
@@ -39,6 +40,7 @@ function toLocalIsoDate(d: Date): string {
 })
 export class Reports {
   private readonly pdf = inject(PdfService);
+  private readonly themeService = inject(ThemeService);
   protected readonly language = inject(LanguageService);
 
   protected readonly report = viewChild.required<ElementRef<HTMLElement>>('report');
@@ -148,9 +150,15 @@ export class Reports {
 
   protected async exportPdf(): Promise<void> {
     this.exporting = true;
+    // The on-screen report card follows the app theme; the exported PDF should always
+    // read like a clean printable page, so force light mode just for the capture.
+    const wasDark = this.themeService.isDark();
+    if (wasDark) this.themeService.set('light');
     try {
+      if (wasDark) await new Promise((resolve) => requestAnimationFrame(resolve));
       await this.pdf.exportElement(this.report().nativeElement, `transfers-report-${this.period()}`);
     } finally {
+      if (wasDark) this.themeService.set('dark');
       this.exporting = false;
     }
   }

@@ -41,6 +41,8 @@ export interface Transfer {
   bankName?: string;
   /** Name of the person who made the bank/wallet transfer (may differ from the customer). */
   senderName?: string;
+  /** Mobile number of the person who made the bank/wallet transfer. */
+  senderPhone?: string;
   transferredAmount?: number;
 }
 

@@ -12,6 +12,7 @@
     "expenses": "المصروفات",
     "reports": "التقارير",
     "constants": "الثوابت",
+    "team": "الفريق",
     "settings": "الإعدادات",
     "menu": "القائمة"
   },
@@ -116,6 +117,11 @@
         "title": "الأجهزة المسجّلة",
         "desc": "أنت مسجّل الدخول حالياً على 3 أجهزة نشطة.",
         "action": "إدارة الأجهزة"
+      },
+      "activityLog": {
+        "title": "سجل النشاطات",
+        "desc": "راجع كل إجراء تم اتخاذه في حسابك وفريقك.",
+        "action": "عرض سجل النشاطات"
       }
     }
   },
@@ -209,7 +215,7 @@
     "useDemo": "استخدام بيانات تجريبية",
     "forgotPassword": "نسيت كلمة المرور؟",
     "noAccount": "ليس لديك حساب؟",
-    "contactBank": "تواصل مع بنكك",
+    "contactBank": "أنشئ حساباً",
     "copyright": "© 2026 حوالاتي. جميع الحقوق محفوظة.",
     "privacy": "سياسة الخصوصية",
     "terms": "شروط الخدمة",
@@ -237,7 +243,10 @@
     "filter": "فلترة",
     "increase": "زيادة",
     "decrease": "إنقاص",
-    "back": "رجوع"
+    "back": "رجوع",
+    "view": "عرض",
+    "suspend": "تعليق",
+    "activate": "تفعيل"
   },
   "dashboard": {
     "title": "لوحة التحكم",
@@ -301,6 +310,9 @@
       "namePlaceholder": "مثال: البنك الوطني أو جوال باي",
       "code": "الرمز",
       "codePlaceholder": "مثال: NBK",
+      "phone": "رقم الواتساب",
+      "phonePlaceholder": "+970 59 000 0000",
+      "phoneHint": "يتم إرسال تفاصيل الطلبات المدفوعة عبر هذا الحساب إلى هذا الرقم على واتساب",
       "active": "نشط"
     },
     "deleteConfirmTitle": "حذف العنصر",
@@ -433,6 +445,8 @@
     "changeAmount": "مبلغ الباقي المُرجَع",
     "senderName": "اسم الشخص الذي قام بالتحويل",
     "senderNamePlaceholder": "أدخل اسم المُحوِّل",
+    "senderPhone": "رقم جوال المُحوِّل",
+    "senderPhonePlaceholder": "+970 59 000 0000",
     "transferredAmount": "المبلغ المُحوَّل",
     "notes": "ملاحظات",
     "notesPlaceholder": "ملاحظات اختيارية"
@@ -477,6 +491,250 @@
       "count": "إجمالي المعاملات",
       "total": "إجمالي المبلغ",
       "average": "متوسط المعاملة"
+    }
+  },
+  "signup": {
+    "title": "أنشئ حساب عملك",
+    "subtitle": "جهّز مساحة عمل حوالاتي الخاصة بك خلال دقائق",
+    "steps": {
+      "business": "معلومات النشاط التجاري",
+      "owner": "حساب المالك"
+    },
+    "form": {
+      "businessName": "اسم النشاط التجاري",
+      "businessNamePlaceholder": "مثال: بيت التميس",
+      "phone": "رقم الهاتف",
+      "ownerName": "اسمك",
+      "ownerNamePlaceholder": "مثال: أحمد علي",
+      "ownerEmail": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "passwordHint": "يجب ألا تقل عن 4 أحرف",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين",
+      "terms": "أوافق على شروط الخدمة وسياسة الخصوصية"
+    },
+    "submit": "إنشاء الحساب",
+    "submitting": "جارٍ تجهيز مساحة عملك...",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "signIn": "تسجيل الدخول",
+    "emailTaken": "هذا البريد الإلكتروني مستخدم بالفعل",
+    "welcomeMessage": "مرحباً بك في حوالاتي، {{name}}!",
+    "brandTitle": "أدر نشاطك التجاري من مساحة عمل واحدة ثنائية اللغة",
+    "brandSubtitle": "الطلبات، القائمة، البنوك، المصروفات، الفريق والتقارير — كل ذلك في مكان واحد، جاهز خلال دقائق.",
+    "feature1": "مساحة عمل خاصة ومعزولة بالكامل",
+    "feature2": "ادعُ الموظفين مع صلاحيات مبنية على الأدوار",
+    "feature3": "سجل نشاطات كامل لكل إجراء",
+    "preview": {
+      "salesLabel": "مبيعات اليوم",
+      "newOrder": "تم استلام طلب جديد",
+      "justNow": "الآن"
+    }
+  },
+  "team": {
+    "title": "الفريق",
+    "subtitle": "إدارة حسابات موظفيك وأدوارهم",
+    "addMember": "إضافة عضو",
+    "editMember": "تعديل عضو",
+    "tabs": {
+      "members": "الأعضاء",
+      "roles": "الأدوار والصلاحيات"
+    },
+    "searchPlaceholder": "ابحث بالاسم أو البريد الإلكتروني...",
+    "count": "{{count}} عضو",
+    "columns": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "role": "الدور",
+      "status": "الحالة"
+    },
+    "you": "أنت",
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "empty": "لا يوجد أعضاء فريق",
+    "saveSuccess": "تم حفظ عضو الفريق بنجاح",
+    "deleteSuccess": "تمت إزالة عضو الفريق بنجاح",
+    "deleteConfirmTitle": "إزالة عضو الفريق",
+    "deleteConfirmText": "هل أنت متأكد من إزالة عضو الفريق هذا؟",
+    "cannotRemoveSelf": "لا يمكنك إزالة حسابك الخاص",
+    "cannotRemoveLastOwner": "لا يمكنك إزالة آخر مالك في هذا النشاط التجاري",
+    "form": {
+      "name": "الاسم الكامل",
+      "namePlaceholder": "مثال: سارة يوسف",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "حدّد كلمة مرور أولية",
+      "passwordKeepPlaceholder": "اتركه فارغاً للإبقاء على كلمة المرور الحالية",
+      "role": "الدور",
+      "active": "نشط"
+    }
+  },
+  "roles": {
+    "addRole": "إضافة دور",
+    "editRole": "تعديل دور",
+    "saveSuccess": "تم حفظ الدور بنجاح",
+    "deleteSuccess": "تم حذف الدور بنجاح",
+    "deleteConfirmTitle": "حذف الدور",
+    "deleteConfirmText": "هل أنت متأكد من حذف هذا الدور؟",
+    "system": "نظامي",
+    "permissionCount": "{{count}} صلاحية",
+    "form": {
+      "name": "اسم الدور",
+      "namePlaceholder": "مثال: كاشير",
+      "permissions": "الصلاحيات",
+      "permissionsRequired": "اختر صلاحية واحدة على الأقل"
+    },
+    "groups": {
+      "orders": "الطلبات",
+      "menu": "القائمة",
+      "banks": "البنوك والمحافظ",
+      "expenses": "المصروفات",
+      "constants": "الثوابت",
+      "devices": "الأجهزة",
+      "team": "الفريق"
+    },
+    "permissions": {
+      "transfersCreate": "إنشاء طلبات جديدة",
+      "menuManage": "إدارة أصناف القائمة",
+      "banksManage": "إدارة البنوك والمحافظ",
+      "expensesManage": "إدارة المصروفات",
+      "constantsManage": "إدارة الثوابت",
+      "devicesManage": "إدارة الأجهزة المسجّلة",
+      "teamManage": "إدارة الفريق والأدوار"
+    },
+    "systemRoles": {
+      "owner": "مالك",
+      "manager": "مدير",
+      "staff": "موظف"
+    }
+  },
+  "activityLog": {
+    "title": "سجل النشاطات",
+    "subtitle": "كل إجراء تم اتخاذه في نشاطك التجاري، في مكان واحد",
+    "searchPlaceholder": "ابحث بالاسم أو البريد الإلكتروني أو العنصر...",
+    "category": "التصنيف",
+    "empty": "لا يوجد نشاط مسجّل بعد",
+    "columns": {
+      "actor": "القائم بالإجراء",
+      "action": "الإجراء",
+      "entity": "العنصر",
+      "category": "التصنيف",
+      "time": "الوقت"
+    },
+    "categories": {
+      "auth": "تسجيل الدخول",
+      "tenant": "النشاط التجاري",
+      "team": "الفريق",
+      "banks": "البنوك والمحافظ",
+      "menu": "القائمة",
+      "expenses": "المصروفات",
+      "constants": "الثوابت",
+      "devices": "الأجهزة",
+      "transfers": "الطلبات"
+    }
+  },
+  "auditLog": {
+    "actions": {
+      "created": "أضاف",
+      "updated": "عدّل",
+      "deleted": "حذف",
+      "signedOut": "سجّل خروج",
+      "suspended": "علّق",
+      "activated": "فعّل",
+      "planChanged": "غيّر خطة",
+      "loggedIn": "سجّل دخول"
+    },
+    "entities": {
+      "expense": "مصروف",
+      "bank": "بنك/محفظة",
+      "menuItem": "صنف قائمة",
+      "constant": "ثابت",
+      "device": "جهاز",
+      "order": "طلب",
+      "teamMember": "عضو فريق",
+      "role": "دور",
+      "tenant": "نشاط تجاري"
+    }
+  },
+  "admin": {
+    "badge": "سوبر أدمين",
+    "nav": {
+      "dashboard": "لوحة التحكم",
+      "tenants": "الأنشطة التجارية",
+      "logs": "سجل المنصة"
+    },
+    "dashboard": {
+      "title": "لوحة تحكم المنصة",
+      "subtitle": "نظرة عامة على كل نشاط تجاري يعمل على حوالاتي",
+      "totalTenants": "إجمالي الأنشطة التجارية",
+      "activeTenants": "نشط",
+      "trialTenants": "فترة تجريبية",
+      "suspendedTenants": "معلّق",
+      "recentTenants": "أحدث الأنشطة التجارية",
+      "recentActivity": "أحدث النشاطات",
+      "viewAll": "عرض الكل",
+      "noTenants": "لا توجد أنشطة تجارية بعد",
+      "noActivity": "لا يوجد نشاط بعد"
+    },
+    "tenants": {
+      "title": "الأنشطة التجارية",
+      "subtitle": "كل نشاط تجاري مستقل يستخدم حوالاتي",
+      "searchPlaceholder": "ابحث بالنشاط التجاري أو المالك أو البريد الإلكتروني...",
+      "count": "{{count}} نشاط تجاري",
+      "empty": "لا توجد أنشطة تجارية",
+      "status": {
+        "trial": "تجريبي",
+        "active": "نشط",
+        "suspended": "معلّق"
+      },
+      "columns": {
+        "business": "النشاط التجاري",
+        "owner": "المالك",
+        "plan": "الخطة",
+        "status": "الحالة"
+      },
+      "plans": {
+        "starter": "أساسية",
+        "pro": "احترافية",
+        "enterprise": "مؤسسية"
+      },
+      "suspend": "تعليق النشاط التجاري",
+      "activate": "تفعيل النشاط التجاري",
+      "suspendConfirmTitle": "تعليق النشاط التجاري",
+      "suspendConfirmText": "سيفقد هذا النشاط التجاري إمكانية الوصول إلى حوالاتي حتى يُعاد تفعيله. هل تريد المتابعة؟",
+      "activateConfirmTitle": "تفعيل النشاط التجاري",
+      "activateConfirmText": "سيستعيد هذا النشاط التجاري إمكانية الوصول إلى حوالاتي. هل تريد المتابعة؟",
+      "suspendSuccess": "تم تعليق النشاط التجاري",
+      "activateSuccess": "تم تفعيل النشاط التجاري",
+      "planChangedSuccess": "تم تحديث الخطة بنجاح"
+    },
+    "tenantDetail": {
+      "info": "معلومات النشاط التجاري",
+      "owner": "المالك",
+      "phone": "الهاتف",
+      "usersCount": "أعضاء الفريق",
+      "createdAt": "تاريخ الإنشاء",
+      "team": "أعضاء الفريق",
+      "recentActivity": "أحدث النشاطات",
+      "noTeam": "لا يوجد أعضاء فريق بعد",
+      "notFound": "النشاط التجاري غير موجود",
+      "backToList": "العودة إلى الأنشطة التجارية"
+    },
+    "logs": {
+      "title": "سجل المنصة",
+      "subtitle": "كل إجراء عبر كل نشاط تجاري على المنصة",
+      "tenant": "النشاط التجاري"
+    }
+  },
+  "whatsapp": {
+    "orderMessage": {
+      "title": "طلب جديد {{id}}",
+      "customer": "العميل: {{name}}",
+      "items": "الأصناف: {{items}}",
+      "amount": "المبلغ: {{amount}} شيكل",
+      "sender": "تم التحويل بواسطة: {{name}}",
+      "senderPhone": "رقم جوال المُحوِّل: {{phone}}"
     }
   }
 }

@@ -265,6 +265,12 @@
               <app-field-error [control]="form.controls.senderName" />
 
               <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>{{ 'form.senderPhone' | translate }}</mat-label>
+                <input matInput type="tel" dir="ltr" formControlName="senderPhone" [placeholder]="'form.senderPhonePlaceholder' | translate" />
+              </mat-form-field>
+              <app-field-error [control]="form.controls.senderPhone" />
+
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
                 <mat-label>{{ 'form.transferredAmount' | translate }}</mat-label>
                 <input matInput type="number" formControlName="transferredAmount" />
               </mat-form-field>

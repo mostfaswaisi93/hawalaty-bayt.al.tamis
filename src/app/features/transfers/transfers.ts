@@ -14,6 +14,7 @@ import { ConstantsService } from '../../core/constants.service';
 import { MenuService } from '../../core/menu.service';
 import { menuCategoryBadge, menuCategoryIcon } from '../../core/menu-category-style';
 import { LocalCurrencyPipe } from '../../core/localize.pipes';
+import { WhatsappService } from '../../core/whatsapp.service';
 import { MenuItem } from '../../data/menu';
 import { ChangeMethod, PaymentMethod, Transfer, TransferLineItem } from '../../data/transfers';
 import { FieldError } from '../../shared/field-error/field-error';
@@ -48,6 +49,7 @@ export class Transfers {
   private readonly snackbar = inject(MatSnackBar);
   private readonly translate = inject(TranslateService);
   private readonly auditLog = inject(AuditLogService);
+  private readonly whatsapp = inject(WhatsappService);
 
   protected readonly banks = computed(() => this.banksService.all().filter((b) => b.active && b.type === 'bank'));
   protected readonly wallets = computed(() => this.banksService.all().filter((b) => b.active && b.type === 'wallet'));
@@ -149,6 +151,7 @@ export class Transfers {
     // Bank/wallet scenario
     bankId: [null as string | null],
     senderName: [''],
+    senderPhone: [''],
     transferredAmount: [null as number | null],
 
     notes: [''],
@@ -171,19 +174,23 @@ export class Transfers {
   protected onPaymentMethodChange(method: PaymentMethod): void {
     const bankId = this.form.controls.bankId;
     const senderName = this.form.controls.senderName;
+    const senderPhone = this.form.controls.senderPhone;
     const transferredAmount = this.form.controls.transferredAmount;
 
     if (method === 'bank') {
       bankId.setValidators([Validators.required]);
       senderName.setValidators([Validators.required, Validators.minLength(2)]);
+      senderPhone.setValidators([Validators.required, Validators.minLength(7)]);
       transferredAmount.setValidators([Validators.required, Validators.min(0.01)]);
     } else {
       bankId.clearValidators();
       senderName.clearValidators();
+      senderPhone.clearValidators();
       transferredAmount.clearValidators();
     }
     bankId.updateValueAndValidity();
     senderName.updateValueAndValidity();
+    senderPhone.updateValueAndValidity();
     transferredAmount.updateValueAndValidity();
   }
 
@@ -259,11 +266,15 @@ export class Transfers {
             bankId: paidBank?.id,
             bankName: paidBank?.name,
             senderName: v.senderName,
+            senderPhone: v.senderPhone,
             transferredAmount: Number(v.transferredAmount),
           }),
     };
 
     this.auditLog.log({ action: 'created', entityType: 'order', entityLabel: result.id, category: 'transfers' });
+    if (paidBank) {
+      this.whatsapp.notifyOrder(paidBank, result);
+    }
     this.snackbar.open(this.translate.instant('messages.saveSuccess'), this.translate.instant('common.close'), {
       duration: 3000,
     });

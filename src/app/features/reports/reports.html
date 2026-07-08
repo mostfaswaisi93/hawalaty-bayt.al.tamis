@@ -127,22 +127,22 @@
 
   <!-- Report card -->
   <div class="tonal-elevation rounded-3xl border border-outline-variant bg-surface-container-lowest p-4 sm:p-6">
-    <!-- Printable sheet: captured verbatim into the PDF (carries active dir + font). -->
-    <div #report class="report-sheet rounded-2xl bg-white p-6 text-[#0b1c30] sm:p-8" [attr.dir]="language.dir()">
+    <!-- Printable sheet: captured verbatim into the PDF (forced to light mode during export — see exportPdf()). -->
+    <div #report class="report-sheet rounded-2xl bg-surface p-6 text-on-surface sm:p-8" [attr.dir]="language.dir()">
       <!-- Report header -->
-      <div class="mb-6 flex items-start justify-between border-b border-slate-200 pb-4">
+      <div class="mb-6 flex items-start justify-between border-b border-outline-variant pb-4">
         <div>
-          <h2 class="text-2xl font-bold text-[#00236f]">{{ 'app.name' | translate }}</h2>
-          <p class="text-sm text-slate-500">{{ 'reports.title' | translate }}</p>
+          <h2 class="text-2xl font-bold text-primary">{{ 'app.name' | translate }}</h2>
+          <p class="text-sm text-on-surface-variant">{{ 'reports.title' | translate }}</p>
         </div>
         <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#00236f] text-white">
           <span class="material-symbols-outlined">account_balance_wallet</span>
         </div>
       </div>
-      <p class="text-xs text-slate-500">
+      <p class="text-xs text-on-surface-variant">
         {{ 'reports.generatedAt' | translate }}: {{ now | localDate: { dateStyle: 'long', timeStyle: 'short' } }}
       </p>
-      <p class="mb-6 text-xs font-semibold text-slate-600">
+      <p class="mb-6 text-xs font-semibold text-on-surface-variant">
         {{ 'reports.periods.' + period() | translate }}
         @if (period() !== 'all') {
           ·
@@ -162,15 +162,15 @@
 
       @if (transfers().length === 0) {
         <div class="flex flex-col items-center gap-3 py-16 text-center">
-          <span class="material-symbols-outlined text-5xl text-slate-300">receipt_long</span>
-          <p class="text-slate-500">{{ 'reports.empty' | translate }}</p>
+          <span class="material-symbols-outlined text-5xl text-outline/50">receipt_long</span>
+          <p class="text-on-surface-variant">{{ 'reports.empty' | translate }}</p>
         </div>
       } @else {
         <!-- Table -->
         <div class="overflow-x-auto">
           <table class="w-full">
             <thead>
-              <tr class="border-b border-slate-200 text-slate-500">
+              <tr class="border-b border-outline-variant text-on-surface-variant">
                 <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.id' | translate }}</th>
                 <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.customer' | translate }}</th>
                 <th class="whitespace-nowrap pb-3 text-start text-[11px] font-semibold uppercase tracking-wider">{{ 'table.item' | translate }}</th>
@@ -180,12 +180,12 @@
             </thead>
             <tbody class="stagger-rows">
               @for (t of transfers(); track t.id) {
-                <tr class="border-b border-slate-100">
+                <tr class="border-b border-outline-variant/40">
                   <td class="whitespace-nowrap py-3 text-start text-sm"><span dir="ltr">{{ t.id }}</span></td>
                   <td class="whitespace-nowrap py-3 text-sm font-medium">{{ t.customer }}</td>
-                  <td class="whitespace-nowrap py-3 text-sm text-slate-500">{{ t.itemName || '—' }}</td>
-                  <td class="whitespace-nowrap py-3 text-sm font-bold text-[#00236f]">{{ t.amount | localCurrency }}</td>
-                  <td class="whitespace-nowrap py-3 text-sm text-slate-500">{{ t.date | localDate }}</td>
+                  <td class="whitespace-nowrap py-3 text-sm text-on-surface-variant">{{ t.itemName || '—' }}</td>
+                  <td class="whitespace-nowrap py-3 text-sm font-bold text-primary">{{ t.amount | localCurrency }}</td>
+                  <td class="whitespace-nowrap py-3 text-sm text-on-surface-variant">{{ t.date | localDate }}</td>
                 </tr>
               }
             </tbody>
@@ -193,9 +193,9 @@
         </div>
 
         <!-- Total -->
-        <div class="mt-6 flex items-center justify-between border-t-2 border-slate-200 pt-4">
+        <div class="mt-6 flex items-center justify-between border-t-2 border-outline-variant pt-4">
           <span class="font-bold">{{ 'reports.total' | translate }}</span>
-          <span class="text-lg font-bold text-[#00236f]">{{ total | localCurrency }}</span>
+          <span class="text-lg font-bold text-primary">{{ total | localCurrency }}</span>
         </div>
       }
     </div>

@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { LocalCurrencyPipe, LocalDatePipe, LocalNumberPipe } from '../../core/localize.pipes';
 import { ExpensesService } from '../../core/expenses.service';
+import { PermissionsService } from '../../core/permissions.service';
 import { MOCK_TRANSFERS, Transfer } from '../../data/transfers';
 
 const WEEKDAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
@@ -22,6 +23,7 @@ function toLocalIsoDate(d: Date): string {
 })
 export class Dashboard {
   private readonly expensesService = inject(ExpensesService);
+  protected readonly permissions = inject(PermissionsService);
 
   private readonly allTransfers: Transfer[] = MOCK_TRANSFERS;
 

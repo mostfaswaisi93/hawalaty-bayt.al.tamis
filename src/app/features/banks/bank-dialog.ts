@@ -50,6 +50,12 @@ import { FieldError } from '../../shared/field-error/field-error';
         </mat-form-field>
         <app-field-error [control]="form.controls.code" />
 
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>{{ 'banks.form.phone' | translate }}</mat-label>
+          <input matInput formControlName="phone" dir="ltr" [placeholder]="'banks.form.phonePlaceholder' | translate" />
+          <mat-hint>{{ 'banks.form.phoneHint' | translate }}</mat-hint>
+        </mat-form-field>
+
         <mat-slide-toggle formControlName="active" class="mt-1">
           {{ 'banks.form.active' | translate }}
         </mat-slide-toggle>
@@ -71,6 +77,7 @@ export class BankDialog {
     type: [this.data?.type ?? ('bank' as BankEntityType), Validators.required],
     name: [this.data?.name ?? '', [Validators.required, Validators.minLength(2)]],
     code: [this.data?.code ?? '', [Validators.required, Validators.minLength(2)]],
+    phone: [this.data?.phone ?? ''],
     active: [this.data?.active ?? true],
   });
 
@@ -86,6 +93,7 @@ export class BankDialog {
       name: v.name,
       code: v.code,
       active: v.active,
+      ...(v.phone.trim() ? { phone: v.phone.trim() } : {}),
     };
     this.ref.close(result);
   }

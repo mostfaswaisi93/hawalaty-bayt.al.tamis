@@ -30,32 +30,38 @@
 
     <!-- Quick actions -->
     <div class="grid grid-cols-2 gap-4">
-      <a
-        routerLink="/transfers"
-        class="tonal-elevation group flex flex-col items-center justify-center gap-3 rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 transition-all hover:border-primary hover:bg-surface-container">
-        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-secondary-container/10 text-secondary transition-colors group-hover:bg-secondary-container group-hover:text-white">
-          <mat-icon>add_shopping_cart</mat-icon>
-        </div>
-        <span class="text-body-sm font-bold">{{ 'dashboard.newTransfer' | translate }}</span>
-      </a>
+      @if (permissions.can('transfers.create')) {
+        <a
+          routerLink="/transfers"
+          class="tonal-elevation group flex flex-col items-center justify-center gap-3 rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 transition-all hover:border-primary hover:bg-surface-container">
+          <div class="flex h-12 w-12 items-center justify-center rounded-full bg-secondary-container/10 text-secondary transition-colors group-hover:bg-secondary-container group-hover:text-white">
+            <mat-icon>add_shopping_cart</mat-icon>
+          </div>
+          <span class="text-body-sm font-bold">{{ 'dashboard.newTransfer' | translate }}</span>
+        </a>
+      }
 
-      <a
-        routerLink="/menu"
-        class="tonal-elevation group flex flex-col items-center justify-center gap-3 rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 transition-all hover:border-primary hover:bg-surface-container">
-        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
-          <mat-icon>restaurant_menu</mat-icon>
-        </div>
-        <span class="text-body-sm font-bold">{{ 'nav.foodMenu' | translate }}</span>
-      </a>
+      @if (permissions.can('menu.manage')) {
+        <a
+          routerLink="/menu"
+          class="tonal-elevation group flex flex-col items-center justify-center gap-3 rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 transition-all hover:border-primary hover:bg-surface-container">
+          <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+            <mat-icon>restaurant_menu</mat-icon>
+          </div>
+          <span class="text-body-sm font-bold">{{ 'nav.foodMenu' | translate }}</span>
+        </a>
+      }
 
-      <a
-        routerLink="/expenses"
-        class="tonal-elevation group flex flex-col items-center justify-center gap-3 rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 transition-all hover:border-primary hover:bg-surface-container">
-        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-tertiary/10 text-tertiary transition-colors group-hover:bg-tertiary group-hover:text-white">
-          <mat-icon>payments</mat-icon>
-        </div>
-        <span class="text-body-sm font-bold">{{ 'nav.expenses' | translate }}</span>
-      </a>
+      @if (permissions.can('expenses.manage')) {
+        <a
+          routerLink="/expenses"
+          class="tonal-elevation group flex flex-col items-center justify-center gap-3 rounded-2xl border border-outline-variant bg-surface-container-lowest p-6 transition-all hover:border-primary hover:bg-surface-container">
+          <div class="flex h-12 w-12 items-center justify-center rounded-full bg-tertiary/10 text-tertiary transition-colors group-hover:bg-tertiary group-hover:text-white">
+            <mat-icon>payments</mat-icon>
+          </div>
+          <span class="text-body-sm font-bold">{{ 'nav.expenses' | translate }}</span>
+        </a>
+      }
 
       <a
         routerLink="/reports"
@@ -74,9 +80,11 @@
     <div class="glass-card tonal-elevation flex flex-col rounded-3xl p-6 lg:col-span-2">
       <div class="mb-6 flex items-center justify-between">
         <h3 class="font-headline-md text-headline-md">{{ 'dashboard.recentExpenses.title' | translate }}</h3>
-        <a routerLink="/expenses" class="text-body-sm font-bold text-primary hover:underline">
-          {{ 'dashboard.recentExpenses.viewAll' | translate }}
-        </a>
+        @if (permissions.can('expenses.manage')) {
+          <a routerLink="/expenses" class="text-body-sm font-bold text-primary hover:underline">
+            {{ 'dashboard.recentExpenses.viewAll' | translate }}
+          </a>
+        }
       </div>
 
       @if (recentExpenses().length === 0) {

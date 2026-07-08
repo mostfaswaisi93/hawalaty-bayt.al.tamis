@@ -215,7 +215,7 @@
     "useDemo": "Use demo credentials",
     "forgotPassword": "Forgot password?",
     "noAccount": "Don't have an account?",
-    "contactBank": "Contact your bank",
+    "contactBank": "Create one",
     "copyright": "© 2026 My Transfers. All rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
@@ -243,7 +243,10 @@
     "filter": "Filter",
     "increase": "Increase",
     "decrease": "Decrease",
-    "back": "Back"
+    "back": "Back",
+    "view": "View",
+    "suspend": "Suspend",
+    "activate": "Activate"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -307,6 +310,9 @@
       "namePlaceholder": "e.g. National Bank or Jawwal Pay",
       "code": "Code",
       "codePlaceholder": "e.g. NBK",
+      "phone": "WhatsApp number",
+      "phonePlaceholder": "+970 59 000 0000",
+      "phoneHint": "New orders paid through this account are sent here on WhatsApp",
       "active": "Active"
     },
     "deleteConfirmTitle": "Delete entry",
@@ -439,6 +445,8 @@
     "changeAmount": "Change amount returned",
     "senderName": "Name of the person who made the transfer",
     "senderNamePlaceholder": "Enter the sender's name",
+    "senderPhone": "Sender's mobile number",
+    "senderPhonePlaceholder": "+970 59 000 0000",
     "transferredAmount": "Transferred amount",
     "notes": "Notes",
     "notesPlaceholder": "Optional notes"
@@ -483,6 +491,250 @@
       "count": "Total transactions",
       "total": "Total amount",
       "average": "Average per transaction"
+    }
+  },
+  "signup": {
+    "title": "Create your business account",
+    "subtitle": "Set up your own Hawalaty workspace in a couple of minutes",
+    "steps": {
+      "business": "Business information",
+      "owner": "Owner account"
+    },
+    "form": {
+      "businessName": "Business name",
+      "businessNamePlaceholder": "e.g. بيت التميس",
+      "phone": "Phone number",
+      "ownerName": "Your name",
+      "ownerNamePlaceholder": "e.g. Ahmad Ali",
+      "ownerEmail": "Email",
+      "password": "Password",
+      "passwordHint": "Must be at least 4 characters",
+      "confirmPassword": "Confirm password",
+      "passwordMismatch": "Passwords don't match",
+      "terms": "I agree to the Terms of Service and Privacy Policy"
+    },
+    "submit": "Create account",
+    "submitting": "Setting up your workspace...",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "emailTaken": "This email is already in use",
+    "welcomeMessage": "Welcome to Hawalaty, {{name}}!",
+    "brandTitle": "Run your business on one bilingual workspace",
+    "brandSubtitle": "Orders, menu, banks, expenses, team and reports — all in one place, ready in minutes.",
+    "feature1": "Your own isolated workspace",
+    "feature2": "Invite staff with role-based permissions",
+    "feature3": "Full activity log of every action",
+    "preview": {
+      "salesLabel": "Today's Sales",
+      "newOrder": "New order received",
+      "justNow": "Just now"
+    }
+  },
+  "team": {
+    "title": "Team",
+    "subtitle": "Manage your staff accounts and their roles",
+    "addMember": "Add Member",
+    "editMember": "Edit Member",
+    "tabs": {
+      "members": "Members",
+      "roles": "Roles & Permissions"
+    },
+    "searchPlaceholder": "Search by name or email...",
+    "count": "{{count}} members",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status"
+    },
+    "you": "You",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "empty": "No team members found",
+    "saveSuccess": "Team member saved successfully",
+    "deleteSuccess": "Team member removed successfully",
+    "deleteConfirmTitle": "Remove team member",
+    "deleteConfirmText": "Are you sure you want to remove this team member?",
+    "cannotRemoveSelf": "You can't remove your own account",
+    "cannotRemoveLastOwner": "You can't remove the last Owner of this business",
+    "form": {
+      "name": "Full name",
+      "namePlaceholder": "e.g. Sara Youssef",
+      "email": "Email",
+      "password": "Password",
+      "passwordPlaceholder": "Set an initial password",
+      "passwordKeepPlaceholder": "Leave blank to keep current password",
+      "role": "Role",
+      "active": "Active"
+    }
+  },
+  "roles": {
+    "addRole": "Add Role",
+    "editRole": "Edit Role",
+    "saveSuccess": "Role saved successfully",
+    "deleteSuccess": "Role deleted successfully",
+    "deleteConfirmTitle": "Delete role",
+    "deleteConfirmText": "Are you sure you want to delete this role?",
+    "system": "System",
+    "permissionCount": "{{count}} permissions",
+    "form": {
+      "name": "Role name",
+      "namePlaceholder": "e.g. Cashier",
+      "permissions": "Permissions",
+      "permissionsRequired": "Select at least one permission"
+    },
+    "groups": {
+      "orders": "Orders",
+      "menu": "Menu",
+      "banks": "Banks & Wallets",
+      "expenses": "Expenses",
+      "constants": "Constants",
+      "devices": "Devices",
+      "team": "Team"
+    },
+    "permissions": {
+      "transfersCreate": "Create new orders",
+      "menuManage": "Manage menu items",
+      "banksManage": "Manage banks & wallets",
+      "expensesManage": "Manage expenses",
+      "constantsManage": "Manage constants",
+      "devicesManage": "Manage signed-in devices",
+      "teamManage": "Manage team & roles"
+    },
+    "systemRoles": {
+      "owner": "Owner",
+      "manager": "Manager",
+      "staff": "Staff"
+    }
+  },
+  "activityLog": {
+    "title": "Activity Log",
+    "subtitle": "Every action taken across your business, in one place",
+    "searchPlaceholder": "Search by name, email or item...",
+    "category": "Category",
+    "empty": "No activity recorded yet",
+    "columns": {
+      "actor": "Actor",
+      "action": "Action",
+      "entity": "Item",
+      "category": "Category",
+      "time": "Time"
+    },
+    "categories": {
+      "auth": "Sign-in",
+      "tenant": "Business",
+      "team": "Team",
+      "banks": "Banks & Wallets",
+      "menu": "Menu",
+      "expenses": "Expenses",
+      "constants": "Constants",
+      "devices": "Devices",
+      "transfers": "Orders"
+    }
+  },
+  "auditLog": {
+    "actions": {
+      "created": "created",
+      "updated": "updated",
+      "deleted": "deleted",
+      "signedOut": "signed out",
+      "suspended": "suspended",
+      "activated": "activated",
+      "planChanged": "changed plan for",
+      "loggedIn": "logged in"
+    },
+    "entities": {
+      "expense": "expense",
+      "bank": "bank/wallet",
+      "menuItem": "menu item",
+      "constant": "constant",
+      "device": "device",
+      "order": "order",
+      "teamMember": "team member",
+      "role": "role",
+      "tenant": "business"
+    }
+  },
+  "admin": {
+    "badge": "Super Admin",
+    "nav": {
+      "dashboard": "Dashboard",
+      "tenants": "Businesses",
+      "logs": "Platform Log"
+    },
+    "dashboard": {
+      "title": "Platform Dashboard",
+      "subtitle": "An overview of every business running on Hawalaty",
+      "totalTenants": "Total businesses",
+      "activeTenants": "Active",
+      "trialTenants": "On trial",
+      "suspendedTenants": "Suspended",
+      "recentTenants": "Recent businesses",
+      "recentActivity": "Recent activity",
+      "viewAll": "View all",
+      "noTenants": "No businesses yet",
+      "noActivity": "No activity yet"
+    },
+    "tenants": {
+      "title": "Businesses",
+      "subtitle": "Every independent business using Hawalaty",
+      "searchPlaceholder": "Search by business, owner or email...",
+      "count": "{{count}} businesses",
+      "empty": "No businesses found",
+      "status": {
+        "trial": "Trial",
+        "active": "Active",
+        "suspended": "Suspended"
+      },
+      "columns": {
+        "business": "Business",
+        "owner": "Owner",
+        "plan": "Plan",
+        "status": "Status"
+      },
+      "plans": {
+        "starter": "Starter",
+        "pro": "Pro",
+        "enterprise": "Enterprise"
+      },
+      "suspend": "Suspend business",
+      "activate": "Activate business",
+      "suspendConfirmTitle": "Suspend business",
+      "suspendConfirmText": "This business will lose access to Hawalaty until reactivated. Continue?",
+      "activateConfirmTitle": "Activate business",
+      "activateConfirmText": "This business will regain access to Hawalaty. Continue?",
+      "suspendSuccess": "Business suspended",
+      "activateSuccess": "Business activated",
+      "planChangedSuccess": "Plan updated successfully"
+    },
+    "tenantDetail": {
+      "info": "Business information",
+      "owner": "Owner",
+      "phone": "Phone",
+      "usersCount": "Team members",
+      "createdAt": "Created on",
+      "team": "Team roster",
+      "recentActivity": "Recent activity",
+      "noTeam": "No team members yet",
+      "notFound": "Business not found",
+      "backToList": "Back to businesses"
+    },
+    "logs": {
+      "title": "Platform Log",
+      "subtitle": "Every action across every business on the platform",
+      "tenant": "Business"
+    }
+  },
+  "whatsapp": {
+    "orderMessage": {
+      "title": "New order {{id}}",
+      "customer": "Customer: {{name}}",
+      "items": "Items: {{items}}",
+      "amount": "Amount: {{amount}} ILS",
+      "sender": "Transferred by: {{name}}",
+      "senderPhone": "Sender's number: {{phone}}"
     }
   }
 }

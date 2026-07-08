@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuditLogService } from '../../core/audit-log.service';
 import { AuthService } from '../../core/auth.service';
+import { LocalCurrencyPipe } from '../../core/localize.pipes';
 import { TeamService } from '../../core/team.service';
 import { TenantsService } from '../../core/tenants.service';
 import { TeamMember } from '../../data/team-members';
@@ -21,7 +22,7 @@ function passwordsMatch(control: AbstractControl): ValidationErrors | null {
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, RouterLink, TranslateModule, LanguageSwitcher, Logo, ThemeToggle, FieldError],
+  imports: [ReactiveFormsModule, RouterLink, TranslateModule, LanguageSwitcher, Logo, ThemeToggle, FieldError, LocalCurrencyPipe],
   templateUrl: './signup.html',
 })
 export class Signup {
@@ -42,7 +43,7 @@ export class Signup {
 
   protected readonly form = this.fb.nonNullable.group({
     businessName: ['', [Validators.required, Validators.minLength(2)]],
-    phone: ['', [Validators.required, Validators.minLength(7)]],
+    phone: ['', [Validators.required, Validators.minLength(7), Validators.pattern(/^\d[\d\s]*$/)]],
     ownerName: ['', [Validators.required, Validators.minLength(2)]],
     ownerEmail: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(4)]],
@@ -73,7 +74,7 @@ export class Signup {
       businessName: v.businessName,
       ownerName: v.ownerName,
       ownerEmail: v.ownerEmail,
-      phone: v.phone,
+      phone: '+970 ' + v.phone.trim(),
     });
 
     const owner: TeamMember = {

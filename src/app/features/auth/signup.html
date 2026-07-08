@@ -29,12 +29,15 @@
               <label class="block font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant" for="businessName">
                 {{ 'signup.form.businessName' | translate }}
               </label>
-              <input
-                id="businessName"
-                type="text"
-                formControlName="businessName"
-                [placeholder]="'signup.form.businessNamePlaceholder' | translate"
-                class="w-full rounded-xl border border-outline-variant bg-surface-container-lowest px-4 py-3 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
+              <div class="relative">
+                <span class="material-symbols-outlined pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3 text-outline">storefront</span>
+                <input
+                  id="businessName"
+                  type="text"
+                  formControlName="businessName"
+                  [placeholder]="'signup.form.businessNamePlaceholder' | translate"
+                  class="w-full rounded-xl border border-outline-variant bg-surface-container-lowest py-3 pe-4 ps-11 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
+              </div>
               <app-field-error [control]="form.controls.businessName" />
             </div>
 
@@ -42,13 +45,15 @@
               <label class="block font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant" for="phone">
                 {{ 'signup.form.phone' | translate }}
               </label>
-              <input
-                id="phone"
-                type="tel"
-                dir="ltr"
-                formControlName="phone"
-                placeholder="+970 59 000 0000"
-                class="w-full rounded-xl border border-outline-variant bg-surface-container-lowest px-4 py-3 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
+              <div class="flex" dir="ltr">
+                <span class="flex items-center rounded-s-xl border-y border-s border-outline-variant bg-surface-container px-4 text-body-sm font-semibold text-on-surface-variant">+970</span>
+                <input
+                  id="phone"
+                  type="tel"
+                  formControlName="phone"
+                  placeholder="59 000 0000"
+                  class="flex-1 rounded-e-xl border border-outline-variant bg-surface-container-lowest px-4 py-3 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
+              </div>
               <app-field-error [control]="form.controls.phone" />
             </div>
           </div>
@@ -61,12 +66,15 @@
               <label class="block font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant" for="ownerName">
                 {{ 'signup.form.ownerName' | translate }}
               </label>
-              <input
-                id="ownerName"
-                type="text"
-                formControlName="ownerName"
-                [placeholder]="'signup.form.ownerNamePlaceholder' | translate"
-                class="w-full rounded-xl border border-outline-variant bg-surface-container-lowest px-4 py-3 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
+              <div class="relative">
+                <span class="material-symbols-outlined pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3 text-outline">person</span>
+                <input
+                  id="ownerName"
+                  type="text"
+                  formControlName="ownerName"
+                  [placeholder]="'signup.form.ownerNamePlaceholder' | translate"
+                  class="w-full rounded-xl border border-outline-variant bg-surface-container-lowest py-3 pe-4 ps-11 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
+              </div>
               <app-field-error [control]="form.controls.ownerName" />
             </div>
 
@@ -74,14 +82,17 @@
               <label class="block font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant" for="ownerEmail">
                 {{ 'signup.form.ownerEmail' | translate }}
               </label>
-              <input
-                id="ownerEmail"
-                type="email"
-                dir="ltr"
-                formControlName="ownerEmail"
-                autocomplete="username"
-                placeholder="name@example.com"
-                class="w-full rounded-xl border border-outline-variant bg-surface-container-lowest px-4 py-3 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
+              <div class="relative">
+                <span class="material-symbols-outlined pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3 text-outline">mail</span>
+                <input
+                  id="ownerEmail"
+                  type="email"
+                  dir="ltr"
+                  formControlName="ownerEmail"
+                  autocomplete="username"
+                  placeholder="name@example.com"
+                  class="w-full rounded-xl border border-outline-variant bg-surface-container-lowest py-3 pe-4 ps-11 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
+              </div>
               <app-field-error [control]="form.controls.ownerEmail" />
             </div>
 
@@ -90,13 +101,14 @@
                 {{ 'signup.form.password' | translate }}
               </label>
               <div class="relative">
+                <span class="material-symbols-outlined pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3 text-outline">lock</span>
                 <input
                   id="password"
                   [type]="hidePassword() ? 'password' : 'text'"
                   formControlName="password"
                   autocomplete="new-password"
                   dir="ltr"
-                  class="w-full rounded-xl border border-outline-variant bg-surface-container-lowest py-3 pe-12 ps-4 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
+                  class="w-full rounded-xl border border-outline-variant bg-surface-container-lowest py-3 pe-12 ps-11 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
                 <button
                   type="button"
                   (click)="hidePassword.set(!hidePassword())"
@@ -105,6 +117,7 @@
                   <span class="material-symbols-outlined">{{ hidePassword() ? 'visibility' : 'visibility_off' }}</span>
                 </button>
               </div>
+              <p class="text-xs text-on-surface-variant">{{ 'signup.form.passwordHint' | translate }}</p>
               <app-field-error [control]="form.controls.password" />
             </div>
 
@@ -112,13 +125,16 @@
               <label class="block font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant" for="confirmPassword">
                 {{ 'signup.form.confirmPassword' | translate }}
               </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                dir="ltr"
-                formControlName="confirmPassword"
-                autocomplete="new-password"
-                class="w-full rounded-xl border border-outline-variant bg-surface-container-lowest px-4 py-3 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
+              <div class="relative">
+                <span class="material-symbols-outlined pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3 text-outline">lock</span>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  dir="ltr"
+                  formControlName="confirmPassword"
+                  autocomplete="new-password"
+                  class="w-full rounded-xl border border-outline-variant bg-surface-container-lowest py-3 pe-4 ps-11 text-body-lg outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary" />
+              </div>
               @if (form.errors?.['mismatch'] && form.controls.confirmPassword.touched) {
                 <p class="text-body-sm text-error">{{ 'signup.form.passwordMismatch' | translate }}</p>
               }
@@ -161,6 +177,34 @@
       <div class="pointer-events-none absolute inset-0 opacity-30">
         <div class="absolute -top-1/4 start-[-10%] h-96 w-96 rounded-full bg-primary blur-3xl"></div>
         <div class="absolute -bottom-1/4 end-[-10%] h-96 w-96 rounded-full bg-secondary-container blur-3xl"></div>
+      </div>
+
+      <!-- Floating product-preview cards -->
+      <div class="pointer-events-none absolute inset-0 hidden xl:block">
+        <div class="absolute start-12 top-28 w-56 -rotate-3 rounded-2xl border border-white/20 bg-white/10 p-4 shadow-xl backdrop-blur-md">
+          <div class="flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <p class="font-label-caps text-[10px] uppercase tracking-wider text-white/60">{{ 'signup.preview.salesLabel' | translate }}</p>
+              <p class="mt-1 text-xl font-bold text-white" dir="ltr">{{ 2450 | localCurrency }}</p>
+            </div>
+            <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-container/40 text-white">
+              <span class="material-symbols-outlined">trending_up</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute end-10 bottom-36 w-64 rotate-2 rounded-2xl border border-white/20 bg-white/10 p-4 shadow-xl backdrop-blur-md">
+          <div class="flex items-center gap-3">
+            <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/15 text-white">
+              <span class="material-symbols-outlined">receipt_long</span>
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="truncate text-sm font-bold text-white">{{ 'signup.preview.newOrder' | translate }}</p>
+              <p class="text-xs text-white/60">{{ 'signup.preview.justNow' | translate }}</p>
+            </div>
+            <span class="whitespace-nowrap text-sm font-bold text-white" dir="ltr">+{{ 56 | localCurrency }}</span>
+          </div>
+        </div>
       </div>
 
       <div class="relative z-10 max-w-lg text-center">
